@@ -6,7 +6,6 @@
   <name>jCompas</name>
   <description>a flamenco metronome</description>
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
