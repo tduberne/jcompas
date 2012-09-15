@@ -70,6 +70,9 @@ public class SimpleReloj extends JPanel implements Reloj {
 			log.trace( "needleAngle: "+needleAngle+" for fraction "+fraction );
 		}
 		repaint();
+		if (JCompasGlobal.isDebugMode()) {
+			updateFpsInfo();
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -100,24 +103,20 @@ public class SimpleReloj extends JPanel implements Reloj {
 				smallR);
 
 		if (JCompasGlobal.isDebugMode()) {
-			updateFpsInfo( g , 0 , width);
+			g.drawString( fpsText , 0 , width );
 		}
 	}
 
-	private void updateFpsInfo(
-			final Graphics g,
-			final int xText,
-			final int yText) {
-		if (lastFpsPrint == Long.MIN_VALUE) lastFpsPrint = System.currentTimeMillis();
+	private void updateFpsInfo() {
+		final long now = System.currentTimeMillis();
+		if (lastFpsPrint == Long.MIN_VALUE) lastFpsPrint = now;
 		frameCount++;
 
-		final long now = System.currentTimeMillis();
 		if ( now > lastFpsPrint + 1000 ) {
 			fpsText = "fps: "+ (1000d * frameCount / (now - lastFpsPrint));
 			frameCount = 0;
 			lastFpsPrint = now;
 		}
-		g.drawString( fpsText , xText , yText );
 	}
 
 	private void paintNeedle(
