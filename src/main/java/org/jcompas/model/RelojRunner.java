@@ -75,13 +75,13 @@ public class RelojRunner implements InfinitePlayer {
 			final double compasStep = 1d / (defaultFps * (period / 1000d));
 			long nextTime = startTime + timeStep;
 			while (true) {
-				while (nextTime < System.currentTimeMillis()) {
+				while (nextTime <= System.currentTimeMillis()) {
 					// missed... jump to next!
 					nextTime += timeStep;
 					positionInCompas += compasStep;
 				}
 				try {
-					Thread.sleep( Math.max( nextTime -System.currentTimeMillis() , 5 ) );
+					Thread.sleep( Math.max( nextTime - System.currentTimeMillis() , 5 ) );
 				} catch (InterruptedException e) {
 					JCompasGlobal.notifyException( "" , e );
 				}
