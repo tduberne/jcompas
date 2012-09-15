@@ -70,22 +70,21 @@ public class RelojRunner implements InfinitePlayer {
 		public void run() {
 			if (period < 1) throw new IllegalStateException( "invalid period: "+period+" ms." );
 
-			double positionInCompas = 0;
 			final long timeStep = 1000 / defaultFps;
-			final double compasStep = 1d / (defaultFps * (period / 1000d));
+			long elapsedTime = 0;
 			long nextTime = startTime + timeStep;
 			while (true) {
 				while (nextTime <= System.currentTimeMillis()) {
 					// missed... jump to next!
 					nextTime += timeStep;
-					positionInCompas += compasStep;
+					elapsedTime += timeStep;
 				}
 				try {
 					Thread.sleep( Math.max( nextTime - System.currentTimeMillis() , 5 ) );
 				} catch (InterruptedException e) {
 					JCompasGlobal.notifyException( "" , e );
 				}
-				reloj.notifyCompasFraction( positionInCompas % 1 );
+				reloj.notifyCompasFraction( ((double) elapsedTime / period) % 1 );
 			}
 		}
 	}
