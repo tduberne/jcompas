@@ -20,6 +20,7 @@
 package org.jcompas.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.awt.Graphics;
 
@@ -36,6 +37,8 @@ import org.jcompas.model.Tense;
 public class SimpleReloj extends JPanel implements Reloj {
 	private static final Logger log =
 		Logger.getLogger(SimpleReloj.class);
+
+	private final int fontSize = 17;
 
 	private final CompasInformation compas;
 	private double needleAngle = 0;
@@ -110,11 +113,17 @@ public class SimpleReloj extends JPanel implements Reloj {
 			final int yCenter,
 			final double smallR,
 			final double bigR) {
-		g.drawOval( 0 , 0 , width , width );
-		Color c = g.getColor();
+		// get defaults
+		final Color c = g.getColor();
+		final Font f = g.getFont();
+		final Font softFont = f.deriveFont( f.getStyle() , fontSize );
+		final Font strongFont = softFont.deriveFont( Font.BOLD );
+		g.setFont( softFont );
+
 		g.setColor( Color.white );
 		g.fillOval( 0 , 0 , width , width );
 		g.setColor( c );
+		g.drawOval( 0 , 0 , width , width );
 
 		double angle = 0;
 		for (Tense tense : compas.getTenses()) {
@@ -127,15 +136,22 @@ public class SimpleReloj extends JPanel implements Reloj {
 					(int) (xCenter + bigR * horiz),
 					(int) (yCenter + bigR * vert));
 
+			if (tense.isStrong()) {
+				g.setColor( Color.red );
+				g.setFont( strongFont );
+			}
 			final Rectangle2D bounds = g.getFontMetrics().getStringBounds( tense.getName() , g );
 
 			g.drawString(
 					tense.getName(),
 					(int) (xCenter + smallR * horiz - bounds.getWidth()/2d),
 					(int) (yCenter + smallR * vert + bounds.getHeight()/2d));
+			g.setColor( c );
+			g.setFont( softFont );
 
 			angle += tickAngleStep;
 		}
+		g.setFont( f );
 	}
 }
 

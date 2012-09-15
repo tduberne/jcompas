@@ -38,7 +38,7 @@ import org.jcompas.view.SimpleReloj;
 public class RunSimpleReloj {
 	public static void main(final String[] args) {
 		BasicConfigurator.configure();
-		// Logger.getRootLogger().setLevel( Level.TRACE );
+		Logger.getRootLogger().setLevel( Level.TRACE );
 
 		CompasInformation compas = CompasFactory.createBuleriasCompas();
 		Reloj reloj = new SimpleReloj( compas );
