@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import org.jcompas.model.CompasInformation;
+import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.Tense;
 
 /**
@@ -43,6 +44,11 @@ public class SimpleReloj extends JPanel implements Reloj {
 	private final CompasInformation compas;
 	private double needleAngle = 0;
 	private final double tickAngleStep;
+
+	// for debug mode: fps info
+	private int frameCount = 0;
+	private long lastFpsPrint = Long.MIN_VALUE;
+	private String fpsText = "fps: NA";
 
 	public SimpleReloj(final CompasInformation compas) {
 		this.compas = compas;
@@ -92,6 +98,26 @@ public class SimpleReloj extends JPanel implements Reloj {
 				xCenter,
 				yCenter,
 				smallR);
+
+		if (JCompasGlobal.isDebugMode()) {
+			updateFpsInfo( g , 0 , width);
+		}
+	}
+
+	private void updateFpsInfo(
+			final Graphics g,
+			final int xText,
+			final int yText) {
+		if (lastFpsPrint == Long.MIN_VALUE) lastFpsPrint = System.currentTimeMillis();
+		frameCount++;
+
+		final long now = System.currentTimeMillis();
+		if ( now > lastFpsPrint + 1000 ) {
+			fpsText = "fps: "+ (1000d * frameCount / (now - lastFpsPrint));
+			frameCount = 0;
+			lastFpsPrint = now;
+		}
+		g.drawString( fpsText , xText , yText );
 	}
 
 	private void paintNeedle(
