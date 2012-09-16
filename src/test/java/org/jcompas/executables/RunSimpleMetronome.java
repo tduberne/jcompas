@@ -26,10 +26,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import org.apache.log4j.BasicConfigurator;
 
 import org.jcompas.model.CompasFactory;
 import org.jcompas.model.CompasInformation;
+import org.jcompas.model.RelojRunner;
 import org.jcompas.model.sound.Clap;
 import org.jcompas.model.sound.MetronomeRunner;
 import org.jcompas.model.sound.MonoSoundClap;
@@ -37,6 +41,8 @@ import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.Pattern.Golpe;
 import org.jcompas.model.sound.Pattern.Musician;
 import org.jcompas.model.sound.SimpleMetronome;
+import org.jcompas.view.Reloj;
+import org.jcompas.view.SimpleReloj;
 
 /**
  * @author thibautd
@@ -75,13 +81,27 @@ public class RunSimpleMetronome {
 				1,
 				1);
 
-		MetronomeRunner runner =
+		MetronomeRunner mrunner =
 			new MetronomeRunner(
 					new SimpleMetronome(
 						pattern,
 						compas));
 
-		runner.start( System.currentTimeMillis() + 1000, 3000 );
+
+		JFrame window = new JFrame();
+		Reloj reloj = new SimpleReloj( compas );
+		window.getContentPane().add( reloj.getView() );
+		window.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+		window.setVisible( true );
+		RelojRunner rrunner = new RelojRunner( reloj );
+
+		long start = System.currentTimeMillis() + 1000;
+		mrunner.start(
+				start,
+				3000 );
+		rrunner.start(
+				start,
+				3000);
 	}
 }
 
