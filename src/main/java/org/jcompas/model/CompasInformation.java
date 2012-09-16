@@ -27,14 +27,21 @@ import java.util.List;
  * @author thibautd
  */
 public final class CompasInformation {
+	private final String name;
 	private final int typicalBpm;
 	private final List<Tense> tenses;
 
 	public CompasInformation(
+			final String name,
 			final int bpm,
 			final List<Tense> tenses) {
+		this.name = name;
 		this.typicalBpm = bpm;
 		this.tenses = Collections.unmodifiableList( tenses );
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public int getTypicalBpm() {

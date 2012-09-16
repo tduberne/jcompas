@@ -44,7 +44,7 @@ public final class CompasFactory {
 		tenses.add ( new Tense( 10 , true ) );
 		tenses.add ( new Tense( 11 , false ) );
 		
-		return new CompasInformation( 190 , tenses );
+		return new CompasInformation( "Bulerias" , 190 , tenses );
 	}
 }
 
