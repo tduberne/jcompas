@@ -53,7 +53,7 @@ public class RelojRunner implements InfinitePlayer {
 	private static class InternRunnable implements Runnable {
 		private final Reloj reloj;
 		private long period = -1;
-		private final int defaultFps = 30;
+		private final int defaultFps = 60;
 		private long startTime = -1;
 
 		public InternRunnable(final Reloj reloj) {
@@ -71,20 +71,19 @@ public class RelojRunner implements InfinitePlayer {
 			if (period < 1) throw new IllegalStateException( "invalid period: "+period+" ms." );
 
 			final long timeStep = 1000 / defaultFps;
-			long elapsedTime = 0;
 			long nextTime = startTime + timeStep;
 			while (true) {
 				while (nextTime <= System.currentTimeMillis()) {
 					// missed... jump to next!
 					nextTime += timeStep;
-					elapsedTime += timeStep;
 				}
 				try {
-					Thread.sleep( Math.max( nextTime - System.currentTimeMillis() , 5 ) );
+					Thread.sleep( Math.max( nextTime - System.currentTimeMillis() , 1 ) );
 				} catch (InterruptedException e) {
 					JCompasGlobal.notifyException( "" , e );
 				}
-				reloj.notifyCompasFraction( ((double) elapsedTime / period) % 1 );
+				reloj.notifyCompasFraction(
+						((double) ( System.currentTimeMillis() - startTime) / period) % 1 );
 			}
 		}
 	}
