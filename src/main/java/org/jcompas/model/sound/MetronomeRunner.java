@@ -21,7 +21,10 @@ package org.jcompas.model.sound;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
@@ -63,6 +66,19 @@ public final class MetronomeRunner implements InfinitePlayer {
 							SourceDataLine.class,
 							format));
 			line.open( format );
+
+			log.debug( "opened line: "+line );
+			line.addLineListener( new LineListener() {
+				@Override
+				public void update(final LineEvent event) {
+					log.debug( "got event: "+event );
+					log.debug( "Controls:" );
+					for (Control c : event.getLine().getControls()) {
+						log.debug( c );
+					}
+				}
+			});
+
 			line.start();
 			feeder = new Feeder(
 					startTime,
