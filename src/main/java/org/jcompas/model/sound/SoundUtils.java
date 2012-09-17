@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * CompasFactory.java
+ * SoundUtils.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,34 +17,28 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.sound;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.sound.sampled.AudioFormat;
+
+import org.jcompas.model.sound.Pattern;
 
 /**
  * @author thibautd
  */
-public final class CompasFactory {
-	private CompasFactory() {};
+public final class SoundUtils {
+	private SoundUtils() {};
 
-	public static CompasInformation createBuleriasCompas() {
-		List<Tense> tenses = new ArrayList<Tense>();
+	public static AudioFormat identifyAudioFormat( final Pattern p ) {
+		return identifyAudioFormat( p.getMusicians().get( 0 ) );
+	}
 
-		tenses.add ( new Tense( 12 , true ) );
-		tenses.add ( new Tense( 1 , false ) );
-		tenses.add ( new Tense( 2 , false ) );
-		tenses.add ( new Tense( 3 , true ) );
-		tenses.add ( new Tense( 4 , false ) );
-		tenses.add ( new Tense( 5 , false ) );
-		tenses.add ( new Tense( 6 , true ) );
-		tenses.add ( new Tense( 7 , false ) );
-		tenses.add ( new Tense( 8 , true ) );
-		tenses.add ( new Tense( 9 , false ) );
-		tenses.add ( new Tense( 10 , true ) );
-		tenses.add ( new Tense( 11 , false ) );
-		
-		return new CompasInformation( "Bulerias" , 190 , tenses );
+	public static AudioFormat identifyAudioFormat( final Pattern.Musician m ) {
+		return identifyAudioFormat( m.getGolpes().get( 0 ) );
+	}
+
+	public static AudioFormat identifyAudioFormat( final Pattern.Golpe p ) {
+		return p.getClap().getAudioFormat();
 	}
 }
 

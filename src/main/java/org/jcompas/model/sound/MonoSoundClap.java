@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * CompasInformation.java
+ * MonoSoundClap.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,43 +17,66 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.sound;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import org.jcompas.model.JCompasGlobal;
 
 /**
- * A data structure giving access to compas information.
  * @author thibautd
  */
-public final class CompasInformation {
+public class MonoSoundClap implements Clap {
+	private final byte[] sound;
+	private final AudioFormat format;
 	private final String name;
-	private final int typicalBpm;
-	private final List<Tense> tenses;
 
-	public CompasInformation(
+	public MonoSoundClap(
 			final String name,
-			final int bpm,
-			final List<Tense> tenses) {
+			final InputStream data) {
 		this.name = name;
-		this.typicalBpm = bpm;
-		this.tenses = Collections.unmodifiableList( tenses );
+		try {
+			AudioInputStream audio = AudioSystem.getAudioInputStream( data );
+			ByteArrayOutputStream array = new ByteArrayOutputStream();
+			this.format = audio.getFormat();
+
+			byte[] buffer = new byte[20000];
+			int nRead = audio.read( buffer );
+			while ( nRead > 0 ) {
+				array.write( buffer , 0 , nRead );
+				nRead = audio.read( buffer );
+			}
+
+			this.sound = array.toByteArray();
+		} catch (Exception e) {
+			JCompasGlobal.notifyException( "" , e );
+			// global should already exit,
+			// but without that the code does not
+			// compile
+			throw new RuntimeException();
+		}
 	}
 
-	public String getName() {
+	@Override
+	public byte[] getSoundData() {
+		return sound;
+	}
+
+	@Override
+	public String getSoundName() {
 		return name;
 	}
 
-	public int getTypicalBpm() {
-		return typicalBpm;
-	}
-
-	public List<Tense> getTenses() {
-		return tenses;
-	}
-
-	public int getTensesCount() {
-		return tenses.size();
+	@Override
+	public AudioFormat getAudioFormat() {
+		return format;
 	}
 }
 

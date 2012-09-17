@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * CompasFactory.java
+ * Claps.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,34 +17,21 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.sound;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author thibautd
  */
-public final class CompasFactory {
-	private CompasFactory() {};
+public class Claps {
+	public Set<String> getClapNames() {
+		return Collections.EMPTY_SET;
+	}
 
-	public static CompasInformation createBuleriasCompas() {
-		List<Tense> tenses = new ArrayList<Tense>();
-
-		tenses.add ( new Tense( 12 , true ) );
-		tenses.add ( new Tense( 1 , false ) );
-		tenses.add ( new Tense( 2 , false ) );
-		tenses.add ( new Tense( 3 , true ) );
-		tenses.add ( new Tense( 4 , false ) );
-		tenses.add ( new Tense( 5 , false ) );
-		tenses.add ( new Tense( 6 , true ) );
-		tenses.add ( new Tense( 7 , false ) );
-		tenses.add ( new Tense( 8 , true ) );
-		tenses.add ( new Tense( 9 , false ) );
-		tenses.add ( new Tense( 10 , true ) );
-		tenses.add ( new Tense( 11 , false ) );
-		
-		return new CompasInformation( "Bulerias" , 190 , tenses );
+	public Clap getClap(final String name) {
+		return null;
 	}
 }
 
