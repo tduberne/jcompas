@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import org.jcompas.model.CompasFactory;
 import org.jcompas.model.CompasInformation;
@@ -48,16 +49,21 @@ import org.jcompas.view.SimpleReloj;
  * @author thibautd
  */
 public class RunSimpleMetronome {
+	private static final Logger log =
+		Logger.getLogger(RunSimpleMetronome.class);
+
 	public static void main(final String[] args) throws FileNotFoundException {
 		BasicConfigurator.configure();
 		CompasInformation compas = CompasFactory.createBuleriasCompas();
 
 		Clap fuerte = new MonoSoundClap(
 				"fuerte",
-				new FileInputStream( "/home/thibautd/code/workspace-perso/jCompas/src/resources/sounds/palmas/sonora-fuerte-1.wav" ));
+				RunSimpleMetronome.class.getResourceAsStream(
+					"/sounds/palmas/sonora-fuerte-1.wav" ));
 		Clap bajo = new MonoSoundClap(
 				"bajo",
-				new FileInputStream( "/home/thibautd/code/workspace-perso/jCompas/src/resources/sounds/palmas/sonora-baja-1.wav" ));
+				RunSimpleMetronome.class.getResourceAsStream(
+					"/sounds/palmas/sonora-baja-1.wav" ));
 
 		List<Golpe> golpes = new ArrayList<Golpe>();
 		golpes.add( new Golpe( fuerte , 0 ) );
