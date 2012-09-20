@@ -42,5 +42,9 @@ public final class Tense {
 	public boolean isStrong() {
 		return isStrong;
 	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+name+(isStrong ? "s" : "w")+"]";
+	}
 }
 

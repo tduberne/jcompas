@@ -59,6 +59,8 @@ public final class Palo {
 		return estilos.get( name );
 	}
 
-
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+name+", "+estilos+"]";
+	}
 }
 
