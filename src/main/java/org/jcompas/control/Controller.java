@@ -19,12 +19,16 @@
  * *********************************************************************** */
 package org.jcompas.control;
 
+import java.awt.GridLayout;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import org.jcompas.model.Estilo;
 import org.jcompas.model.Palo;
@@ -39,6 +43,7 @@ import org.jcompas.view.SimpleReloj;
  * @author thibautd
  */
 public final class Controller {
+	private final Logger log = Logger.getLogger( Controller.class );
 	private final PaloFactory paloFactory = new PaloFactory();
 
 	private Palo selectedPalo = null;
@@ -47,6 +52,11 @@ public final class Controller {
 
 	private JPanel relojPanel = new JPanel();
 	private Reloj reloj = null;
+	private int bpm = -1;
+
+	public Controller() {
+		relojPanel.setLayout( new GridLayout( 1 , 1 ) );
+	}
 
 	// /////////////////////////////////////////////////////////////////////////
 	// for interface
@@ -55,6 +65,7 @@ public final class Controller {
 	}
 
 	public void selectPalo(final String name) {
+		log.debug( "selecting palo "+name );
 		selectedPalo = paloFactory.createPalo( name );
 		selectedEstilo = null;
 		selectedPatterns.clear();
@@ -72,10 +83,15 @@ public final class Controller {
 	public void selectEstilo(final String name) {
 		selectedEstilo = selectedPalo.getEstilo( name );
 		selectedPatterns.clear();
+		bpm = selectedEstilo.getCompas().getTypicalBpm();
 
+		log.debug( "selecting estilo "+name );
+		log.debug( "compas is: "+selectedEstilo.getCompas() );
 		relojPanel.removeAll();
 		reloj = new SimpleReloj( selectedEstilo.getCompas() );
+		log.debug( "adding Reloj "+reloj );
 		relojPanel.add( reloj.getView() );
+		relojPanel.revalidate();
 	}
 
 	public String getSelectedEstilo() {
@@ -111,6 +127,14 @@ public final class Controller {
 	
 	public boolean stop() {
 		return false;
+	}
+
+	public void setBpm(final int bpm) {
+		this.bpm = bpm;
+	}
+
+	public int getBpm() {
+		return bpm;
 	}
 
 	private static List<String> toStrings(final List<Pattern> ps) {
