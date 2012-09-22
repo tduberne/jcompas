@@ -33,8 +33,6 @@ import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.sound.MetronomeData;
 import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SoundUtils;
-import org.jcompas.model.sound.Pattern.Golpe;
-import org.jcompas.model.sound.Pattern.Musician;
 
 /**
  * Basically a pattern mixer.
@@ -56,7 +54,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 	@Override
 	public void start(
 			final long startTime,
-			final int compasLengthMilli) {
+			final long compasLengthMilli) {
 		try {
 			// Oops, this pattern just vanishes afterwards...
 			// Try to find a CLEAN way to play it (or another CLEAN way
@@ -104,8 +102,16 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// stopping the line stops the blocking behavior of
 		// write(), and we do not want the feeder to loop again
 		// and refeed the line!
+		log.debug( "stopping feeder" );
 		if ( feeder != null ) feeder.run = false;
-		if ( line != null ) line.stop();
+		if ( line != null ) {
+			log.debug( "stopping line" );
+			line.stop();
+			log.debug( "flushing line" );
+			line.flush();
+			log.debug( "closing line" );
+			line.close();
+		}
 		line = null;
 		feeder = null;
 	}
@@ -158,7 +164,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 				int start = 0;
 				int length = buffer.length;
 				
-				while (length - start > 0) {
+				while ( run && (length - start > 0)) {
 					start += line.write(
 							buffer,
 							start,

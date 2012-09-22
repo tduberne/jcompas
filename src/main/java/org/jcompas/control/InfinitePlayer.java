@@ -24,7 +24,7 @@ package org.jcompas.control;
  * @author thibautd
  */
 public interface InfinitePlayer {
-	public void start(final long startTime, final int compasLengthMilli);
+	public void start(final long startTime, final long compasLengthMilli);
 	public void stop();
 }
 

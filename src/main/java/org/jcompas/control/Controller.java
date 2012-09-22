@@ -34,6 +34,7 @@ import org.jcompas.model.Estilo;
 import org.jcompas.model.Palo;
 import org.jcompas.model.PaloFactory;
 import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
 import org.jcompas.view.SimpleReloj;
 
@@ -43,7 +44,9 @@ import org.jcompas.view.SimpleReloj;
  * @author thibautd
  */
 public final class Controller {
-	private final Logger log = Logger.getLogger( Controller.class );
+	private static final Logger log = Logger.getLogger( Controller.class );
+	private static final int TIME_BEFORE_PLAY = 100;
+
 	private final PaloFactory paloFactory = new PaloFactory();
 
 	private Palo selectedPalo = null;
@@ -53,6 +56,9 @@ public final class Controller {
 	private JPanel relojPanel = new JPanel();
 	private Reloj reloj = null;
 	private int bpm = -1;
+
+	private MetronomeRunner metronomeRunner = null;
+	private RelojRunner relojRunner = null;
 
 	public Controller() {
 		relojPanel.setLayout( new GridLayout( 1 , 1 ) );
@@ -122,11 +128,29 @@ public final class Controller {
 	}
 
 	public boolean start() {
-		return false;
+		metronomeRunner =
+			new MetronomeRunner( 
+					new SimpleMetronome(
+						selectedPatterns,
+						selectedEstilo.getCompas()));
+		relojRunner = new RelojRunner( reloj );
+
+		long compasDur = (long)
+			((60000d / bpm) * selectedEstilo.getCompas().getTensesCount());
+		long start = System.currentTimeMillis() + TIME_BEFORE_PLAY;
+
+		metronomeRunner.start( start , compasDur );
+		relojRunner.start( start , compasDur );
+
+		return true;
 	}
 	
 	public boolean stop() {
-		return false;
+		metronomeRunner.stop();
+		relojRunner.stop();
+		metronomeRunner = null;
+		relojRunner = null;
+		return true;
 	}
 
 	public void setBpm(final int bpm) {

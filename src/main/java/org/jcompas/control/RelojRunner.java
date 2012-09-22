@@ -38,7 +38,7 @@ public class RelojRunner implements InfinitePlayer {
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
 	@Override
-	public void start(final long startTime, final int compasLengthMilli) {
+	public void start(final long startTime, final long compasLengthMilli) {
 		runner.setStartInfo( startTime , compasLengthMilli );
 		thread.start();
 	}
