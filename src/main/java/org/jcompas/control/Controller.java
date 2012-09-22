@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import org.jcompas.model.Estilo;
+import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.Palo;
 import org.jcompas.model.PaloFactory;
 import org.jcompas.model.sound.Pattern;
@@ -128,6 +129,11 @@ public final class Controller {
 	}
 
 	public boolean start() {
+		if (selectedPatterns.size() == 0) {
+			JCompasGlobal.userWarning( "no Pattern selected!" );
+			return false;
+		}
+
 		metronomeRunner =
 			new MetronomeRunner( 
 					new SimpleMetronome(
@@ -149,11 +155,14 @@ public final class Controller {
 	}
 	
 	public boolean stop() {
-		metronomeRunner.stop();
-		relojRunner.stop();
-		metronomeRunner = null;
-		relojRunner = null;
-		return true;
+		if (metronomeRunner != null) {
+			metronomeRunner.stop();
+			relojRunner.stop();
+			metronomeRunner = null;
+			relojRunner = null;
+			return true;
+		}
+		return false;
 	}
 
 	public void setBpm(final int bpm) {
