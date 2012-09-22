@@ -149,6 +149,8 @@ public class ControlPaneFactory {
 					startButton.setEnabled( !start );
 					stopButton.setEnabled( start );
 
+					patternBoxes.setEnabled( !start );
+
 					paloBox.setEnabled( !start );
 					estiloBox.setEnabled( !start );
 					bpmSlider.setEnabled( !start );
@@ -183,6 +185,11 @@ public class ControlPaneFactory {
 				add( b );
 			}
 			revalidate();
+		}
+
+		public void setEnabled(final boolean bool) {
+			super.setEnabled( bool );
+			for (JCheckBox b : boxes) b.setEnabled( bool );
 		}
 
 		private class Listener implements ItemListener {
