@@ -36,7 +36,7 @@ import org.jcompas.model.Estilo;
 import org.jcompas.model.io.PaloReader;
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.Palo;
-import org.jcompas.model.PaloFactory;
+import org.jcompas.model.Palos;
 import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
@@ -52,7 +52,7 @@ public final class Controller {
 	private static final Logger log = Logger.getLogger( Controller.class );
 	private static final int TIME_BEFORE_PLAY = 100;
 
-	private final PaloFactory paloFactory;
+	private final Palos palos;
 
 	private Palo selectedPalo = null;
 	private Estilo selectedEstilo = null;
@@ -68,7 +68,7 @@ public final class Controller {
 	public Controller() {
 		relojPanel.setLayout( new GridLayout( 1 , 1 ) );
 		try {
-			paloFactory = new PaloReader().readPalos();
+			palos = new PaloReader().readPalos();
 		}
 		catch (Exception e) {
 			JCompasGlobal.notifyException(
@@ -81,12 +81,12 @@ public final class Controller {
 	// /////////////////////////////////////////////////////////////////////////
 	// for interface
 	public Collection<String> getPalos() {
-		return paloFactory.getAvailablePalos();
+		return palos.getAvailablePalos();
 	}
 
 	public void selectPalo(final String name) {
 		log.debug( "selecting palo "+name );
-		selectedPalo = paloFactory.createPalo( name );
+		selectedPalo = palos.createPalo( name );
 		selectedEstilo = null;
 		selectedPatterns.clear();
 		relojPanel.removeAll();

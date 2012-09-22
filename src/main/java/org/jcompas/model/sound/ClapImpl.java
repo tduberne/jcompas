@@ -36,19 +36,19 @@ import org.jcompas.model.JCompasGlobal;
 /**
  * @author thibautd
  */
-public class MonoSoundClap implements Clap {
+public class ClapImpl implements Clap {
 	private final byte[] sound;
 	private final AudioFormat format;
 	private final String name;
 
 
-	public MonoSoundClap(
+	public ClapImpl(
 			final String name,
 			final File data) throws FileNotFoundException {
 		this( name , new FileInputStream( data ) );
 	}
 
-	public MonoSoundClap(
+	public ClapImpl(
 			final String name,
 			final InputStream data) {
 		this.name = name;

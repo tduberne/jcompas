@@ -37,7 +37,7 @@ import org.jcompas.control.RelojRunner;
 import org.jcompas.model.CompasFactory;
 import org.jcompas.model.CompasInformation;
 import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.MonoSoundClap;
+import org.jcompas.model.sound.ClapImpl;
 import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.Pattern.Golpe;
 import org.jcompas.model.sound.Pattern.Musician;
@@ -56,11 +56,11 @@ public class RunSimpleMetronome {
 		BasicConfigurator.configure();
 		CompasInformation compas = CompasFactory.createBuleriasCompas();
 
-		Clap fuerte = new MonoSoundClap(
+		Clap fuerte = new ClapImpl(
 				"fuerte",
 				RunSimpleMetronome.class.getResourceAsStream(
 					"/sounds/palmas/sonora-fuerte-1.wav" ));
-		Clap bajo = new MonoSoundClap(
+		Clap bajo = new ClapImpl(
 				"bajo",
 				RunSimpleMetronome.class.getResourceAsStream(
 					"/sounds/palmas/sonora-baja-1.wav" ));

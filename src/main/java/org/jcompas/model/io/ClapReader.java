@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.MonoSoundClap;
+import org.jcompas.model.sound.ClapImpl;
 
 /**
  * @author thibautd
@@ -39,7 +39,7 @@ public class ClapReader {
 
 		if (clap == null) {
 			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
-			clap = new MonoSoundClap( directory , f.listFiles()[0] );
+			clap = new ClapImpl( directory , f.listFiles()[0] );
 			cache.put( directory , clap );
 		}
 
