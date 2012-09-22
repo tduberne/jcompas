@@ -57,7 +57,7 @@ public final class CompasInformation {
 	}
 
 	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+tenses+"]";
+		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
 	}
 }
 
