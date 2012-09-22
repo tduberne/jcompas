@@ -90,7 +90,7 @@ public class RunSimpleMetronome {
 		MetronomeRunner mrunner =
 			new MetronomeRunner(
 					new SimpleMetronome(
-						pattern,
+						Arrays.asList( pattern ),
 						compas));
 
 

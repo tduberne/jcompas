@@ -19,25 +19,37 @@
  * *********************************************************************** */
 package org.jcompas.model.sound;
 
+import java.util.List;
+import java.util.Random;
+
 import org.jcompas.model.CompasInformation;
 
 /**
  * @author thibautd
  */
 public final class SimpleMetronome implements MetronomeData {
-	private final Pattern pattern;
+	private final Random random = new Random();
+	private final List<Pattern> patterns;
 	private final CompasInformation compasInformation;
 
+	private Pattern currentPattern = null;
+	private int remainingPlays = 0;
+
 	public SimpleMetronome(
-			final Pattern pattern,
+			final List<Pattern> patterns,
 			final CompasInformation compasInformation) {
-		this.pattern = pattern;
+		this.patterns = patterns;
 		this.compasInformation = compasInformation;
 	}
 
 	@Override
 	public Pattern getNextPattern() {
-		return pattern;
+		if (remainingPlays <= 0) {
+			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
+			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
+		}
+		remainingPlays--;
+		return currentPattern;
 	}
 
 	@Override
