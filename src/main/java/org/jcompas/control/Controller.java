@@ -21,6 +21,8 @@ package org.jcompas.control;
 
 import java.awt.GridLayout;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +33,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import org.jcompas.model.Estilo;
+import org.jcompas.model.io.PaloReader;
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.Palo;
 import org.jcompas.model.PaloFactory;
@@ -38,6 +41,7 @@ import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
 import org.jcompas.view.SimpleReloj;
+import org.jdom2.JDOMException;
 
 /**
  * Unifies elements of the model under a unified interface,
@@ -48,7 +52,7 @@ public final class Controller {
 	private static final Logger log = Logger.getLogger( Controller.class );
 	private static final int TIME_BEFORE_PLAY = 100;
 
-	private final PaloFactory paloFactory = new PaloFactory();
+	private final PaloFactory paloFactory;
 
 	private Palo selectedPalo = null;
 	private Estilo selectedEstilo = null;
@@ -63,6 +67,15 @@ public final class Controller {
 
 	public Controller() {
 		relojPanel.setLayout( new GridLayout( 1 , 1 ) );
+		try {
+			paloFactory = new PaloReader().readPalos();
+		}
+		catch (Exception e) {
+			JCompasGlobal.notifyException(
+					"error while importing palos",
+					e );
+			throw new RuntimeException();
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////

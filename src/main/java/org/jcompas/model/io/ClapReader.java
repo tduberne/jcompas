@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Palo.java
+ * ClapReader.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,50 +17,33 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.io;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import org.jcompas.model.sound.Clap;
+import org.jcompas.model.sound.MonoSoundClap;
 
 /**
- * Represents a "Palo", such as Bulerias,
- * soleares, seguiryias, sevillanas...
  * @author thibautd
  */
-public final class Palo {
-	private final String name;
-	private final Map<String, Estilo> estilos;
+public class ClapReader {
+	private final Map<String, Clap> cache = new HashMap<String, Clap>();
 
-	public Palo(
-			final String name,
-			final Collection<Estilo> estilos) {
-		this.name = name;
+	public Clap createClap(final String directory) throws FileNotFoundException {
+		Clap clap = cache.get( directory );
 
-		Map<String, Estilo> map = new HashMap<String, Estilo>();
-		for (Estilo e : estilos) {
-			map.put( e.getName() , e );
+		if (clap == null) {
+			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
+			clap = new MonoSoundClap( directory , f.listFiles()[0] );
+			cache.put( directory , clap );
 		}
-		
-		this.estilos = Collections.unmodifiableMap( map );
-	}
 
-	public String getName() {
-		return name;
-	}
-
-	public Set<String> getEstilos() {
-		return estilos.keySet();
-	}
-
-	public Estilo getEstilo(final String name) {
-		return estilos.get( name );
-	}
-
-	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+estilos+"]";
+		return clap;
 	}
 }
 
