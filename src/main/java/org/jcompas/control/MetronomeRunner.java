@@ -17,7 +17,7 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.control;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -29,9 +29,10 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
 
-import org.jcompas.model.InfinitePlayer;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.sound.MetronomeData;
 import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.sound.SoundUtils;
 
 /**
  * Basically a pattern mixer.
@@ -53,7 +54,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 	@Override
 	public void start(
 			final long startTime,
-			final int compasLengthMilli) {
+			final long compasLengthMilli) {
 		try {
 			// Oops, this pattern just vanishes afterwards...
 			// Try to find a CLEAN way to play it (or another CLEAN way
@@ -101,8 +102,16 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// stopping the line stops the blocking behavior of
 		// write(), and we do not want the feeder to loop again
 		// and refeed the line!
+		log.debug( "stopping feeder" );
 		if ( feeder != null ) feeder.run = false;
-		if ( line != null ) line.stop();
+		if ( line != null ) {
+			log.debug( "stopping line" );
+			line.stop();
+			log.debug( "flushing line" );
+			line.flush();
+			log.debug( "closing line" );
+			line.close();
+		}
 		line = null;
 		feeder = null;
 	}
@@ -111,6 +120,13 @@ public final class MetronomeRunner implements InfinitePlayer {
 	// processing
 	// /////////////////////////////////////////////////////////////////////////
 	private static class Feeder implements Runnable {
+		// contrary to what the documentation says, the line does not stop
+		// in the middle of a buffer (at least on linux).
+		// This is a compromise between latency and allowing the thread to sleep.
+		// Half a second seems to be a good value.
+		private static final int MAX_BUFFER_DUR = 500;
+		private final int maxBytesInBuffer;
+
 		private boolean run = true;
 		private final MetronomeData metronome;
 		private final int nBytesPerCompas;
@@ -139,6 +155,8 @@ public final class MetronomeRunner implements InfinitePlayer {
 			if (nBytesPerCompas == Integer.MAX_VALUE) {
 				throw new RuntimeException( "overflow!" );
 			}
+			maxBytesInBuffer = (int) (MAX_BUFFER_DUR / frameDurationMilli) * frameSize;
+			log.debug( "max buffer size: "+maxBytesInBuffer );
 		}
 
 		@Override
@@ -155,11 +173,11 @@ public final class MetronomeRunner implements InfinitePlayer {
 				int start = 0;
 				int length = buffer.length;
 				
-				while (length - start > 0) {
+				while ( run && (length - start > 0)) {
 					start += line.write(
 							buffer,
 							start,
-							length - start);
+							Math.min(length - start, maxBytesInBuffer));
 				}
 				buffer = mixPattern( metronome.getNextPattern() );
 			}

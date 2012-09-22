@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * JCompasGlobal.java
+ * Run.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,53 +17,37 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas;
 
-import javax.swing.JOptionPane;
+import java.awt.GridLayout;
 
-import org.apache.log4j.Logger;
+import javax.swing.JFrame;
+
+import org.apache.log4j.BasicConfigurator;
+
+import org.jcompas.control.Controller;
+import org.jcompas.model.JCompasGlobal;
+import org.jcompas.view.ControlPaneFactory;
 
 /**
- * Groups compile-time options and general interest static methods.
  * @author thibautd
  */
-public class JCompasGlobal {
-	private static final Logger log =
-		Logger.getLogger(JCompasGlobal.class);
+public class Run {
+	public static void main(final String[] args) {
+		BasicConfigurator.configure();
+		try {
+			Controller controller = new Controller();
 
-	private static final String versionId = "0.0.1-SNAPSHOT";
-
-	/**
-	 * to be set to false in production versions.
-	 * idea: ui shows info of what happens "behind the hood"
-	 * if this is true.
-	 */
-	private static final boolean DEBUG = true;
-
-	private JCompasGlobal() {}
-
-	public static String getVersionId() {
-		return versionId;
-	}
-
-	public static boolean isDebugMode() {
-		return DEBUG;
-	}
-
-	public static void notifyException(
-			final String message,
-			final Exception e) {
-		log.error( message , e );
-		System.exit( 1 );
-	}
-
-	public static void userWarning(
-			final String message) {
-		JOptionPane.showMessageDialog(
-				null,
-				message,
-				"Warning",
-				JOptionPane.WARNING_MESSAGE);
+			JFrame window = new JFrame( "jCompas "+JCompasGlobal.getVersionId() );
+			window.getContentPane().setLayout( new GridLayout( 1 , 2 ) );
+			window.add( controller.getRelojPane() );
+			window.add( ControlPaneFactory.createControlPane( controller ) );
+			window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+			window.setVisible( true );
+		}
+		catch (Exception e) {
+			JCompasGlobal.notifyException( "got an uncatched exception!", e );
+		}
 	}
 }
 

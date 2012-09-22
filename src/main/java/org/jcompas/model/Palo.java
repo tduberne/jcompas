@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * JCompasGlobal.java
+ * Palo.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -19,51 +19,48 @@
  * *********************************************************************** */
 package org.jcompas.model;
 
-import javax.swing.JOptionPane;
-
-import org.apache.log4j.Logger;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Groups compile-time options and general interest static methods.
+ * Represents a "Palo", such as Bulerias,
+ * soleares, seguiryias, sevillanas...
  * @author thibautd
  */
-public class JCompasGlobal {
-	private static final Logger log =
-		Logger.getLogger(JCompasGlobal.class);
+public final class Palo {
+	private final String name;
+	private final Map<String, Estilo> estilos;
 
-	private static final String versionId = "0.0.1-SNAPSHOT";
+	public Palo(
+			final String name,
+			final List<Estilo> estilos) {
+		this.name = name;
 
-	/**
-	 * to be set to false in production versions.
-	 * idea: ui shows info of what happens "behind the hood"
-	 * if this is true.
-	 */
-	private static final boolean DEBUG = true;
-
-	private JCompasGlobal() {}
-
-	public static String getVersionId() {
-		return versionId;
+		Map<String, Estilo> map = new HashMap<String, Estilo>();
+		for (Estilo e : estilos) {
+			map.put( e.getName() , e );
+		}
+		
+		this.estilos = Collections.unmodifiableMap( map );
 	}
 
-	public static boolean isDebugMode() {
-		return DEBUG;
+	public String getName() {
+		return name;
 	}
 
-	public static void notifyException(
-			final String message,
-			final Exception e) {
-		log.error( message , e );
-		System.exit( 1 );
+	public Set<String> getEstilos() {
+		return estilos.keySet();
 	}
 
-	public static void userWarning(
-			final String message) {
-		JOptionPane.showMessageDialog(
-				null,
-				message,
-				"Warning",
-				JOptionPane.WARNING_MESSAGE);
+	public Estilo getEstilo(final String name) {
+		return estilos.get( name );
+	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+name+", "+estilos+"]";
 	}
 }
 

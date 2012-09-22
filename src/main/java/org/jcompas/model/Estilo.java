@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * InfinitePlayer.java
+ * Estilo.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -19,12 +19,55 @@
  * *********************************************************************** */
 package org.jcompas.model;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.jcompas.model.sound.Pattern;
+
 /**
- * Interface for objects that can be started.
+ * Represents an estilo, that is a special form of a palo
+ * (Bulerias por 12 or por 6, sevillanas rocieras or boleras...).
+ * Technically, it can be seen as a collection of patterns associated with
+ * one particular compas.
+ *
  * @author thibautd
  */
-public interface InfinitePlayer {
-	public void start(final long startTime, final int compasLengthMilli);
-	public void stop();
+public final class Estilo {
+	private final String name;
+	private final CompasInformation compas;
+	private final Map<String, Pattern> patterns;
+
+	public Estilo(
+			final String name,
+			final CompasInformation compas,
+			final List<Pattern> patterns) {
+		this.name = name;
+		this.compas = compas;
+		Map<String, Pattern> map = new HashMap<String, Pattern>();
+		for (Pattern p : patterns) {
+			map.put( p.getName() , p );
+		}
+
+		this.patterns = Collections.unmodifiableMap( map );
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public CompasInformation getCompas() {
+		return compas;
+	}
+
+	public Set<String> getPatterns() {
+		return patterns.keySet();
+	}
+
+	public Pattern getPattern(final String name) {
+		return patterns.get( name );
+	}
 }
 

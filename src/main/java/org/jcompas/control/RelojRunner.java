@@ -17,8 +17,9 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.control;
 
+import org.jcompas.model.JCompasGlobal;
 import org.jcompas.view.Reloj;
 
 /**
@@ -37,7 +38,7 @@ public class RelojRunner implements InfinitePlayer {
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
 	@Override
-	public void start(final long startTime, final int compasLengthMilli) {
+	public void start(final long startTime, final long compasLengthMilli) {
 		runner.setStartInfo( startTime , compasLengthMilli );
 		thread.start();
 	}

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * JCompasGlobal.java
+ * InfinitePlayer.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,53 +17,14 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
-
-import javax.swing.JOptionPane;
-
-import org.apache.log4j.Logger;
+package org.jcompas.control;
 
 /**
- * Groups compile-time options and general interest static methods.
+ * Interface for objects that can be started.
  * @author thibautd
  */
-public class JCompasGlobal {
-	private static final Logger log =
-		Logger.getLogger(JCompasGlobal.class);
-
-	private static final String versionId = "0.0.1-SNAPSHOT";
-
-	/**
-	 * to be set to false in production versions.
-	 * idea: ui shows info of what happens "behind the hood"
-	 * if this is true.
-	 */
-	private static final boolean DEBUG = true;
-
-	private JCompasGlobal() {}
-
-	public static String getVersionId() {
-		return versionId;
-	}
-
-	public static boolean isDebugMode() {
-		return DEBUG;
-	}
-
-	public static void notifyException(
-			final String message,
-			final Exception e) {
-		log.error( message , e );
-		System.exit( 1 );
-	}
-
-	public static void userWarning(
-			final String message) {
-		JOptionPane.showMessageDialog(
-				null,
-				message,
-				"Warning",
-				JOptionPane.WARNING_MESSAGE);
-	}
+public interface InfinitePlayer {
+	public void start(final long startTime, final long compasLengthMilli);
+	public void stop();
 }
 

@@ -55,5 +55,9 @@ public final class CompasInformation {
 	public int getTensesCount() {
 		return beats.size();
 	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
+	}
 }
 
