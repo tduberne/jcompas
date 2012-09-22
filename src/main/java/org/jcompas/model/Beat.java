@@ -22,15 +22,15 @@ package org.jcompas.model;
 /**
  * @author thibautd
  */
-public final class Tense {
+public final class Beat {
 	private final String name;
 	private final boolean isStrong;
 
-	public Tense(final int name, final boolean isStrong) {
+	public Beat(final int name, final boolean isStrong) {
 		this ( ""+name , isStrong );
 	}
 
-	public Tense(final String name, final boolean isStrong) {
+	public Beat(final String name, final boolean isStrong) {
 		this.name = name;
 		this.isStrong = isStrong;
 	}
