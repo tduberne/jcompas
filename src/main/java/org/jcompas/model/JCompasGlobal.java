@@ -19,6 +19,8 @@
  * *********************************************************************** */
 package org.jcompas.model;
 
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -53,6 +55,15 @@ public class JCompasGlobal {
 			final Exception e) {
 		log.error( message , e );
 		System.exit( 1 );
+	}
+
+	public static void userWarning(
+			final String message) {
+		JOptionPane.showMessageDialog(
+				null,
+				message,
+				"Warning",
+				JOptionPane.WARNING_MESSAGE);
 	}
 }
 
