@@ -22,12 +22,19 @@ package org.jcompas.view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -65,6 +72,10 @@ public class ControlPaneFactory {
 		final JComboBox estiloBox = new JComboBox();
 		estiloBox.setMaximumSize( new Dimension( 200, 20 ) );
 		pane.add( estiloBox );
+
+		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
+		final PatternBoxGroup patternBoxes = new PatternBoxGroup( controller );
+		pane.add( patternBoxes );
 
 		final JButton startButton = new JButton( "Start" );
 		startButton.setEnabled( false );
@@ -119,9 +130,7 @@ public class ControlPaneFactory {
 				JComboBox box = (JComboBox) e.getSource();
 				controller.selectEstilo( (String) box.getSelectedItem() );
 
-				for (String p : controller.getPatterns()) {
-					controller.addPatternToSelection( p );
-				}
+				patternBoxes.setPatterns( controller.getPatterns() );
 
 				startButton.setEnabled( true );
 				bpmSlider.setEnabled( true );
@@ -132,17 +141,18 @@ public class ControlPaneFactory {
 		ActionListener buttonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean start = e.getActionCommand().equals( START_ACTION );
-				startButton.setEnabled( !start );
-				stopButton.setEnabled( start );
-
-				paloBox.setEnabled( !start );
-				estiloBox.setEnabled( !start );
-				bpmSlider.setEnabled( !start );
-
 				controller.setBpm( bpmSlider.getValue() );
-				if (start) controller.start();
-				else controller.stop();
+				boolean start = e.getActionCommand().equals( START_ACTION );
+				boolean success = start ? controller.start() : controller.stop();
+
+				if (success) {
+					startButton.setEnabled( !start );
+					stopButton.setEnabled( start );
+
+					paloBox.setEnabled( !start );
+					estiloBox.setEnabled( !start );
+					bpmSlider.setEnabled( !start );
+				}
 			}
 		};
 		startButton.addActionListener( buttonListener );
@@ -150,5 +160,48 @@ public class ControlPaneFactory {
 
 		return pane;
 	}
+
+	private static class PatternBoxGroup extends JPanel {
+		private final List<JCheckBox> boxes = new ArrayList<JCheckBox>();
+		private final Listener listener = new Listener();
+		private final Controller controller;
+
+		public PatternBoxGroup(
+				final Controller controller) {
+			this.controller = controller;
+			setLayout( new BoxLayout( this , BoxLayout.Y_AXIS ) ); 
+		}
+
+		public void setPatterns(
+				final Collection<String> patterns) {
+			boxes.clear();
+			removeAll();
+			for (String p : patterns) {
+				JCheckBox b = new JCheckBox( p );
+				boxes.add( b );
+				b.addItemListener( listener );
+				add( b );
+			}
+			revalidate();
+		}
+
+		private class Listener implements ItemListener {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				JCheckBox b = (JCheckBox) e.getItem();
+				String p = b.getLabel();
+
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					controller.addPatternToSelection( p );
+				}
+				else {
+					controller.removePatternFromSelection( p );
+				}
+			}
+		}
+
+
+	}
 }
+
 
