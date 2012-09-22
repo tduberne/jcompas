@@ -135,8 +135,11 @@ public final class Controller {
 						selectedEstilo.getCompas()));
 		relojRunner = new RelojRunner( reloj );
 
+		log.debug( "start playing!" );
 		long compasDur = (long)
 			((60000d / bpm) * selectedEstilo.getCompas().getTensesCount());
+		log.debug( "bpm: "+bpm );
+		log.debug( "compas dur.: "+compasDur+" ms." );
 		long start = System.currentTimeMillis() + TIME_BEFORE_PLAY;
 
 		metronomeRunner.start( start , compasDur );
