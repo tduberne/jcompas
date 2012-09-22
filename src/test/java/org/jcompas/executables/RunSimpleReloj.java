@@ -26,9 +26,9 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import org.jcompas.control.RelojRunner;
 import org.jcompas.model.CompasFactory;
 import org.jcompas.model.CompasInformation;
-import org.jcompas.model.RelojRunner;
 import org.jcompas.view.Reloj;
 import org.jcompas.view.SimpleReloj;
 

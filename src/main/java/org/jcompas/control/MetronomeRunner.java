@@ -17,7 +17,7 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.control;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -29,9 +29,12 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
 
-import org.jcompas.model.InfinitePlayer;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.sound.MetronomeData;
 import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.sound.SoundUtils;
+import org.jcompas.model.sound.Pattern.Golpe;
+import org.jcompas.model.sound.Pattern.Musician;
 
 /**
  * Basically a pattern mixer.

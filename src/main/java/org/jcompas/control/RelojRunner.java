@@ -17,8 +17,9 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.control;
 
+import org.jcompas.model.JCompasGlobal;
 import org.jcompas.view.Reloj;
 
 /**
