@@ -140,6 +140,7 @@ public class ControlPaneFactory {
 				estiloBox.setEnabled( !start );
 				bpmSlider.setEnabled( !start );
 
+				controller.setBpm( bpmSlider.getValue() );
 				if (start) controller.start();
 				else controller.stop();
 			}
