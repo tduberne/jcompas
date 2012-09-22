@@ -20,6 +20,9 @@
 package org.jcompas.model.sound;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -37,6 +40,13 @@ public class MonoSoundClap implements Clap {
 	private final byte[] sound;
 	private final AudioFormat format;
 	private final String name;
+
+
+	public MonoSoundClap(
+			final String name,
+			final File data) throws FileNotFoundException {
+		this( name , new FileInputStream( data ) );
+	}
 
 	public MonoSoundClap(
 			final String name,

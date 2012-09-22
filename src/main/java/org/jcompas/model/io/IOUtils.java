@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Palo.java
+ * IOUtils.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,50 +17,15 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.io;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.net.URL;
 
 /**
- * Represents a "Palo", such as Bulerias,
- * soleares, seguiryias, sevillanas...
  * @author thibautd
  */
-public final class Palo {
-	private final String name;
-	private final Map<String, Estilo> estilos;
-
-	public Palo(
-			final String name,
-			final Collection<Estilo> estilos) {
-		this.name = name;
-
-		Map<String, Estilo> map = new HashMap<String, Estilo>();
-		for (Estilo e : estilos) {
-			map.put( e.getName() , e );
-		}
-		
-		this.estilos = Collections.unmodifiableMap( map );
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Set<String> getEstilos() {
-		return estilos.keySet();
-	}
-
-	public Estilo getEstilo(final String name) {
-		return estilos.get( name );
-	}
-
-	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+estilos+"]";
-	}
+public class IOUtils {
+	public static final URL SOUNDS_LOCATION = IOUtils.class.getResource( "/sounds/" );
+	public static final URL PATTERNS_LOCATION = IOUtils.class.getResource( "/patterns/" );
 }
 
