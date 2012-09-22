@@ -35,7 +35,7 @@ import org.jcompas.model.Beat;
 import org.jcompas.model.CompasInformation;
 import org.jcompas.model.Estilo;
 import org.jcompas.model.Palo;
-import org.jcompas.model.PaloFactory;
+import org.jcompas.model.Palos;
 import org.jcompas.model.sound.Clap;
 import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.Pattern.Golpe;
@@ -54,7 +54,7 @@ public class PaloReader {
 	private final ClapReader clapReader = new ClapReader();
 	private final SAXBuilder xmlParser = new SAXBuilder();
 
-	public PaloFactory readPalos() throws URISyntaxException, JDOMException, IOException {
+	public Palos readPalos() throws URISyntaxException, JDOMException, IOException {
 		File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
 				new FilenameFilter() {
 					@Override
@@ -99,7 +99,7 @@ public class PaloReader {
 			palos.add( new Palo( p.getKey() , p.getValue() ) );
 		}
 
-		return new PaloFactory( palos );
+		return new Palos( palos );
 	}
 
 	private EstiloAndPalo parseEstilo(final String file, final List<Pattern> patterns) throws JDOMException, IOException {

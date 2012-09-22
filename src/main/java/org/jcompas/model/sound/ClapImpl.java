@@ -23,32 +23,30 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.jcompas.model.JCompasGlobal;
 
 /**
  * @author thibautd
  */
-public class MonoSoundClap implements Clap {
+public class ClapImpl implements Clap {
 	private final byte[] sound;
 	private final AudioFormat format;
 	private final String name;
 
 
-	public MonoSoundClap(
+	public ClapImpl(
 			final String name,
 			final File data) throws FileNotFoundException {
 		this( name , new FileInputStream( data ) );
 	}
 
-	public MonoSoundClap(
+	public ClapImpl(
 			final String name,
 			final InputStream data) {
 		this.name = name;

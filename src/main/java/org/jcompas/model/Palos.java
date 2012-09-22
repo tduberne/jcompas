@@ -27,10 +27,10 @@ import java.util.Map;
  * Gives access to the available palos.
  * @author thibautd
  */
-public final class PaloFactory {
+public final class Palos {
 	private final Map<String, Palo> palos = new HashMap<String, Palo>();
 
-	public PaloFactory(final Collection<Palo> palos) {
+	public Palos(final Collection<Palo> palos) {
 		for (Palo p : palos) {
 			this.palos.put( p.getName() , p );
 		}
