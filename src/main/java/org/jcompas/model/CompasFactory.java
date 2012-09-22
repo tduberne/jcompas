@@ -29,22 +29,22 @@ public final class CompasFactory {
 	private CompasFactory() {};
 
 	public static CompasInformation createBuleriasCompas() {
-		List<Tense> tenses = new ArrayList<Tense>();
+		List<Beat> beats = new ArrayList<Beat>();
 
-		tenses.add ( new Tense( 12 , true ) );
-		tenses.add ( new Tense( 1 , false ) );
-		tenses.add ( new Tense( 2 , false ) );
-		tenses.add ( new Tense( 3 , true ) );
-		tenses.add ( new Tense( 4 , false ) );
-		tenses.add ( new Tense( 5 , false ) );
-		tenses.add ( new Tense( 6 , true ) );
-		tenses.add ( new Tense( 7 , false ) );
-		tenses.add ( new Tense( 8 , true ) );
-		tenses.add ( new Tense( 9 , false ) );
-		tenses.add ( new Tense( 10 , true ) );
-		tenses.add ( new Tense( 11 , false ) );
+		beats.add ( new Beat( 12 , true ) );
+		beats.add ( new Beat( 1 , false ) );
+		beats.add ( new Beat( 2 , false ) );
+		beats.add ( new Beat( 3 , true ) );
+		beats.add ( new Beat( 4 , false ) );
+		beats.add ( new Beat( 5 , false ) );
+		beats.add ( new Beat( 6 , true ) );
+		beats.add ( new Beat( 7 , false ) );
+		beats.add ( new Beat( 8 , true ) );
+		beats.add ( new Beat( 9 , false ) );
+		beats.add ( new Beat( 10 , true ) );
+		beats.add ( new Beat( 11 , false ) );
 		
-		return new CompasInformation( "Bulerias" , 190 , tenses );
+		return new CompasInformation( "Bulerias" , 190 , beats );
 	}
 }
 

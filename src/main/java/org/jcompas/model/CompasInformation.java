@@ -29,15 +29,15 @@ import java.util.List;
 public final class CompasInformation {
 	private final String name;
 	private final int typicalBpm;
-	private final List<Tense> tenses;
+	private final List<Beat> beats;
 
 	public CompasInformation(
 			final String name,
 			final int bpm,
-			final List<Tense> tenses) {
+			final List<Beat> beats) {
 		this.name = name;
 		this.typicalBpm = bpm;
-		this.tenses = Collections.unmodifiableList( tenses );
+		this.beats = Collections.unmodifiableList( beats );
 	}
 
 	public String getName() {
@@ -48,12 +48,12 @@ public final class CompasInformation {
 		return typicalBpm;
 	}
 
-	public List<Tense> getTenses() {
-		return tenses;
+	public List<Beat> getTenses() {
+		return beats;
 	}
 
 	public int getTensesCount() {
-		return tenses.size();
+		return beats.size();
 	}
 }
 

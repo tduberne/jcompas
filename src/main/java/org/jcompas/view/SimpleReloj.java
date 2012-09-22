@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 
 import org.jcompas.model.CompasInformation;
 import org.jcompas.model.JCompasGlobal;
-import org.jcompas.model.Tense;
+import org.jcompas.model.Beat;
 
 /**
  * @author thibautd
@@ -151,7 +151,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 		g.drawOval( 0 , 0 , width , width );
 
 		double angle = 0;
-		for (Tense tense : compas.getTenses()) {
+		for (Beat beat : compas.getTenses()) {
 			final double horiz = Math.sin( angle );
 			final double vert = -Math.cos( angle );
 
@@ -161,14 +161,14 @@ public class SimpleReloj extends JPanel implements Reloj {
 					(int) (xCenter + bigR * horiz),
 					(int) (yCenter + bigR * vert));
 
-			if (tense.isStrong()) {
+			if (beat.isStrong()) {
 				g.setColor( Color.red );
 				g.setFont( strongFont );
 			}
-			final Rectangle2D bounds = g.getFontMetrics().getStringBounds( tense.getName() , g );
+			final Rectangle2D bounds = g.getFontMetrics().getStringBounds( beat.getName() , g );
 
 			g.drawString(
-					tense.getName(),
+					beat.getName(),
 					(int) (xCenter + smallR * horiz - bounds.getWidth()/2d),
 					(int) (yCenter + smallR * vert + bounds.getHeight()/2d));
 			g.setColor( c );
