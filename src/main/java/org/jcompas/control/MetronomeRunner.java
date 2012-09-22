@@ -216,7 +216,9 @@ public final class MetronomeRunner implements InfinitePlayer {
 				final int byteNr = frameNr * frameSize;
 
 				for (int i=0; i < sound.length; i++) {
-					bytes[ byteNr + i ] = sound[ i ];
+					if (byteNr + i < bytes.length) {
+						bytes[ byteNr + i ] = sound[ i ];
+					}
 				}
 			}
 
