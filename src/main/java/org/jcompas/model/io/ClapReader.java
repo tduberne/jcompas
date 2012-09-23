@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import org.jcompas.model.sound.Clap;
 import org.jcompas.model.sound.ClapImpl;
 
@@ -32,6 +34,9 @@ import org.jcompas.model.sound.ClapImpl;
  * @author thibautd
  */
 public class ClapReader {
+	private static final Logger log =
+		Logger.getLogger(ClapReader.class);
+
 	private final Map<String, Clap> cache = new HashMap<String, Clap>();
 
 	public Clap createClap(final String directory) throws FileNotFoundException {
@@ -39,6 +44,7 @@ public class ClapReader {
 
 		if (clap == null) {
 			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
+			log.debug( "reading sound directory "+f );
 			clap = new ClapImpl( directory , f.listFiles()[0] );
 			cache.put( directory , clap );
 		}
