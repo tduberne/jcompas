@@ -20,6 +20,7 @@
 package org.jcompas.model.io;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileNotFoundException;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.ClapImpl;
+import org.jcompas.model.sound.RandomizedClap;
 
 /**
  * @author thibautd
@@ -45,7 +46,15 @@ public class ClapReader {
 		if (clap == null) {
 			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
 			log.debug( "reading sound directory "+f );
-			clap = new ClapImpl( directory , f.listFiles()[0] );
+			clap = new RandomizedClap(
+					directory,
+					f.listFiles(
+						new FilenameFilter() {
+							@Override
+							public boolean accept(File dir, String name) {
+								return name.endsWith( ".wav" );
+							}
+						}) );
 			cache.put( directory , clap );
 		}
 
