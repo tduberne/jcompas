@@ -1,20 +1,20 @@
-<pattern name="Contratiempos (1)"
+<pattern name="Contratiempos (2)"
 		estilo="estilos/bulerias-basicas.xml"
 		nCompas="1"
 		nRepeat="3">
 
 	<musician name="Paquito">
 		<sound directory="palmas/sonora/fuerte/">
-			-x-x-x-x-x-x-x-x-x-x-x-x
+			x--x--x-x-x-
 		</sound>
 		<sound directory="palmas/sonora/baja/">
-			x-x-x-x-x-x-x-x-x-x-x-x-
+			-xx-xx-x-x-x
 		</sound>
 	</musician>
 
 	<musician name="Carlito">
-		<sound directory="percusion/foot/">
-			x-----x-----x---x---x---
+		<sound directory="palmas/sonora/fuerte/">
+			x--x--x--x--x--x---x--x-
 		</sound>
 	</musician>
 </pattern>
