@@ -35,11 +35,15 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import org.apache.log4j.Logger;
 
@@ -104,7 +108,7 @@ public class ControlPaneFactory {
 		pane.add( buttons );
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 
-		final JSlider bpmSlider =
+		JSlider bpmSlider =
 			new JSlider(
 					JSlider.HORIZONTAL,
 					BPM_MIN,
@@ -114,10 +118,12 @@ public class ControlPaneFactory {
 		bpmSlider.setMinorTickSpacing( 10 );
 		bpmSlider.setPaintTicks( true );
 		bpmSlider.setPaintLabels( true );
-		bpmSlider.setBorder( BorderFactory.createTitledBorder( "Tempo" ) );
-		bpmSlider.setEnabled( false );
 
-		pane.add( bpmSlider );
+		final SliderSpinerGroup tempoPane = new SliderSpinerGroup( bpmSlider );
+		tempoPane.setBorder( BorderFactory.createTitledBorder( "Tempo" ) );
+		tempoPane.setEnabled( false );
+
+		pane.add( tempoPane );
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 
 		// listenners
@@ -142,15 +148,15 @@ public class ControlPaneFactory {
 				patternBoxes.setPatterns( controller.getPatterns() );
 
 				startButton.setEnabled( true );
-				bpmSlider.setEnabled( true );
-				bpmSlider.setValue( controller.getBpm() );
+				tempoPane.setEnabled( true );
+				tempoPane.setValue( controller.getBpm() );
 			}
 		});
 
 		ActionListener buttonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setBpm( bpmSlider.getValue() );
+				controller.setBpm( tempoPane.getValue() );
 				boolean start = e.getActionCommand().equals( START_ACTION );
 				boolean success = start ? controller.start() : controller.stop();
 
@@ -162,7 +168,7 @@ public class ControlPaneFactory {
 
 					paloBox.setEnabled( !start );
 					estiloBox.setEnabled( !start );
-					bpmSlider.setEnabled( !start );
+					tempoPane.setEnabled( !start );
 				}
 			}
 		};
@@ -235,8 +241,60 @@ public class ControlPaneFactory {
 				}
 			}
 		}
+	}
 
+	private static class SliderSpinerGroup extends JPanel {
+		private final JSlider slider;
+		private final JSpinner spinner;
 
+		public SliderSpinerGroup(final JSlider slider) {
+			this.slider = slider;
+			final SpinnerNumberModel spinnerModel =
+					new SpinnerNumberModel(
+						slider.getValue(),
+						slider.getMinimum(),
+						slider.getMaximum(),
+						1);
+			this.spinner = new JSpinner( spinnerModel );
+			spinner.setMaximumSize( new Dimension( 50 , 20 ) );
+			spinner.setAlignmentY( Component.BOTTOM_ALIGNMENT );
+
+			ChangeListener listener = new ChangeListener() {
+				@Override
+				public void stateChanged(final ChangeEvent e) {
+					Object s = e.getSource();
+
+					if (s == slider) {
+						spinner.setValue( slider.getValue() );
+					}
+					else if (s == spinner) {
+						slider.setValue( spinnerModel.getNumber().intValue() );
+					}
+				}
+			};
+
+			slider.addChangeListener( listener );
+			spinner.addChangeListener( listener );
+
+			setLayout( new BoxLayout( this , BoxLayout.X_AXIS ) );
+			add( slider );
+			add( spinner );
+		}
+
+		public int getValue() {
+			return slider.getValue();
+		}
+
+		public void setValue(final int value) {
+			slider.setValue( value );
+		}
+
+		@Override
+		public void setEnabled(final boolean b) {
+			super.setEnabled( b );
+			slider.setEnabled( b );
+			spinner.setEnabled( b );
+		}
 	}
 }
 
