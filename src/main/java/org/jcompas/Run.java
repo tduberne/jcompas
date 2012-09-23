@@ -21,6 +21,7 @@ package org.jcompas;
 
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 import org.apache.log4j.BasicConfigurator;
@@ -33,6 +34,7 @@ import org.jcompas.view.ControlPaneFactory;
  * @author thibautd
  */
 public class Run {
+	private static final int RELOJ_PANE_BORDER = 20;
 	public static void main(final String[] args) {
 		BasicConfigurator.configure();
 		try {
@@ -40,6 +42,12 @@ public class Run {
 
 			JFrame window = new JFrame( "jCompas "+JCompasGlobal.getVersionId() );
 			window.getContentPane().setLayout( new GridLayout( 1 , 2 ) );
+			controller.getRelojPane().setBorder(
+					BorderFactory.createEmptyBorder(
+						RELOJ_PANE_BORDER,
+						RELOJ_PANE_BORDER,
+						RELOJ_PANE_BORDER,
+						RELOJ_PANE_BORDER) );
 			window.add( controller.getRelojPane() );
 			window.add( ControlPaneFactory.createControlPane( controller ) );
 			window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
