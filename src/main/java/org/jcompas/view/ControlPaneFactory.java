@@ -19,11 +19,13 @@
  * *********************************************************************** */
 package org.jcompas.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.GridLayout;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +54,7 @@ public class ControlPaneFactory {
 
 	private static final int BPM_MIN = 50;
 	private static final int BPM_MAX = 250;
-	private static final int VERT_GAP = 20;
+	private static final int VERT_GAP = 10;
 
 	private static final String START_ACTION = "cocorico";
 	private static final String STOP_ACTION = "turlututu";
@@ -65,16 +67,23 @@ public class ControlPaneFactory {
 		// init components and add them
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 		final JComboBox paloBox = new JComboBox( controller.getPalos().toArray() );
-		paloBox.setMaximumSize( new Dimension( 200, 20 ) );
+		paloBox.setMaximumSize( new Dimension( Integer.MAX_VALUE , 20 ) );
+		paloBox.setBorder(
+				BorderFactory.createTitledBorder( "Palo" ) );
 		pane.add( paloBox );
 
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 		final JComboBox estiloBox = new JComboBox();
-		estiloBox.setMaximumSize( new Dimension( 200, 20 ) );
+		estiloBox.setMaximumSize( new Dimension( Integer.MAX_VALUE, 20 ) );
+		estiloBox.setBorder(
+				BorderFactory.createTitledBorder( "Estilo" ) );
 		pane.add( estiloBox );
 
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 		final PatternBoxGroup patternBoxes = new PatternBoxGroup( controller );
+		patternBoxes.setBorder(
+				BorderFactory.createTitledBorder( "Patterns" ) );
+		patternBoxes.setAlignmentX( Component.RIGHT_ALIGNMENT );
 		pane.add( patternBoxes );
 
 		final JButton startButton = new JButton( "Start" );
@@ -171,7 +180,8 @@ public class ControlPaneFactory {
 		public PatternBoxGroup(
 				final Controller controller) {
 			this.controller = controller;
-			setLayout( new BoxLayout( this , BoxLayout.Y_AXIS ) ); 
+			//setLayout( new BoxLayout( this , BoxLayout.Y_AXIS ) ); 
+			setLayout( new GridLayout( 0 , 2 ) );
 		}
 
 		public void setPatterns(
@@ -187,9 +197,28 @@ public class ControlPaneFactory {
 			revalidate();
 		}
 
+
+		@Override
 		public void setEnabled(final boolean bool) {
 			super.setEnabled( bool );
 			for (JCheckBox b : boxes) b.setEnabled( bool );
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(
+					Integer.MAX_VALUE,
+					getLayout().minimumLayoutSize( this ).height);
+		}
+
+		@Override
+		public Dimension getMaximumSize() {
+			return getPreferredSize();
+		}
+
+		@Override
+		public Dimension getMinimumSize() {
+			return getPreferredSize();
 		}
 
 		private class Listener implements ItemListener {
