@@ -1,4 +1,4 @@
-<estilo name="Bulería Modernas" palo="Bulería">
+<estilo name="Bulerías Modernas" palo="Bulería">
 		<compas bpm="190">
 			<beat pos="1" name="12" strong="true"/>
 			<beat pos="2" name="1" strong="false"/>

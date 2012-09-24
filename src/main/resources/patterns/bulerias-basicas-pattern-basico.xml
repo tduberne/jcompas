@@ -10,4 +10,10 @@
 			-XX-XX-X-X-X
 		</sound>
 	</musician>
+
+	<musician name="Carlito">
+		<sound directory="percusion/foot/">
+			X--X--X-X-X-
+		</sound>
+	</musician>
 </pattern>
