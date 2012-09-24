@@ -56,6 +56,7 @@ public class ClapReader {
 		if (clap == null) {
 			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
 			log.debug( "reading sound directory "+f );
+			log.debug( "volume is "+(config.getVolume( directory )*100)+"%" );
 			clap = new RandomizedClap(
 					directory,
 					f.listFiles(
