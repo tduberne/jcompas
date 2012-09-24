@@ -43,7 +43,8 @@ public class RandomizedClap implements Clap {
 
 	public RandomizedClap(
 			final String name,
-			final File[] data) {
+			final File[] data,
+			final double volume) {
 		this.name = name;
 		sounds = new byte[data.length][];
 		try {
@@ -66,6 +67,10 @@ public class RandomizedClap implements Clap {
 					nRead = audio.read( buffer );
 				}
 				this.sounds[i] = array.toByteArray();
+
+				for (int j=0; j < sounds[i].length; j++) {
+					sounds[i][j] *= volume;
+				}
 			}
 
 			this.format = currentFormat;
