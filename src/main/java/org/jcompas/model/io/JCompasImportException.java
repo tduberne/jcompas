@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * JCompasImportException.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -19,57 +19,12 @@
  * *********************************************************************** */
 package org.jcompas.model.io;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.FileNotFoundException;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.RandomizedClap;
-import org.jcompas.model.SoundConfig;
-
 /**
  * @author thibautd
  */
-public class ClapReader {
-	private static final Logger log =
-		Logger.getLogger(ClapReader.class);
-
-	private final Map<String, Clap> cache = new HashMap<String, Clap>();
-	private final SoundConfig config;
-
-	public ClapReader() {
-		this( new SoundConfig( IOUtils.SOUND_CONFIG_LOCATION ) );
-	}
-
-	public ClapReader(final SoundConfig config) {
-		this.config = config;
-	}
-
-	public Clap createClap(final String directory) {
-		Clap clap = cache.get( directory );
-
-		if (clap == null) {
-			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
-			log.debug( "reading sound directory "+f );
-			clap = new RandomizedClap(
-					directory,
-					f.listFiles(
-						new FilenameFilter() {
-							@Override
-							public boolean accept(File dir, String name) {
-								return name.endsWith( ".wav" );
-							}
-						}),
-					config.getVolume( directory ));
-			cache.put( directory , clap );
-		}
-
-		return clap;
+public class JCompasImportException extends RuntimeException {
+	public JCompasImportException(final String msg, final Exception cause) {
+		super( msg , cause );
 	}
 }
 
