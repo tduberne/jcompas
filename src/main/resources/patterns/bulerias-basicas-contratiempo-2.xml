@@ -17,4 +17,11 @@
 			x--x--x--x--x--x---x--x-
 		</sound>
 	</musician>
+
+
+	<musician name="Javier">
+		<sound directory="percusion/foot/">
+			x--x--x-x-x-
+		</sound>
+	</musician>
 </pattern>

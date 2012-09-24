@@ -1,0 +1,10 @@
+<estilo name="Medio Compás 6-11" palo="Bulería">
+		<compas bpm="190">
+			<beat pos="7" name="6" strong="true"/>
+			<beat pos="8" name="7" strong="false"/>
+			<beat pos="9" name="8" strong="true"/>
+			<beat pos="10" name="9" strong="false"/>
+			<beat pos="11" name="10" strong="true"/>
+			<beat pos="12" name="11" strong="false"/>
+		</compas>
+</estilo>

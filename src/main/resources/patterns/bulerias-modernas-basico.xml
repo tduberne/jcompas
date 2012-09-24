@@ -1,19 +1,20 @@
 <pattern name="Compas Básico"
-		estilo="estilos/bulerias-basicas.xml"
+		estilo="estilos/bulerias-modernas.xml"
 		nCompas="1"
 		nRepeat="3">
 	<musician name="Paquito">
 		<sound directory="palmas/sonora/fuerte/">
-			X--X--X-X-X-
+			X--X---XX-X-
 		</sound>
 		<sound directory="palmas/sonora/baja/">
-			-XX-XX-X-X-X
+			-XX-XXX--X-X
 		</sound>
 	</musician>
 
-	<musician name="Carlito">
+	<musician name="Pie">
 		<sound directory="percusion/foot/">
-			X--X--X-X-X-
+			X--X---XX-X-
 		</sound>
 	</musician>
+
 </pattern>
