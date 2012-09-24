@@ -54,52 +54,59 @@ public class PaloReader {
 	private final ClapReader clapReader = new ClapReader();
 	private final SAXBuilder xmlParser = new SAXBuilder();
 
-	public Palos readPalos() throws URISyntaxException, JDOMException, IOException {
-		File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
-				new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						return name.endsWith( ".xml" );
+	public Palos readPalos() {
+		try {
+			File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
+					new FilenameFilter() {
+						@Override
+						public boolean accept(File dir, String name) {
+							return name.endsWith( ".xml" );
+						}
+					});
+
+			Map<String, List<Pattern>> estilo2Pattern = new HashMap<String, List<Pattern>>();
+			for (File f : files) {
+				Document doc = xmlParser.build( f );
+				if (doc.getRootElement().getName().equals( XmlSchemaNames.PATTERN_TAG )) {
+					Pattern p = parsePattern( doc );
+					String estiloFile = doc.getRootElement().getAttribute( XmlSchemaNames.PATTERN_ESTILO_ATT ).getValue();
+					List<Pattern> ps = estilo2Pattern.get( estiloFile );
+
+					if (ps == null) {
+						ps = new ArrayList<Pattern>();
+						estilo2Pattern.put( estiloFile , ps );
 					}
-				});
 
-		Map<String, List<Pattern>> estilo2Pattern = new HashMap<String, List<Pattern>>();
-		for (File f : files) {
-			Document doc = xmlParser.build( f );
-			if (doc.getRootElement().getName().equals( XmlSchemaNames.PATTERN_TAG )) {
-				Pattern p = parsePattern( doc );
-				String estiloFile = doc.getRootElement().getAttribute( XmlSchemaNames.PATTERN_ESTILO_ATT ).getValue();
-				List<Pattern> ps = estilo2Pattern.get( estiloFile );
-
-				if (ps == null) {
-					ps = new ArrayList<Pattern>();
-					estilo2Pattern.put( estiloFile , ps );
+					ps.add( p );
 				}
-
-				ps.add( p );
 			}
-		}
 
 
-		Map<String, List<Estilo>> palo2Estilo = new HashMap<String, List<Estilo>>();
-		for (Map.Entry<String, List<Pattern>> patterns : estilo2Pattern.entrySet()) {
-			EstiloAndPalo estilo = parseEstilo( patterns.getKey() , patterns.getValue() );
+			Map<String, List<Estilo>> palo2Estilo = new HashMap<String, List<Estilo>>();
+			for (Map.Entry<String, List<Pattern>> patterns : estilo2Pattern.entrySet()) {
+				EstiloAndPalo estilo = parseEstilo( patterns.getKey() , patterns.getValue() );
 
-			List<Estilo> es = palo2Estilo.get( estilo.palo );
-			if (es == null) {
-				es = new ArrayList<Estilo>();
-				palo2Estilo.put( estilo.palo , es);
+				List<Estilo> es = palo2Estilo.get( estilo.palo );
+				if (es == null) {
+					es = new ArrayList<Estilo>();
+					palo2Estilo.put( estilo.palo , es);
+				}
+				es.add( estilo.estilo );
 			}
-			es.add( estilo.estilo );
+
+			List<Palo> palos = new ArrayList<Palo>();
+
+			for (Map.Entry<String, List<Estilo>> p : palo2Estilo.entrySet()) {
+				palos.add( new Palo( p.getKey() , p.getValue() ) );
+			}
+
+			return new Palos( palos );
 		}
-
-		List<Palo> palos = new ArrayList<Palo>();
-
-		for (Map.Entry<String, List<Estilo>> p : palo2Estilo.entrySet()) {
-			palos.add( new Palo( p.getKey() , p.getValue() ) );
+		catch (Exception e) {
+			throw new JCompasImportException(
+					"could not import palos",
+					e);
 		}
-
-		return new Palos( palos );
 	}
 
 	private EstiloAndPalo parseEstilo(final String file, final List<Pattern> patterns) throws JDOMException, IOException {

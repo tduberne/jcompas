@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * JCompasImportException.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -19,44 +19,12 @@
  * *********************************************************************** */
 package org.jcompas.model.io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.ClapImpl;
-
 /**
  * @author thibautd
  */
-public class ClapReader {
-	private static final Logger log =
-		Logger.getLogger(ClapReader.class);
-
-	private final Map<String, Clap> cache = new HashMap<String, Clap>();
-
-	public Clap createClap(final String directory) {
-		Clap clap = cache.get( directory );
-
-		if (clap == null) {
-			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
-			log.debug( "reading sound directory "+f );
-			try {
-				clap = new ClapImpl( directory , f.listFiles()[0] );
-			}
-			catch (FileNotFoundException e) {
-				throw new JCompasImportException(
-						"Could not import directory "+directory,
-						e );
-			}
-			cache.put( directory , clap );
-		}
-
-		return clap;
+public class JCompasImportException extends RuntimeException {
+	public JCompasImportException(final String msg, final Exception cause) {
+		super( msg , cause );
 	}
 }
 
