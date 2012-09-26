@@ -1,0 +1,27 @@
+<pattern name="Contratiempos (2, Sordas)"
+		estilo="estilos/bulerias-basicas.xml"
+		nCompas="1"
+		nRepeat="3">
+
+	<musician name="Paquito">
+		<sound directory="palmas/sorda/fuerte/">
+			x--x--x-x-x-
+		</sound>
+		<sound directory="palmas/sorda/baja/">
+			-xx-xx-x-x-x
+		</sound>
+	</musician>
+
+	<musician name="Carlito">
+		<sound directory="palmas/sorda/fuerte/">
+			x--x--x--x--x--x---x--x-
+		</sound>
+	</musician>
+
+
+	<musician name="Javier">
+		<sound directory="percusion/foot/">
+			x--x--x-x-x-
+		</sound>
+	</musician>
+</pattern>
