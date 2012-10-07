@@ -26,6 +26,9 @@
               <mainClass>org.jcompas.Run</mainClass>
 			  <classpathPrefix>./lib/</classpathPrefix>
             </manifest>
+			<manifestEntries>
+				<Class-Path>./</Class-Path>
+			</manifestEntries>
           </archive>
 			<excludes>
 				<exclude>patterns/</exclude>
@@ -41,11 +44,13 @@
           <descriptors>
             <descriptor>src/main/assembly/zip.xml</descriptor>
           </descriptors>
+		  <!--
           <archive>
             <manifest>
               <mainClass>org.jcompas.Run</mainClass>
             </manifest>
           </archive>
+		-->
 
         </configuration>
         <executions>

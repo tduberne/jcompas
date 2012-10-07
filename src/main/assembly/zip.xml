@@ -24,12 +24,12 @@
 
 			<fileSet>
 			  <directory>src/main/resources/sounds/</directory>
-			  <outputDirectory>lib/sounds</outputDirectory>
+			  <outputDirectory>sounds</outputDirectory>
 			</fileSet>
 
 			<fileSet>
 			  <directory>src/main/resources/patterns/</directory>
-			  <outputDirectory>lib/patterns</outputDirectory>
+			  <outputDirectory>patterns</outputDirectory>
 			</fileSet>
 		  </fileSets>
 <!--
