@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -40,9 +41,11 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
 import org.apache.log4j.Logger;
@@ -89,8 +92,32 @@ public class ControlPaneFactory {
 
 		final JButton startButton = new JButton( "Start" );
 		startButton.setEnabled( false );
+		pane.getInputMap( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ).put(
+				KeyStroke.getKeyStroke( ' ' ),
+				startButton );
+		pane.getActionMap().put(
+				startButton,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						startButton.doClick();
+					}
+				});
+		startButton.setToolTipText( "[space]" );
 		final JButton tapTempoButton = new JButton( "Tap Tempo" );
 		tapTempoButton.setEnabled( false );
+		pane.getInputMap( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ).put(
+				KeyStroke.getKeyStroke( 't' ),
+				tapTempoButton );
+		pane.getActionMap().put(
+				tapTempoButton,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						tapTempoButton.doClick();
+					}
+				});
+		tapTempoButton.setToolTipText( "[t]" );
 
 		pane.add( Box.createVerticalGlue() );
 		JPanel buttons = new JPanel();
