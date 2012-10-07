@@ -25,7 +25,7 @@ import java.net.URL;
  * @author thibautd
  */
 public class IOUtils {
-	public static final URL SOUNDS_LOCATION = IOUtils.class.getResource( "/sounds/" );
-	public static final URL PATTERNS_LOCATION = IOUtils.class.getResource( "/patterns/" );
+	public static final URL SOUNDS_LOCATION = ClassLoader.getSystemResource( "sounds/" );
+	public static final URL PATTERNS_LOCATION = ClassLoader.getSystemResource( "patterns/" );
 }
 
