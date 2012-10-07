@@ -60,9 +60,6 @@ public class ControlPaneFactory {
 	private static final int BPM_MAX = 250;
 	private static final int VERT_GAP = 10;
 
-	private static final String START_ACTION = "cocorico";
-	private static final String STOP_ACTION = "turlututu";
-
 	public static JPanel createControlPane(final Controller controller) {
 		// init pane
 		final JPanel pane = new JPanel();
@@ -92,18 +89,12 @@ public class ControlPaneFactory {
 
 		final JButton startButton = new JButton( "Start" );
 		startButton.setEnabled( false );
-		startButton.setActionCommand( START_ACTION );
-		final JButton stopButton = new JButton( "Stop" );
-		stopButton.setEnabled( false );
-		stopButton.setActionCommand( STOP_ACTION );
 
 		pane.add( Box.createVerticalGlue() );
 		JPanel buttons = new JPanel();
 		buttons.setLayout( new BoxLayout( buttons , BoxLayout.X_AXIS ) );
 		buttons.add( Box.createHorizontalGlue() );
 		buttons.add( startButton );
-		buttons.add( Box.createHorizontalGlue() );
-		buttons.add( stopButton );
 		buttons.add( Box.createHorizontalGlue() );
 		pane.add( buttons );
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
@@ -153,27 +144,25 @@ public class ControlPaneFactory {
 			}
 		});
 
-		ActionListener buttonListener = new ActionListener() {
+		startButton.addActionListener( new ActionListener() {
+			boolean isRunning = false;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setBpm( tempoPane.getValue() );
-				boolean start = e.getActionCommand().equals( START_ACTION );
-				boolean success = start ? controller.start() : controller.stop();
+				boolean success = isRunning ? controller.stop() : controller.start();
 
 				if (success) {
-					startButton.setEnabled( !start );
-					stopButton.setEnabled( start );
+					isRunning = !isRunning;
+					startButton.setText( isRunning ? "Stop" : "Start" );
 
-					patternBoxes.setEnabled( !start );
+					patternBoxes.setEnabled( !isRunning );
 
-					paloBox.setEnabled( !start );
-					estiloBox.setEnabled( !start );
-					tempoPane.setEnabled( !start );
+					paloBox.setEnabled( !isRunning );
+					estiloBox.setEnabled( !isRunning );
+					tempoPane.setEnabled( !isRunning );
 				}
 			}
-		};
-		startButton.addActionListener( buttonListener );
-		stopButton.addActionListener( buttonListener );
+		});
 
 		return pane;
 	}
