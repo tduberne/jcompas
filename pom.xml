@@ -66,6 +66,17 @@
       </plugin>
 
     </plugins>
+
+	<resources>
+		<resource>
+			<!-- to include in jar -->
+			<directory>src/main/resources</directory>
+		</resource>
+		<resource>
+			<!-- to exclude from jar -->
+			<directory>src/main/accessibleresources</directory>
+		</resource>
+	</resources>
   </build>
 
 

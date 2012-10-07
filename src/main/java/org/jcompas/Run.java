@@ -24,7 +24,8 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import org.jcompas.control.Controller;
 import org.jcompas.model.JCompasGlobal;
@@ -34,9 +35,22 @@ import org.jcompas.view.ControlPaneFactory;
  * @author thibautd
  */
 public class Run {
+	private static final Logger log =
+		Logger.getLogger(Run.class);
+
 	private static final int RELOJ_PANE_BORDER = 20;
 	public static void main(final String[] args) {
-		BasicConfigurator.configure();
+		PropertyConfigurator.configure( ClassLoader.getSystemResource( "log4j.properties" ) );
+		log.info( "################################################################################" );
+		log.info( "Starting jCompas "+JCompasGlobal.getVersionId() );
+
+		Runtime.getRuntime().addShutdownHook( new Thread() {
+			@Override
+			public void run() {
+				log.info( "Ending jCompas "+JCompasGlobal.getVersionId() );
+				log.info( "################################################################################" );
+			}
+		});
 		try {
 			Controller controller = new Controller();
 
