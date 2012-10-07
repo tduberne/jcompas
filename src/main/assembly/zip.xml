@@ -31,16 +31,14 @@
 			  <directory>src/main/resources/patterns/</directory>
 			  <outputDirectory>patterns</outputDirectory>
 			</fileSet>
+
 		  </fileSets>
-<!--
 		  <files>
 			<file>
-			  <source>src/run/run.sh</source>
-			  <outputDirectory></outputDirectory>
-			  <fileMode>0755</fileMode>
+				<source>src/main/resources/log4j.properties</source>
+				<outputDirectory>./</outputDirectory>
 			</file>
 		  </files>
--->
 		</assembly>
 
 
