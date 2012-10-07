@@ -89,12 +89,16 @@ public class ControlPaneFactory {
 
 		final JButton startButton = new JButton( "Start" );
 		startButton.setEnabled( false );
+		final JButton tapTempoButton = new JButton( "Tap Tempo" );
+		tapTempoButton.setEnabled( false );
 
 		pane.add( Box.createVerticalGlue() );
 		JPanel buttons = new JPanel();
 		buttons.setLayout( new BoxLayout( buttons , BoxLayout.X_AXIS ) );
 		buttons.add( Box.createHorizontalGlue() );
 		buttons.add( startButton );
+		buttons.add( Box.createHorizontalGlue() );
+		buttons.add( tapTempoButton );
 		buttons.add( Box.createHorizontalGlue() );
 		pane.add( buttons );
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
@@ -140,10 +144,13 @@ public class ControlPaneFactory {
 
 				startButton.setEnabled( true );
 				tempoPane.setEnabled( true );
+				tapTempoButton.setEnabled( true );
 				tempoPane.setValue( controller.getBpm() );
 			}
 		});
 
+		// configure buttons now, as they need to communicate with the components
+		// above
 		startButton.addActionListener( new ActionListener() {
 			boolean isRunning = false;
 			@Override
@@ -160,7 +167,24 @@ public class ControlPaneFactory {
 					paloBox.setEnabled( !isRunning );
 					estiloBox.setEnabled( !isRunning );
 					tempoPane.setEnabled( !isRunning );
+					tapTempoButton.setEnabled( !isRunning );
 				}
+			}
+		});
+
+		tapTempoButton.addActionListener( new ActionListener() {
+			private long lastTap = Long.MIN_VALUE;
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				long newTap = System.currentTimeMillis();
+				long bpm = 60000 / (newTap - lastTap);
+
+				if (bpm >= BPM_MIN && bpm <= BPM_MAX) {
+					tempoPane.setValue( (int) bpm );
+				}
+
+				lastTap = newTap;
 			}
 		});
 
