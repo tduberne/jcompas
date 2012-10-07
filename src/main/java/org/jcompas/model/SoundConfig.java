@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * SoundConfig.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,60 +17,55 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.io;
+package org.jcompas.model;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.FileNotFoundException;
+import java.net.URL;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.RandomizedClap;
-import org.jcompas.model.SoundConfig;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 
 /**
  * @author thibautd
  */
-public class ClapReader {
+public class SoundConfig {
 	private static final Logger log =
-		Logger.getLogger(ClapReader.class);
+		Logger.getLogger(SoundConfig.class);
 
-	private final Map<String, Clap> cache = new HashMap<String, Clap>();
-	private final SoundConfig config;
+	private final Map<String, Double> volumesMap = new HashMap<String, Double>();
+	public static final String VOLUMES_TAG = "volumes";
+	public static final String VOLUME_TAG = "volume";
+	public static final String VOLUME_DIR_ATT = "dir";
+	public static final String VOLUME_ATT = "volume";
 
-	public ClapReader() {
-		this( new SoundConfig( IOUtils.SOUND_CONFIG_LOCATION ) );
-	}
+	public SoundConfig(final URL configFile) {
+		try {
+			Document document = new SAXBuilder().build( configFile );
 
-	public ClapReader(final SoundConfig config) {
-		this.config = config;
-	}
-
-	public Clap createClap(final String directory) {
-		Clap clap = cache.get( directory );
-
-		if (clap == null) {
-			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
-			log.debug( "reading sound directory "+f );
-			log.debug( "volume is "+(config.getVolume( directory )*100)+"%" );
-			clap = new RandomizedClap(
-					directory,
-					f.listFiles(
-						new FilenameFilter() {
-							@Override
-							public boolean accept(File dir, String name) {
-								return name.endsWith( ".wav" );
-							}
-						}),
-					config.getVolume( directory ));
-			cache.put( directory , clap );
+			Element volumes = document.getRootElement().getChild( VOLUMES_TAG );
+			for (Element e : volumes.getChildren( VOLUME_TAG )) {
+				volumesMap.put(
+						e.getAttribute( VOLUME_DIR_ATT ).getValue(),
+						e.getAttribute( VOLUME_ATT ).getDoubleValue() / 100 );
+			}
 		}
+		catch (Exception e) {
+			log.warn( "got error", e );
+			log.warn( "config may be left uninitialized" );
+		}
+	}
 
-		return clap;
+	/**
+	 * @return the volume, as a double, 0 being nothing and 1 no modification
+	 */
+	public double getVolume(final String directory) {
+		Double vol = volumesMap.get( directory );
+		return vol != null ? vol : 1;
 	}
 }
 
