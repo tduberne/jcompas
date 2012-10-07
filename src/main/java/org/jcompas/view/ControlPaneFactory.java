@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -40,9 +41,11 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
 import org.apache.log4j.Logger;
@@ -59,9 +62,6 @@ public class ControlPaneFactory {
 	private static final int BPM_MIN = 50;
 	private static final int BPM_MAX = 250;
 	private static final int VERT_GAP = 10;
-
-	private static final String START_ACTION = "cocorico";
-	private static final String STOP_ACTION = "turlututu";
 
 	public static JPanel createControlPane(final Controller controller) {
 		// init pane
@@ -92,10 +92,32 @@ public class ControlPaneFactory {
 
 		final JButton startButton = new JButton( "Start" );
 		startButton.setEnabled( false );
-		startButton.setActionCommand( START_ACTION );
-		final JButton stopButton = new JButton( "Stop" );
-		stopButton.setEnabled( false );
-		stopButton.setActionCommand( STOP_ACTION );
+		pane.getInputMap( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ).put(
+				KeyStroke.getKeyStroke( ' ' ),
+				startButton );
+		pane.getActionMap().put(
+				startButton,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						startButton.doClick();
+					}
+				});
+		startButton.setToolTipText( "[space]" );
+		final JButton tapTempoButton = new JButton( "Tap Tempo" );
+		tapTempoButton.setEnabled( false );
+		pane.getInputMap( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ).put(
+				KeyStroke.getKeyStroke( 't' ),
+				tapTempoButton );
+		pane.getActionMap().put(
+				tapTempoButton,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						tapTempoButton.doClick();
+					}
+				});
+		tapTempoButton.setToolTipText( "[t]" );
 
 		pane.add( Box.createVerticalGlue() );
 		JPanel buttons = new JPanel();
@@ -103,7 +125,7 @@ public class ControlPaneFactory {
 		buttons.add( Box.createHorizontalGlue() );
 		buttons.add( startButton );
 		buttons.add( Box.createHorizontalGlue() );
-		buttons.add( stopButton );
+		buttons.add( tapTempoButton );
 		buttons.add( Box.createHorizontalGlue() );
 		pane.add( buttons );
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
@@ -149,31 +171,49 @@ public class ControlPaneFactory {
 
 				startButton.setEnabled( true );
 				tempoPane.setEnabled( true );
+				tapTempoButton.setEnabled( true );
 				tempoPane.setValue( controller.getBpm() );
 			}
 		});
 
-		ActionListener buttonListener = new ActionListener() {
+		// configure buttons now, as they need to communicate with the components
+		// above
+		startButton.addActionListener( new ActionListener() {
+			boolean isRunning = false;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setBpm( tempoPane.getValue() );
-				boolean start = e.getActionCommand().equals( START_ACTION );
-				boolean success = start ? controller.start() : controller.stop();
+				boolean success = isRunning ? controller.stop() : controller.start();
 
 				if (success) {
-					startButton.setEnabled( !start );
-					stopButton.setEnabled( start );
+					isRunning = !isRunning;
+					startButton.setText( isRunning ? "Stop" : "Start" );
 
-					patternBoxes.setEnabled( !start );
+					patternBoxes.setEnabled( !isRunning );
 
-					paloBox.setEnabled( !start );
-					estiloBox.setEnabled( !start );
-					tempoPane.setEnabled( !start );
+					paloBox.setEnabled( !isRunning );
+					estiloBox.setEnabled( !isRunning );
+					tempoPane.setEnabled( !isRunning );
+					tapTempoButton.setEnabled( !isRunning );
 				}
 			}
-		};
-		startButton.addActionListener( buttonListener );
-		stopButton.addActionListener( buttonListener );
+		});
+
+		tapTempoButton.addActionListener( new ActionListener() {
+			private long lastTap = Long.MIN_VALUE;
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				long newTap = System.currentTimeMillis();
+				long bpm = 60000 / (newTap - lastTap);
+
+				if (bpm >= BPM_MIN && bpm <= BPM_MAX) {
+					tempoPane.setValue( (int) bpm );
+				}
+
+				lastTap = newTap;
+			}
+		});
 
 		return pane;
 	}
