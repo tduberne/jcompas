@@ -54,7 +54,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 
 	public SimpleReloj(final CompasInformation compas) {
 		this.compas = compas;
-		this.tickAngleStep = Math.PI * 2 / compas.getTensesCount();
+		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 		final double startAngle = 90 - currBeat * stepInDegrees;
 		final Color c = g.getColor();
 
-		if ( compas.getTenses().get( currBeat ).isStrong() ) {
+		if ( compas.getBeats().get( currBeat ).isStrong() ) {
 			g.setColor( BEAT_STRONG_COLOR );
 		}
 		else {
@@ -192,7 +192,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 		final Font strongFont = softFont.deriveFont( Font.BOLD );
 		g.setFont( softFont );
 		double angle = 0;
-		for (Beat beat : compas.getTenses()) {
+		for (Beat beat : compas.getBeats()) {
 			final double horiz = Math.sin( angle );
 			final double vert = -Math.cos( angle );
 

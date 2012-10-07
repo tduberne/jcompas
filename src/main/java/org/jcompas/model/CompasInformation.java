@@ -48,11 +48,11 @@ public final class CompasInformation {
 		return typicalBpm;
 	}
 
-	public List<Beat> getTenses() {
+	public List<Beat> getBeats() {
 		return beats;
 	}
 
-	public int getTensesCount() {
+	public int getBeatsCount() {
 		return beats.size();
 	}
 

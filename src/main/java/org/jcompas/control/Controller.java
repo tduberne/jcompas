@@ -156,7 +156,7 @@ public final class Controller {
 
 		log.debug( "start playing!" );
 		long compasDur = (long)
-			((60000d / bpm) * selectedEstilo.getCompas().getTensesCount());
+			((60000d / bpm) * selectedEstilo.getCompas().getBeatsCount());
 		log.debug( "bpm: "+bpm );
 		log.debug( "compas dur.: "+compasDur+" ms." );
 		long start = System.currentTimeMillis() + TIME_BEFORE_PLAY;
