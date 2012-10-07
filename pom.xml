@@ -27,6 +27,10 @@
 			  <classpathPrefix>./lib/</classpathPrefix>
             </manifest>
           </archive>
+			<excludes>
+				<exclude>patterns/</exclude>
+				<exclude>sounds/</exclude>
+			</excludes>
         </configuration>
       </plugin>
 

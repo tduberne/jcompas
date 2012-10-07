@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import org.jcompas.model.Beat;
 import org.jcompas.model.CompasInformation;
 import org.jcompas.model.Estilo;
@@ -51,11 +53,15 @@ import org.jdom2.input.SAXBuilder;
  * @author thibautd
  */
 public class PaloReader {
+	private static final Logger log =
+		Logger.getLogger(PaloReader.class);
+
 	private final ClapReader clapReader = new ClapReader();
 	private final SAXBuilder xmlParser = new SAXBuilder();
 
 	public Palos readPalos() {
 		try {
+			log.debug( "getting palos from "+IOUtils.PATTERNS_LOCATION.toURI() );
 			File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
 					new FilenameFilter() {
 						@Override
