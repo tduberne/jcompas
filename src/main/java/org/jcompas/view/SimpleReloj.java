@@ -39,6 +39,8 @@ public class SimpleReloj extends JPanel implements Reloj {
 	private static final Logger log =
 		Logger.getLogger(SimpleReloj.class);
 
+	private static final Color BEAT_COLOR = new Color( 235 , 235 , 235 );
+	private static final Color BEAT_STRONG_COLOR = new Color( 255 , 150 , 150 );
 	private final int fontSize = 17;
 
 	private final CompasInformation compas;
@@ -88,19 +90,27 @@ public class SimpleReloj extends JPanel implements Reloj {
 		final int xCenter = (int) (0.5 * width);
 		final int yCenter = xCenter;
 
-		paintStaticPart(
+		paintBackground(
 				g,
-				width,
-				xCenter,
-				yCenter,
-				smallR,
-				bigR);
+				width);
+
+		paintBeat(
+				g,
+				width);
 
 		paintNeedle(
 				g,
 				xCenter,
 				yCenter,
 				smallR);
+
+		paintForeground(
+				g,
+				width,
+				xCenter,
+				yCenter,
+				smallR,
+				bigR);
 
 		if (JCompasGlobal.isDebugMode()) {
 			g.drawString( fpsText , 0 , width );
@@ -131,25 +141,56 @@ public class SimpleReloj extends JPanel implements Reloj {
 				(int) (yCenter - length * Math.cos( needleAngle )));
 	}
 
-	private void paintStaticPart(
+	private void paintBeat(
+			final Graphics g,
+			final int w) {
+		final double stepInDegrees = tickAngleStep * 180 / Math.PI;
+		final int currBeat = (int) (needleAngle / tickAngleStep);
+		final double startAngle = 90 - currBeat * stepInDegrees;
+		final Color c = g.getColor();
+
+		if ( compas.getTenses().get( currBeat ).isStrong() ) {
+			g.setColor( BEAT_STRONG_COLOR );
+		}
+		else {
+			g.setColor( BEAT_COLOR );
+		}
+
+		g.fillArc(
+				0,
+				0,
+				w,
+				w,
+				(int) Math.round( startAngle ),
+				(int) -Math.round( stepInDegrees ));
+		g.setColor( c );
+	}
+
+	private void paintBackground(
+			final Graphics g,
+			final int width) {
+		// get defaults
+		final Color c = g.getColor();
+
+		g.setColor( Color.white );
+		g.fillOval( 0 , 0 , width , width );
+		g.setColor( c );
+		g.drawOval( 0 , 0 , width , width );
+		g.setColor( c );
+	}
+
+	private void paintForeground(
 			final Graphics g,
 			final int width,
 			final int xCenter,
 			final int yCenter,
 			final double smallR,
 			final double bigR) {
-		// get defaults
 		final Color c = g.getColor();
 		final Font f = g.getFont();
 		final Font softFont = f.deriveFont( f.getStyle() , fontSize );
 		final Font strongFont = softFont.deriveFont( Font.BOLD );
 		g.setFont( softFont );
-
-		g.setColor( Color.white );
-		g.fillOval( 0 , 0 , width , width );
-		g.setColor( c );
-		g.drawOval( 0 , 0 , width , width );
-
 		double angle = 0;
 		for (Beat beat : compas.getTenses()) {
 			final double horiz = Math.sin( angle );
