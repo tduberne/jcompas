@@ -49,9 +49,12 @@ public class SoundConfig {
 
 			Element volumes = document.getRootElement().getChild( VOLUMES_TAG );
 			for (Element e : volumes.getChildren( VOLUME_TAG )) {
+				String dir = e.getAttribute( VOLUME_DIR_ATT ).getValue();
+				double vol = e.getAttribute( VOLUME_ATT ).getDoubleValue() / 100;
+				log.debug( "defined volume for "+dir+"= "+vol );
 				volumesMap.put(
-						e.getAttribute( VOLUME_DIR_ATT ).getValue(),
-						e.getAttribute( VOLUME_ATT ).getDoubleValue() / 100 );
+						dir,
+						vol );
 			}
 		}
 		catch (Exception e) {

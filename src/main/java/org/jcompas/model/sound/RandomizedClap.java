@@ -30,12 +30,17 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import org.apache.log4j.Logger;
+
 import org.jcompas.model.JCompasGlobal;
 
 /**
  * @author thibautd
  */
 public class RandomizedClap implements Clap {
+	private static final Logger log =
+		Logger.getLogger(RandomizedClap.class);
+
 	private final String name;
 	private final byte[][] sounds;
 	private final AudioFormat format;
@@ -57,6 +62,7 @@ public class RandomizedClap implements Clap {
 
 				if (currentFormat == null) {
 					currentFormat = audio.getFormat();
+					log.debug( "format: "+currentFormat );
 				}
 				// TODO: else check compatibility
 
