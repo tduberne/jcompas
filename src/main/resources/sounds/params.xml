@@ -7,8 +7,8 @@
 		 This should not be a problem, as sounds for the same "clap" should have the
 		 same source...
 		-->
-		<volume dir="percusion/foot/" volume="50"/>
-		<volume dir="palmas/sonora/fuerte/" volume="50"/>
-		<volume dir="palmas/sonora/baja/" volume="50"/>
+		<volume dir="percusion/foot/" volume="25"/>
+		<volume dir="palmas/sonora/fuerte/" volume="25"/>
+		<volume dir="palmas/sonora/baja/" volume="25"/>
 	</volumes>
 </soundparameters>

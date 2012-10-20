@@ -129,8 +129,10 @@ public final class MetronomeRunner implements InfinitePlayer {
 
 		private boolean run = true;
 		private final MetronomeData metronome;
+		private final AudioFormat format;
 		private final int nBytesPerCompas;
 		private final int nFramesPerCompas;
+		private final int nSamplesPerCompas;
 		private final int frameSize;
 		private final SourceDataLine line;
 		private final long startTime;
@@ -141,6 +143,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 				final MetronomeData metronome,
 				final AudioFormat format,
 				final long compasLengthMillisec) {
+			this.format = format;
 			this.startTime = startTime;
 			this.line = line;
 			this.metronome = metronome;
@@ -152,6 +155,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 			nFramesPerCompas = (int) dnFramesPerCompas;
 			frameSize = format.getFrameSize();
 			nBytesPerCompas = nFramesPerCompas * frameSize;
+			nSamplesPerCompas = nBytesPerCompas / (format.getSampleSizeInBits() / 8);
 			if (nBytesPerCompas == Integer.MAX_VALUE) {
 				throw new RuntimeException( "overflow!" );
 			}
@@ -184,23 +188,24 @@ public final class MetronomeRunner implements InfinitePlayer {
 		}
 
 		private byte[] mixPattern(final Pattern pattern) {
-			byte[] bytes = new byte[ nBytesPerCompas ];
+			double[] ds = new double[ nSamplesPerCompas ];
 
-
-			for (int i=0; i<bytes.length; i++) {
-				bytes[ i ] = 0;
+			for (int i=0; i<ds.length; i++) {
+				ds[ i ] = 0;
 			}
 
 			for (Pattern.Musician m : pattern.getMusicians()) {
-				byte[] mBytes = catMusician( m );
+				double[] mDs = SoundUtils.convertSoundToDouble(
+						format,
+						catMusician( m ));
 
-				for (int i=0; i < bytes.length; i++) {
+				for (int i=0; i < ds.length; i++) {
 					// will not be nice with several musicians...
-					bytes[ i ] += mBytes[ i ];
+					ds[ i ] += mDs[ i ];
 				}
 			}
 
-			return bytes;
+			return SoundUtils.convertSoundToBytes( format , ds );
 		}
 
 		private byte[] catMusician(final Pattern.Musician musician) {
