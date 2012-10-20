@@ -1,0 +1,35 @@
+<pattern name="Mesas"
+		estilo="estilos/bulerias-12-5.xml"
+		nCompas="1"
+		nRepeat="3">
+	<musician name="Paquito">
+		<sound directory="percusion/cajon/alto/fuerte/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Pedro">
+		<sound directory="percusion/cajon/alto/fuerte/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Manuel">
+		<sound directory="percusion/cajon/alto/fuerte/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Jose">
+		<sound directory="percusion/cajon/alto/fuerte/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Pie">
+		<sound directory="percusion/foot/">
+			X--X--
+		</sound>
+	</musician>
+
+</pattern>
