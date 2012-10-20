@@ -72,11 +72,20 @@ public class RandomizedClap implements Clap {
 					array.write( buffer , 0 , nRead );
 					nRead = audio.read( buffer );
 				}
-				this.sounds[i] = array.toByteArray();
 
-				for (int j=0; j < sounds[i].length; j++) {
-					sounds[i][j] *= volume;
+				double[] soundAsDouble =
+					SoundUtils.convertSoundToDouble(
+							currentFormat,
+							array.toByteArray());
+
+				for (int j=0; j < soundAsDouble.length; j++) {
+					soundAsDouble[j] *= volume;
 				}
+
+				this.sounds[i] =
+					SoundUtils.convertSoundToBytes(
+						currentFormat,
+						soundAsDouble);
 			}
 
 			this.format = currentFormat;
