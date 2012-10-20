@@ -19,6 +19,8 @@
  * *********************************************************************** */
 package org.jcompas.control;
 
+import java.util.Random;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Control;
@@ -125,6 +127,9 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// This is a compromise between latency and allowing the thread to sleep.
 		// Half a second seems to be a good value.
 		private static final int MAX_BUFFER_DUR = 500;
+		// TODO: pass to config file
+		private static final int MAX_IMPRECISION_MILLI = 10;
+		private final Random random = new Random();
 		private final int maxBytesInBuffer;
 
 		private boolean run = true;
@@ -136,6 +141,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 		private final int frameSize;
 		private final SourceDataLine line;
 		private final long startTime;
+		private final double frameDurationMilli;
 
 		public Feeder(
 				final long startTime,
@@ -148,7 +154,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 			this.line = line;
 			this.metronome = metronome;
 
-			double frameDurationMilli = 1000 / format.getFrameRate();
+			frameDurationMilli = 1000 / format.getFrameRate();
 			log.debug( "frame duration in ms: "+frameDurationMilli );
 			double dnFramesPerCompas = compasLengthMillisec / frameDurationMilli;
 			log.debug( dnFramesPerCompas+" frames per compas." );
@@ -200,7 +206,6 @@ public final class MetronomeRunner implements InfinitePlayer {
 						catMusician( m ));
 
 				for (int i=0; i < ds.length; i++) {
-					// will not be nice with several musicians...
 					ds[ i ] += mDs[ i ];
 				}
 			}
@@ -217,7 +222,14 @@ public final class MetronomeRunner implements InfinitePlayer {
 
 			for (Pattern.Golpe golpe : musician.getGolpes()) {
 				byte[] sound = golpe.getClap().getSoundData();
-				final int frameNr = (int) (golpe.getPositionInCompas() * nFramesPerCompas);
+				int frameNr = (int) (golpe.getPositionInCompas() * nFramesPerCompas);
+				// "swing": randomize a little
+				// the aim is more attractive sound and avoiding clipping when the same
+				// sound is played by several musicians simultaneously
+				int frameShift = (int) (random.nextDouble() * MAX_IMPRECISION_MILLI / frameDurationMilli);
+				if (random.nextBoolean()) frameShift = -frameShift;
+				frameNr += frameShift;
+				if (frameNr < 0) frameNr = 0;
 				final int byteNr = frameNr * frameSize;
 
 				for (int i=0; i < sound.length; i++) {
