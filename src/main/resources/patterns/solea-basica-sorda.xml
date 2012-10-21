@@ -2,6 +2,7 @@
 		nCompas="1"
 		nRepeat="3">
 	<estilo file="estilos/soleares.xml"/>
+	<estilo file="estilos/alegrias.xml"/>
 
 	<musician name="Paquito">
 		<sound directory="palmas/sorda/fuerte/">
