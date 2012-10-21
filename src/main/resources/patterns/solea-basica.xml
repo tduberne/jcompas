@@ -1,0 +1,19 @@
+<pattern name="Compas Básico"
+		estilo="estilos/soleares.xml"
+		nCompas="1"
+		nRepeat="3">
+	<musician name="Paquito">
+		<sound directory="palmas/sonora/fuerte/">
+			--X--X-X-X-X
+		</sound>
+		<sound directory="palmas/sonora/baja/">
+			XX-XX-X-X-X-
+		</sound>
+	</musician>
+
+	<musician name="Carlito">
+		<sound directory="percusion/foot/">
+			--X--X-X-X-X
+		</sound>
+	</musician>
+</pattern>
