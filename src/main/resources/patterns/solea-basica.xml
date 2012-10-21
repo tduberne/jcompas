@@ -1,7 +1,8 @@
 <pattern name="Compas Básico"
-		estilo="estilos/soleares.xml"
 		nCompas="1"
 		nRepeat="3">
+	<estilo file="estilos/soleares.xml"/>
+
 	<musician name="Paquito">
 		<sound directory="palmas/sonora/fuerte/">
 			--X--X-X-X-X

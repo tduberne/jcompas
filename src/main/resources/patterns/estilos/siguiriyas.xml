@@ -1,4 +1,4 @@
-<estilo name="Siguiriya" palo="Siguiriya">
+<estilo name="Siguiriya en 5" palo="Siguiriya">
 		<compas bpm="100">
 			<beat name="1" pos="1" strong="true"/>
 			<beat name="" pos="2" strong="false"/>

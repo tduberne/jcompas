@@ -27,9 +27,11 @@ public class XmlSchemaNames {
 
 	public static final String PATTERN_TAG = "pattern";
 	public static final String PATTERN_NAME_ATT = "name";
-	public static final String PATTERN_ESTILO_ATT = "estilo";
 	public static final String PATTERN_NCOMPAS_ATT = "nCompas";
 	public static final String PATTERN_NREPEAT_ATT = "nRepeat";
+
+	public static final String PATTERN_ESTILO_TAG = "estilo";
+	public static final String PATTERN_ESTILO_ATT = "file";
 
 	public static final String MUSICIAN_TAG = "musician";
 	public static final String MUSICIAN_NAME_ATT = "name";

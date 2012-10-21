@@ -1,7 +1,8 @@
 <pattern name="Mesas"
-		estilo="estilos/bulerias-12-5.xml"
 		nCompas="1"
 		nRepeat="3">
+	<estilo file="estilos/bulerias-12-5.xml"/>
+
 	<musician name="Paquito">
 		<sound directory="percusion/mesa/sonora/">
 			-XX-XX
