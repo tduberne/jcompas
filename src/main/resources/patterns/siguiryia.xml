@@ -1,0 +1,10 @@
+<pattern name="Tiempos fuertes"
+		estilo="estilos/siguiriyas.xml"
+		nCompas="1"
+		nRepeat="3">
+	<musician name="Paquito">
+		<sound directory="palmas/sorda/fuerte/">
+			X-X-X--X--X-
+		</sound>
+	</musician>
+</pattern>

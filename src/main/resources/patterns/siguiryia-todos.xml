@@ -1,0 +1,13 @@
+<pattern name="Todos tiempos"
+		estilo="estilos/siguiriyas.xml"
+		nCompas="1"
+		nRepeat="3">
+	<musician name="Paquito">
+		<sound directory="palmas/sorda/fuerte/">
+			X-X-X--X--X-
+		</sound>
+		<sound directory="palmas/sorda/baja/">
+			-X-X-XX-XX-X
+		</sound>
+	</musician>
+</pattern>
