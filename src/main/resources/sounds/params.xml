@@ -30,6 +30,23 @@
 		<attenuation file="2.wav" att="98.9501632740257" />
 		<attenuation file="3.wav" att="100.0" />
 	  </volume>
-	<volume dir="percusion/cajon/alto/fuerte/" volume="25"/>
+	  <volume dir="percusion/cajon/alto/fuerte/" volume="25">
+		<attenuation file="4.wav" att="100.0" />
+		<attenuation file="5.wav" att="98.10676598386095" />
+		<attenuation file="1.wav" att="98.12199286046872" />
+		<attenuation file="2.wav" att="98.51444005817578" />
+		<attenuation file="3.wav" att="98.09154383242824" />
+	  </volume>
+	  <volume dir="percusion/mesa/sonora/" volume="25">
+		<attenuation file="1.wav" att="56.08564558604633" />
+		<attenuation file="2.wav" att="100.0" />
+		<attenuation file="3.wav" att="96.63948441404709" />
+	  </volume>
+	  <volume dir="percusion/mesa/sorda/" volume="25">
+		<attenuation file="4.wav" att="100.0" />
+		<attenuation file="1.wav" att="71.1607621088071" />
+		<attenuation file="2.wav" att="79.9106375665922" />
+		<attenuation file="3.wav" att="93.8020071612285" />
+	  </volume>
 	</volumes>
 </soundparameters>

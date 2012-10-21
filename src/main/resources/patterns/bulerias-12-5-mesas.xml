@@ -3,25 +3,25 @@
 		nCompas="1"
 		nRepeat="3">
 	<musician name="Paquito">
-		<sound directory="percusion/cajon/alto/fuerte/">
+		<sound directory="percusion/mesa/sonora/">
 			-XX-XX
 		</sound>
 	</musician>
 
 	<musician name="Pedro">
-		<sound directory="percusion/cajon/alto/fuerte/">
+		<sound directory="percusion/mesa/sonora/">
 			-XX-XX
 		</sound>
 	</musician>
 
 	<musician name="Manuel">
-		<sound directory="percusion/cajon/alto/fuerte/">
+		<sound directory="percusion/mesa/sonora/">
 			-XX-XX
 		</sound>
 	</musician>
 
 	<musician name="Jose">
-		<sound directory="percusion/cajon/alto/fuerte/">
+		<sound directory="percusion/mesa/sorda/">
 			-XX-XX
 		</sound>
 	</musician>
