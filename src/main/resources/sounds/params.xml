@@ -3,12 +3,14 @@
 		<!--
 		 Describes the volumes of files in %
 		 This is more flexible/easier than modifying the files
-		 Modifying volume of individual files is not supported (yet)
-		 This should not be a problem, as sounds for the same "clap" should have the
-		 same source...
 		-->
-		<volume dir="percusion/foot/" volume="25"/>
-		<volume dir="palmas/sonora/fuerte/" volume="25"/>
-		<volume dir="palmas/sonora/baja/" volume="25"/>
+		<volume dir="percusion/foot/" volume="25">
+		</volume>
+		<volume dir="palmas/sonora/fuerte/" volume="25">
+			<attenuation file="1.wav" att="72.25453904459721"/>
+			<attenuation file="3.wav" att="64.41423744794531"/>
+		</volume>
+		<volume dir="palmas/sonora/baja/" volume="25">
+		</volume>
 	</volumes>
 </soundparameters>

@@ -66,7 +66,8 @@ public class ClapReader {
 								return name.endsWith( ".wav" );
 							}
 						}),
-					config.getVolume( directory ));
+					config.getVolume( directory ),
+					config.getAttenuations( directory ));
 			cache.put( directory , clap );
 		}
 

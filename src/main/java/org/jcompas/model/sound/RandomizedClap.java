@@ -33,6 +33,7 @@ import javax.sound.sampled.AudioSystem;
 import org.apache.log4j.Logger;
 
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.SoundConfig;
 
 /**
  * @author thibautd
@@ -49,7 +50,8 @@ public class RandomizedClap implements Clap {
 	public RandomizedClap(
 			final String name,
 			final File[] data,
-			final double volume) {
+			final double volume,
+			final SoundConfig.Attenuations attenuations) {
 		this.name = name;
 		sounds = new byte[data.length][];
 		try {
@@ -78,8 +80,9 @@ public class RandomizedClap implements Clap {
 							currentFormat,
 							array.toByteArray());
 
+				double fileVolume = volume * attenuations.getAttenuation( data[ i ].getName() );
 				for (int j=0; j < soundAsDouble.length; j++) {
-					soundAsDouble[j] *= volume;
+					soundAsDouble[j] *= fileVolume;
 				}
 
 				this.sounds[i] =
