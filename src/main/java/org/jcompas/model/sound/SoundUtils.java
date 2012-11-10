@@ -19,25 +19,34 @@
  * *********************************************************************** */
 package org.jcompas.model.sound;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Control;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 
-import org.jcompas.model.JCompasGlobal;
+import org.apache.log4j.Logger;
+
 import org.jcompas.model.sound.Pattern;
 
 /**
  * @author thibautd
  */
 public final class SoundUtils {
+	private static Logger log = Logger.getLogger( SoundUtils.class );
+	private static Map<AudioFormat, SourceDataLine> activeLines = new HashMap<AudioFormat, SourceDataLine>();
+
 	private SoundUtils() {};
 
 	public static AudioFormat identifyAudioFormat( final Pattern p ) {
@@ -120,6 +129,39 @@ public final class SoundUtils {
 		}
 
 		throw new IllegalArgumentException ( "Unhandled sample size "+nBits+" bits" );
+	}
+
+	public static SourceDataLine acquireLine(final AudioFormat format) throws LineUnavailableException {
+		SourceDataLine line = activeLines.get( format );
+		
+		if (line == null) {
+			line = (SourceDataLine) AudioSystem.getLine(
+						new DataLine.Info(
+							SourceDataLine.class,
+							format));
+			line.open( format );
+
+			log.debug( "opened line: "+line );
+			line.addLineListener( new LineListener() {
+				@Override
+				public void update(final LineEvent event) {
+					log.debug( "got event: "+event );
+					log.debug( "Controls:" );
+					for (Control c : event.getLine().getControls()) {
+						log.debug( c );
+					}
+				}
+			});
+
+			activeLines.put( format , line );
+		}
+
+		return line;
+	}
+
+	public static void releaseLine(final AudioFormat format) throws LineUnavailableException {
+		SourceDataLine l = activeLines.remove( format );
+		if (l != null) l.close();
 	}
 }
 

@@ -22,11 +22,6 @@ package org.jcompas.control;
 import java.util.Random;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Control;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
@@ -43,11 +38,26 @@ import org.jcompas.model.sound.SoundUtils;
 public final class MetronomeRunner implements InfinitePlayer {
 	private static final Logger log = Logger.getLogger( MetronomeRunner.class );
 	private final MetronomeData metronome;
-	private SourceDataLine line = null;
+	private final AudioFormat format;
+	private final SourceDataLine line;
 	private Feeder feeder = null;
 
 	public MetronomeRunner(final MetronomeData m) {
 		this.metronome = m;
+		// Oops, this pattern just vanishes afterwards...
+		// Try to find a CLEAN way to play it (or another CLEAN way
+		// to identify the AudioFormat)
+		Pattern pattern = metronome.getNextPattern();
+		format = SoundUtils.identifyAudioFormat( pattern );
+		try {
+			line = SoundUtils.acquireLine( format );
+		}
+		catch (Exception e) {
+			JCompasGlobal.notifyException(
+					"exception while initializing metronome",
+					e);
+			throw new RuntimeException( e );
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -57,45 +67,14 @@ public final class MetronomeRunner implements InfinitePlayer {
 	public void start(
 			final long startTime,
 			final long compasLengthMilli) {
-		try {
-			// Oops, this pattern just vanishes afterwards...
-			// Try to find a CLEAN way to play it (or another CLEAN way
-			// to identify the AudioFormat)
-			Pattern pattern = metronome.getNextPattern();
-			
-			AudioFormat format = SoundUtils.identifyAudioFormat( pattern );
-			line = (SourceDataLine) AudioSystem.getLine(
-						new DataLine.Info(
-							SourceDataLine.class,
-							format));
-			line.open( format );
-
-			log.debug( "opened line: "+line );
-			line.addLineListener( new LineListener() {
-				@Override
-				public void update(final LineEvent event) {
-					log.debug( "got event: "+event );
-					log.debug( "Controls:" );
-					for (Control c : event.getLine().getControls()) {
-						log.debug( c );
-					}
-				}
-			});
-
-			line.start();
-			feeder = new Feeder(
-					startTime,
-					line,
-					metronome,
-					format,
-					compasLengthMilli);
-			new Thread( feeder ).start();
-		}
-		catch (Exception e) {
-			JCompasGlobal.notifyException(
-					"exception while playing sound",
-					e);
-		}
+		line.start();
+		feeder = new Feeder(
+				startTime,
+				line,
+				metronome,
+				format,
+				compasLengthMilli);
+		new Thread( feeder ).start();
 	}
 
 	@Override
@@ -111,10 +90,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 			line.stop();
 			log.debug( "flushing line" );
 			line.flush();
-			log.debug( "closing line" );
-			line.close();
 		}
-		line = null;
 		feeder = null;
 	}
 
