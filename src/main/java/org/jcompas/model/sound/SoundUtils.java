@@ -45,7 +45,7 @@ import org.jcompas.model.sound.Pattern;
  */
 public final class SoundUtils {
 	private static Logger log = Logger.getLogger( SoundUtils.class );
-	private static Map<AudioFormat, SourceDataLine> activeLines = new HashMap<AudioFormat, SourceDataLine>();
+	private static Map<String, SourceDataLine> activeLines = new HashMap<String, SourceDataLine>();
 
 	private SoundUtils() {};
 
@@ -132,7 +132,7 @@ public final class SoundUtils {
 	}
 
 	public static SourceDataLine acquireLine(final AudioFormat format) throws LineUnavailableException {
-		SourceDataLine line = activeLines.get( format );
+		SourceDataLine line = activeLines.get( format.toString() );
 		
 		if (line == null) {
 			line = (SourceDataLine) AudioSystem.getLine(
@@ -153,7 +153,7 @@ public final class SoundUtils {
 				}
 			});
 
-			activeLines.put( format , line );
+			activeLines.put( format.toString() , line );
 		}
 
 		return line;
