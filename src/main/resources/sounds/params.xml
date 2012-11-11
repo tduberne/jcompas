@@ -4,13 +4,31 @@
 		 Describes the volumes of files in %
 		 This is more flexible/easier than modifying the files
 		-->
-		<volume dir="percusion/foot/" volume="25">
-		</volume>
-		<volume dir="palmas/sonora/fuerte/" volume="25">
-			<attenuation file="1.wav" att="72.25453904459721"/>
-			<attenuation file="3.wav" att="64.41423744794531"/>
-		</volume>
-		<volume dir="palmas/sonora/baja/" volume="25">
-		</volume>
+	  <volume dir="palmas/sonora/fuerte/" volume="25">
+		<attenuation file="sonora-fuerte-3.wav" att="100.0" />
+		<attenuation file="sonora-fuerte-4.wav" att="100.0" />
+		<attenuation file="sonora-fuerte-1.wav" att="100.0" />
+		<attenuation file="sonora-fuerte-2.wav" att="100.0" />
+	  </volume>
+	  <volume dir="palmas/sonora/baja/" volume="25">
+		<attenuation file="sonora-baja-3.wav" att="100.0" />
+		<attenuation file="sonora-baja-4.wav" att="94.18543186383339" />
+		<attenuation file="sonora-baja-2.wav" att="89.35807422266801" />
+		<attenuation file="sonora-baja-1.wav" att="92.63803680981596" />
+	  </volume>
+	  <volume dir="palmas/sorda/fuerte/" volume="25">
+		<attenuation file="1.wav" att="72.25453904459721" />
+		<attenuation file="2.wav" att="100.0" />
+		<attenuation file="3.wav" att="64.41423744794531" />
+	  </volume>
+	  <volume dir="palmas/sorda/baja/" volume="25">
+		<attenuation file="1.wav" att="74.46859137055837" />
+		<attenuation file="2.wav" att="100.0" />
+	  </volume>
+	  <volume dir="percusion/foot/" volume="25">
+		<attenuation file="1.wav" att="98.9471435546875" />
+		<attenuation file="2.wav" att="98.9501632740257" />
+		<attenuation file="3.wav" att="100.0" />
+	  </volume>
 	</volumes>
 </soundparameters>
