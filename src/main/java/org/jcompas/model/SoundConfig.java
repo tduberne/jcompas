@@ -38,10 +38,14 @@ public class SoundConfig {
 		Logger.getLogger(SoundConfig.class);
 
 	private final Map<String, Double> volumesMap = new HashMap<String, Double>();
+	private final Map<String, Attenuations> attenuationsMap = new HashMap<String, Attenuations>();
 	public static final String VOLUMES_TAG = "volumes";
 	public static final String VOLUME_TAG = "volume";
 	public static final String VOLUME_DIR_ATT = "dir";
 	public static final String VOLUME_ATT = "volume";
+	public static final String ATTENUATION_TAG = "attenuation";
+	public static final String ATTENUATION_FILE_ATT = "file";
+	public static final String ATTENUATION_ATT_ATT = "att";
 
 	public SoundConfig(final URL configFile) {
 		try {
@@ -55,6 +59,14 @@ public class SoundConfig {
 				volumesMap.put(
 						dir,
 						vol );
+				Attenuations atts = new Attenuations();
+				attenuationsMap.put( dir , atts );
+				for (Element attElem : e.getChildren( ATTENUATION_TAG )) {
+					String file = attElem.getAttribute( ATTENUATION_FILE_ATT ).getValue();
+					double att = attElem.getAttribute( ATTENUATION_ATT_ATT ).getDoubleValue() / 100d;
+					log.debug( "defined attenuation for "+file+"= "+att );
+					atts.atts.put( file , att );
+				}
 			}
 		}
 		catch (Exception e) {
@@ -69,6 +81,20 @@ public class SoundConfig {
 	public double getVolume(final String directory) {
 		Double vol = volumesMap.get( directory );
 		return vol != null ? vol : 1;
+	}
+
+	public Attenuations getAttenuations(final String directory) {
+		Attenuations a = attenuationsMap.get( directory );
+		return a != null ? a : new Attenuations();
+	}
+
+	public static class Attenuations {
+		private final Map<String, Double> atts = new HashMap<String, Double>();
+
+		public double getAttenuation(final String file) {
+			Double vol = atts.get( file );
+			return vol != null ? vol : 1;
+		}
 	}
 }
 
