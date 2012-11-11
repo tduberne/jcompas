@@ -1,0 +1,16 @@
+<estilo name="Siguiriya en 5" palo="Siguiriya">
+		<compas bpm="100">
+			<beat name="1" pos="1" strong="true"/>
+			<beat name="" pos="2" strong="false"/>
+			<beat name="2" pos="3" strong="true"/>
+			<beat name="" pos="4" strong="false"/>
+			<beat name="3" pos="5" strong="true"/>
+			<beat name="" pos="6" strong="false"/>
+			<beat name="" pos="7" strong="false"/>
+			<beat name="4" pos="8" strong="true"/>
+			<beat name="" pos="9" strong="false"/>
+			<beat name="" pos="10" strong="false"/>
+			<beat name="5" pos="11" strong="true"/>
+			<beat name="" pos="12" strong="false"/>
+		</compas>
+</estilo>

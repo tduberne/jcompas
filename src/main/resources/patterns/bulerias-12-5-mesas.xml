@@ -1,0 +1,42 @@
+<pattern name="Mesas"
+		nCompas="1"
+		nRepeat="3">
+	<estilo file="estilos/bulerias-12-5.xml"/>
+
+	<musician name="Paquito">
+		<sound directory="percusion/mesa/sonora/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Pedro">
+		<sound directory="percusion/mesa/sonora/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Manuel">
+		<sound directory="percusion/mesa/sonora/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Vicente">
+		<sound directory="percusion/mesa/sonora/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Jose">
+		<sound directory="percusion/mesa/sorda/">
+			-XX-XX
+		</sound>
+	</musician>
+
+	<musician name="Pie">
+		<sound directory="percusion/foot/">
+			XXXXXX
+		</sound>
+	</musician>
+
+</pattern>

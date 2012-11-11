@@ -75,15 +75,16 @@ public class PaloReader {
 				Document doc = xmlParser.build( f );
 				if (doc.getRootElement().getName().equals( XmlSchemaNames.PATTERN_TAG )) {
 					Pattern p = parsePattern( doc );
-					String estiloFile = doc.getRootElement().getAttribute( XmlSchemaNames.PATTERN_ESTILO_ATT ).getValue();
-					List<Pattern> ps = estilo2Pattern.get( estiloFile );
+					for (String estiloFile : extractEstilos( doc )) {
+						List<Pattern> ps = estilo2Pattern.get( estiloFile );
 
-					if (ps == null) {
-						ps = new ArrayList<Pattern>();
-						estilo2Pattern.put( estiloFile , ps );
+						if (ps == null) {
+							ps = new ArrayList<Pattern>();
+							estilo2Pattern.put( estiloFile , ps );
+						}
+
+						ps.add( p );
 					}
-
-					ps.add( p );
 				}
 			}
 
@@ -113,6 +114,18 @@ public class PaloReader {
 					"could not import palos",
 					e);
 		}
+	}
+
+	private static List<String> extractEstilos(final Document patternDoc) {
+		List<String> files = new ArrayList<String>();
+
+		for (Element estilo :
+				patternDoc.getRootElement().getChildren(
+					XmlSchemaNames.PATTERN_ESTILO_TAG )) {
+			files.add( estilo.getAttribute( XmlSchemaNames.PATTERN_ESTILO_ATT ).getValue() );
+		}
+
+		return files;
 	}
 
 	private EstiloAndPalo parseEstilo(final String file, final List<Pattern> patterns) throws JDOMException, IOException {

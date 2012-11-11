@@ -1,7 +1,7 @@
 <pattern name="Jerezanas"
-		estilo="estilos/bulerias-basicas.xml"
 		nCompas="1"
 		nRepeat="3">
+	<estilo file="estilos/bulerias-basicas.xml"/>
 
 	<musician name="Paquito">
 		<sound directory="palmas/sonora/fuerte/">

@@ -1,0 +1,16 @@
+<estilo name="Soleá" palo="Soleá">
+		<compas bpm="120">
+			<beat name="1" pos="1" strong="false"/>
+			<beat name="2" pos="2" strong="false"/>
+			<beat name="3" pos="3" strong="true"/>
+			<beat name="4" pos="4" strong="false"/>
+			<beat name="5" pos="5" strong="false"/>
+			<beat name="6" pos="6" strong="true"/>
+			<beat name="7" pos="7" strong="false"/>
+			<beat name="8" pos="8" strong="true"/>
+			<beat name="9" pos="9" strong="false"/>
+			<beat name="10" pos="10" strong="true"/>
+			<beat name="11" pos="11" strong="false"/>
+			<beat name="12" pos="12" strong="true"/>
+		</compas>
+</estilo>
