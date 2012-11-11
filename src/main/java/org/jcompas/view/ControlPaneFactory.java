@@ -29,6 +29,7 @@ import java.awt.GridLayout;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -158,6 +159,7 @@ public class ControlPaneFactory {
 				estiloBox.setModel(
 					new DefaultComboBoxModel(
 						controller.getEstilos().toArray() ) );
+				patternBoxes.setPatterns( Collections.EMPTY_SET );
 			}
 		});
 
