@@ -23,7 +23,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -32,6 +36,11 @@ import org.apache.log4j.Logger;
 
 import org.jcompas.model.io.IOUtils;
 import org.jcompas.model.sound.SoundUtils;
+import org.jcompas.model.SoundConfig;
+
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  * Prints the maximum amplitude for all clap file,
@@ -41,12 +50,27 @@ import org.jcompas.model.sound.SoundUtils;
 public class DetermineSoundsVolumes {
 	private static final Logger log =
 		Logger.getLogger(DetermineSoundsVolumes.class);
+	private static final int START_RELEVANT_PATH = IOUtils.SOUNDS_LOCATION.getPath().length();
+	private static final String DEFAULT_VOLUME = "25";
 
-	public static void main(final String[] args) {
-		recurse( new File( IOUtils.SOUNDS_LOCATION.getPath() ) );
+	public static void main(final String[] args) throws IOException {
+		Element root = new Element( SoundConfig.VOLUMES_TAG );
+		recurse( new File( IOUtils.SOUNDS_LOCATION.getPath() ) , root );
+		
+		OutputStream stream = System.out;
+		if (args.length > 0) {
+			try {
+				stream = new FileOutputStream( args[ 0 ] );
+			} catch (FileNotFoundException e) {
+				log.error( "could not open file "+args[ 0 ]+", use stdout instead", e );
+				stream = System.out;
+			}
+		}
+
+		new XMLOutputter( Format.getPrettyFormat() ).output( root , stream );
 	}
 
-	private static void recurse(final File directory) {
+	private static void recurse(final File directory, final Element root) {
 		File[] directories = directory.listFiles(
 				new FileFilter() {
 					@Override
@@ -72,7 +96,7 @@ public class DetermineSoundsVolumes {
 			double minVolume =  Double.POSITIVE_INFINITY;
 			for ( int i=0 ; i < fs.length ; i++ ) {
 				final File f = fs[ i ];
-				names[ i ] = f.getPath();
+				names[ i ] = f.getPath().substring( dir.getPath().length()+1 );
 				volumes[ i ] = maxAmplitude( f );
 	
 				log.info( "max amplitude for file "+names[ i ]+": "+volumes[ i ] );
@@ -80,12 +104,32 @@ public class DetermineSoundsVolumes {
 				minVolume = Math.min( minVolume , volumes[ i ] );
 			}
 
-			for ( int i=0 ; i < fs.length ; i++ ) {
-				log.info( "recommended attenuation for "+names[ i ]+": "+
-						(100d * minVolume / volumes[ i ])+"%" );
+			Element volumeElement = new Element( SoundConfig.VOLUME_TAG );
+			if ( fs.length > 0 ) {
+				volumeElement.setAttribute(
+						SoundConfig.VOLUME_DIR_ATT,
+						dir.getPath().substring( START_RELEVANT_PATH )+"/");
+				volumeElement.setAttribute(
+						SoundConfig.VOLUME_ATT,
+						DEFAULT_VOLUME);
+				root.addContent( volumeElement );
 			}
 
-			recurse( dir );
+			for ( int i=0 ; i < fs.length ; i++ ) {
+				double attValue = 100d * minVolume / volumes[ i ];
+				log.info( "recommended attenuation for "+names[ i ]+": "+
+						attValue+"%" );
+				Element attenuation = new Element( SoundConfig.ATTENUATION_TAG );
+				attenuation.setAttribute(
+						SoundConfig.ATTENUATION_FILE_ATT,
+						names[ i ] );
+				attenuation.setAttribute(
+						SoundConfig.ATTENUATION_ATT_ATT,
+						attValue+"" );
+				volumeElement.addContent( attenuation );
+			}
+
+			recurse( dir , root );
 		}
 	}
 
