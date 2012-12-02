@@ -47,11 +47,6 @@ public class SimpleReloj extends JPanel implements Reloj {
 	private double needleAngle = 0;
 	private final double tickAngleStep;
 
-	// for debug mode: fps info
-	private int frameCount = 0;
-	private long lastFpsPrint = Long.MIN_VALUE;
-	private String fpsText = "fps: NA";
-
 	public SimpleReloj(final CompasInformation compas) {
 		this.compas = compas;
 		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
@@ -72,9 +67,6 @@ public class SimpleReloj extends JPanel implements Reloj {
 			log.trace( "needleAngle: "+needleAngle+" for fraction "+fraction );
 		}
 		repaint();
-		if (JCompasGlobal.isDebugMode()) {
-			updateFpsInfo();
-		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -111,22 +103,6 @@ public class SimpleReloj extends JPanel implements Reloj {
 				yCenter,
 				smallR,
 				bigR);
-
-		if (JCompasGlobal.isDebugMode()) {
-			g.drawString( fpsText , 0 , width );
-		}
-	}
-
-	private void updateFpsInfo() {
-		final long now = System.currentTimeMillis();
-		if (lastFpsPrint == Long.MIN_VALUE) lastFpsPrint = now;
-		frameCount++;
-
-		if ( now > lastFpsPrint + 1000 ) {
-			fpsText = "fps: "+ (1000d * frameCount / (now - lastFpsPrint));
-			frameCount = 0;
-			lastFpsPrint = now;
-		}
 	}
 
 	private void paintNeedle(
