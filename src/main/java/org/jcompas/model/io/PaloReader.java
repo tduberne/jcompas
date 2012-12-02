@@ -134,12 +134,12 @@ public class PaloReader {
 
 		Element compasElement = d.getRootElement().getChild( XmlSchemaNames.COMPAS_TAG );
 
-		TreeMap<Integer, Beat> beats = new TreeMap<Integer, Beat>();
+		List<Beat> beats = new ArrayList<Beat>();
 		for (Element b : compasElement.getChildren( XmlSchemaNames.BEAT_TAG )) {
 			Beat beat = new Beat(
 					b.getAttribute( XmlSchemaNames.BEAT_NAME_ATT ).getValue(),
 					b.getAttribute( XmlSchemaNames.BEAT_STRONG_ATT ).getBooleanValue() );
-			beats.put( b.getAttribute( XmlSchemaNames.BEAT_POS_ATT ).getIntValue() , beat );
+			beats.add( beat );
 		}
 
 		return new EstiloAndPalo(
@@ -149,7 +149,7 @@ public class PaloReader {
 					new CompasInformation(
 						name,
 						compasElement.getAttribute( XmlSchemaNames.COMPAS_BPM_ATT ).getIntValue(),
-						new ArrayList<Beat>( beats.values() )),
+						beats),
 					patterns));
 	}
 

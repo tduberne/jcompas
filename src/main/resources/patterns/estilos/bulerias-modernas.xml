@@ -1,16 +1,16 @@
 <estilo name="Bulerías Modernas" palo="Bulería">
 		<compas bpm="190">
-			<beat pos="1" name="12" strong="true"/>
-			<beat pos="2" name="1" strong="false"/>
-			<beat pos="3" name="2" strong="false"/>
-			<beat pos="4" name="3" strong="true"/>
-			<beat pos="5" name="4" strong="false"/>
-			<beat pos="6" name="5" strong="false"/>
-			<beat pos="7" name="6" strong="false"/>
-			<beat pos="8" name="7" strong="true"/>
-			<beat pos="9" name="8" strong="true"/>
-			<beat pos="10" name="9" strong="false"/>
-			<beat pos="11" name="10" strong="true"/>
-			<beat pos="12" name="11" strong="false"/>
+			<beat name="12" strong="true"/>
+			<beat name="1" strong="false"/>
+			<beat name="2" strong="false"/>
+			<beat name="3" strong="true"/>
+			<beat name="4" strong="false"/>
+			<beat name="5" strong="false"/>
+			<beat name="6" strong="false"/>
+			<beat name="7" strong="true"/>
+			<beat name="8" strong="true"/>
+			<beat name="9" strong="false"/>
+			<beat name="10" strong="true"/>
+			<beat name="11" strong="false"/>
 		</compas>
 </estilo>
