@@ -19,9 +19,9 @@ Contributing
 You want to contribute to the project?
 
 Follow those simple steps:
-- go to the [github page of the project]{https://github.com/tduberne/jcompas}
-- [create your own fork]{https://help.github.com/articles/fork-a-repo}
+- go to the [github page of the project](https://github.com/tduberne/jcompas)
+- [create your own fork](https://help.github.com/articles/fork-a-repo)
 - create a new branch for your feature, develop it and test it
-- send me a [pull request]{https://help.github.com/articles/using-pull-requests}
+- send me a [pull request](https://help.github.com/articles/using-pull-requests)
 
-Note that I try to follow [those guideline]{http://nvie.com/posts/a-successful-git-branching-model/}. In particular, this means all the development happens in the _develop_ branch, and that the _master_ branch contains the releases *only*.
+Note that I try to follow [those guidelines](http://nvie.com/posts/a-successful-git-branching-model/). In particular, this means all the development happens in the _develop_ branch, and that the _master_ branch contains the releases *only*.
