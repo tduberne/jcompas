@@ -25,11 +25,6 @@
 		<attenuation file="1.wav" att="74.46859137055837" />
 		<attenuation file="2.wav" att="100.0" />
 	  </volume>
-	  <volume dir="percusion/foot/" volume="15">
-		<attenuation file="1.wav" att="98.9471435546875" />
-		<attenuation file="2.wav" att="98.9501632740257" />
-		<attenuation file="3.wav" att="100.0" />
-	  </volume>
 	  <volume dir="percusion/cajon/alto/fuerte/" volume="25">
 		<attenuation file="4.wav" att="100.0" />
 		<attenuation file="5.wav" att="98.10676598386095" />
@@ -47,6 +42,8 @@
 		<attenuation file="1.wav" att="71.1607621088071" />
 		<attenuation file="2.wav" att="79.9106375665922" />
 		<attenuation file="3.wav" att="93.8020071612285" />
+	  </volume>
+	  <volume dir="percusion/foot/" volume="40">
 	  </volume>
 	</volumes>
 </soundparameters>
