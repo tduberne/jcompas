@@ -1,5 +1,5 @@
 <estilo name="Soleá" palo="Soleá">
-		<compas bpm="120">
+		<compas bpm="70">
 			<beat name="1" strong="false"/>
 			<beat name="2" strong="false"/>
 			<beat name="3" strong="true"/>
