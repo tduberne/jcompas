@@ -86,6 +86,9 @@ public class CounterReloj implements Reloj {
 class CounterRelojView extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	private static final Color BEAT_COLOR = new Color( 235 , 235 , 235 );
+	private static final Color BEAT_STRONG_COLOR = new Color( 255 , 150 , 150 );
+
 	private String beatName = "X";
 	private boolean emphasize = false;
 
@@ -115,10 +118,8 @@ class CounterRelojView extends JPanel {
 		// get defaults
 		final Color c = g.getColor();
 
-		g.setColor( emphasize ? Color.red : Color.white );
+		g.setColor( emphasize ? BEAT_STRONG_COLOR : BEAT_COLOR );
 		g.fillRect( 0 , 0 , width , width );
-		g.setColor( c );
-		g.drawRect( 0 , 0 , width , width );
 		g.setColor( c );
 	}
 
