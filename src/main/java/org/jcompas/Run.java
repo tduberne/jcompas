@@ -30,6 +30,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.jcompas.control.Controller;
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.view.ControlPaneFactory;
+import org.jcompas.view.RelojPaneFactory;
 
 /**
  * @author thibautd
@@ -38,7 +39,6 @@ public class Run {
 	private static final Logger log =
 		Logger.getLogger(Run.class);
 
-	private static final int RELOJ_PANE_BORDER = 20;
 	public static void main(final String[] args) {
 		PropertyConfigurator.configure( ClassLoader.getSystemResource( "log4j.properties" ) );
 		log.info( "################################################################################" );
@@ -56,13 +56,7 @@ public class Run {
 
 			JFrame window = new JFrame( "jCompas "+JCompasGlobal.getVersionId() );
 			window.getContentPane().setLayout( new GridLayout( 1 , 2 ) );
-			controller.getRelojPane().setBorder(
-					BorderFactory.createEmptyBorder(
-						RELOJ_PANE_BORDER,
-						RELOJ_PANE_BORDER,
-						RELOJ_PANE_BORDER,
-						RELOJ_PANE_BORDER) );
-			window.add( controller.getRelojPane() );
+			window.add( RelojPaneFactory.createRelojPane( controller ) );
 			window.add( ControlPaneFactory.createControlPane( controller ) );
 			window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 			window.setVisible( true );

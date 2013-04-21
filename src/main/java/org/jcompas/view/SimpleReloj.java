@@ -55,6 +55,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 	public void setCompas(final CompasInformation compas) {
 		this.compas = compas;
 		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
+		repaint();
 	}
 
 	@Override
