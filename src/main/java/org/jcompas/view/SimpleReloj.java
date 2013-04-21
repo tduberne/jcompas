@@ -195,10 +195,13 @@ public class SimpleReloj extends JPanel implements Reloj {
 			}
 			final Rectangle2D bounds = g.getFontMetrics().getStringBounds( beat.getName() , g );
 
+			final double horizName = Math.sin( angle  + (tickAngleStep / 2));
+			final double vertName = -Math.cos( angle  + (tickAngleStep / 2));
+
 			g.drawString(
 					beat.getName(),
-					(int) (xCenter + smallR * horiz - bounds.getWidth()/2d),
-					(int) (yCenter + smallR * vert + bounds.getHeight()/2d));
+					(int) (xCenter + smallR * horizName - bounds.getWidth()/2d),
+					(int) (yCenter + smallR * vertName + bounds.getHeight()/2d));
 			g.setColor( c );
 			g.setFont( softFont );
 
