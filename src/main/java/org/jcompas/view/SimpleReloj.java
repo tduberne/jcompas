@@ -54,7 +54,9 @@ public class SimpleReloj extends JPanel implements Reloj {
 	@Override
 	public void setCompas(final CompasInformation compas) {
 		this.compas = compas;
-		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
+		if ( compas != null ) {
+			this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
+		}
 		repaint();
 	}
 
@@ -70,6 +72,11 @@ public class SimpleReloj extends JPanel implements Reloj {
 			log.trace( "needleAngle: "+needleAngle+" for fraction "+fraction );
 		}
 		repaint();
+	}
+
+	@Override
+	public String toString() {
+		return "reloj";
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
