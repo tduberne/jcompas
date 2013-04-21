@@ -47,7 +47,9 @@ public final class RelojPaneFactory {
 
 		pane.add( Box.createRigidArea( new Dimension( 0 , VERT_GAP ) ) );
 		final JComboBox selector =
-			new JComboBox( new Reloj[]{ new SimpleReloj() } );
+			new JComboBox( new Reloj[]{
+				new SimpleReloj(),
+				new CounterReloj() } );
 		selector.setMaximumSize( new Dimension( Integer.MAX_VALUE , 20 ) );
 		selector.setBorder(
 				BorderFactory.createTitledBorder( "View Type" ) );
