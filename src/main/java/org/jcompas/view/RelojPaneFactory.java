@@ -78,6 +78,8 @@ public final class RelojPaneFactory {
 						controller.setReloj( r );
 						relojPane.removeAll();
 						relojPane.add( r.getView() );
+						relojPane.revalidate();
+						pane.repaint();
 					}
 				});
 

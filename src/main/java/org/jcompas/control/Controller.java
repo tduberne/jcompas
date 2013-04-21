@@ -71,6 +71,9 @@ public final class Controller {
 	// for interface
 	public void setReloj(final Reloj reloj) {
 		this.reloj = reloj;
+		if ( selectedEstilo != null ) {
+			reloj.setCompas( selectedEstilo.getCompas() );
+		}
 	}
 
 	public Collection<String> getPalos() {
