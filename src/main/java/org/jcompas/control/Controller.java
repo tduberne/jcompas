@@ -19,16 +19,9 @@
  * *********************************************************************** */
 package org.jcompas.control;
 
-import java.awt.GridLayout;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
@@ -40,8 +33,6 @@ import org.jcompas.model.Palos;
 import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
-import org.jcompas.view.SimpleReloj;
-import org.jdom2.JDOMException;
 
 /**
  * Unifies elements of the model under a unified interface,
@@ -58,7 +49,6 @@ public final class Controller {
 	private Estilo selectedEstilo = null;
 	private final List<Pattern> selectedPatterns = new ArrayList<Pattern>();
 
-	private JPanel relojPanel = new JPanel();
 	private Reloj reloj = null;
 	private int bpm = -1;
 
@@ -66,7 +56,6 @@ public final class Controller {
 	private RelojRunner relojRunner = null;
 
 	public Controller() {
-		relojPanel.setLayout( new GridLayout( 1 , 1 ) );
 		try {
 			palos = new PaloReader().readPalos();
 		}
@@ -80,6 +69,13 @@ public final class Controller {
 
 	// /////////////////////////////////////////////////////////////////////////
 	// for interface
+	public void setReloj(final Reloj reloj) {
+		this.reloj = reloj;
+		if ( selectedEstilo != null ) {
+			reloj.setCompas( selectedEstilo.getCompas() );
+		}
+	}
+
 	public Collection<String> getPalos() {
 		return palos.getAvailablePalos();
 	}
@@ -89,7 +85,7 @@ public final class Controller {
 		selectedPalo = palos.createPalo( name );
 		selectedEstilo = null;
 		selectedPatterns.clear();
-		relojPanel.removeAll();
+		if ( reloj != null ) reloj.setCompas( null );
 	}
 
 	public String getSelectedPalo() {
@@ -107,11 +103,7 @@ public final class Controller {
 
 		log.debug( "selecting estilo "+name );
 		log.debug( "compas is: "+selectedEstilo.getCompas() );
-		relojPanel.removeAll();
-		reloj = new SimpleReloj( selectedEstilo.getCompas() );
-		log.debug( "adding Reloj "+reloj );
-		relojPanel.add( reloj.getView() );
-		relojPanel.revalidate();
+		reloj.setCompas( selectedEstilo.getCompas() );
 	}
 
 	public String getSelectedEstilo() {
@@ -135,10 +127,6 @@ public final class Controller {
 	public List<String> removePatternFromSelection( final String name ) {
 		selectedPatterns.remove( selectedEstilo.getPattern( name ) );
 		return getSelectedPatterns();
-	}
-
-	public JComponent getRelojPane() {
-		return relojPanel;
 	}
 
 	public boolean start() {

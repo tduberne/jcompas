@@ -43,18 +43,23 @@ public class SimpleReloj extends JPanel implements Reloj {
 	private static final Color BEAT_STRONG_COLOR = new Color( 255 , 150 , 150 );
 	private final int fontSize = 17;
 
-	private final CompasInformation compas;
-	private double needleAngle = 0;
-	private final double tickAngleStep;
+	private CompasInformation compas = null;
+	private double tickAngleStep = -1;
 
-	public SimpleReloj(final CompasInformation compas) {
-		this.compas = compas;
-		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
-	}
+	private double needleAngle = 0;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
+	@Override
+	public void setCompas(final CompasInformation compas) {
+		this.compas = compas;
+		if ( compas != null ) {
+			this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
+		}
+		repaint();
+	}
+
 	@Override
 	public JPanel getView() {
 		return this;
@@ -69,12 +74,18 @@ public class SimpleReloj extends JPanel implements Reloj {
 		repaint();
 	}
 
+	@Override
+	public String toString() {
+		return "Reloj";
+	}
+
 	// /////////////////////////////////////////////////////////////////////////
 	// Paint
 	// /////////////////////////////////////////////////////////////////////////
 	@Override
 	public void paintComponent(final Graphics g) {
 		super.paintComponent( g );
+		if ( compas == null ) return;
 
 		final int width = Math.min( getWidth() , getHeight() );
 		final double smallR = 0.45 * width;
@@ -184,10 +195,13 @@ public class SimpleReloj extends JPanel implements Reloj {
 			}
 			final Rectangle2D bounds = g.getFontMetrics().getStringBounds( beat.getName() , g );
 
+			final double horizName = Math.sin( angle  + (tickAngleStep / 2));
+			final double vertName = -Math.cos( angle  + (tickAngleStep / 2));
+
 			g.drawString(
 					beat.getName(),
-					(int) (xCenter + smallR * horiz - bounds.getWidth()/2d),
-					(int) (yCenter + smallR * vert + bounds.getHeight()/2d));
+					(int) (xCenter + smallR * horizName - bounds.getWidth()/2d),
+					(int) (yCenter + smallR * vertName + bounds.getHeight()/2d));
 			g.setColor( c );
 			g.setFont( softFont );
 
