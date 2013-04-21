@@ -159,9 +159,13 @@ public class ControlPaneFactory {
 				estiloBox.setModel(
 					new DefaultComboBoxModel(
 						controller.getEstilos().toArray() ) );
-				patternBoxes.setPatterns( Collections.EMPTY_SET );
+				// fire an event to update the pattern boxes
+				estiloBox.setSelectedIndex( estiloBox.getSelectedIndex() );
 			}
 		});
+		// fire an event to fill the estilo box
+		paloBox.setSelectedIndex( paloBox.getSelectedIndex() );
+		controller.selectPalo( (String) paloBox.getSelectedItem() );
 
 		estiloBox.addActionListener( new ActionListener() {
 			@Override
@@ -177,6 +181,9 @@ public class ControlPaneFactory {
 				tempoPane.setValue( controller.getBpm() );
 			}
 		});
+		// fire an event to fill the pattern boxes
+		estiloBox.setSelectedIndex( estiloBox.getSelectedIndex() );
+		controller.selectEstilo( (String) estiloBox.getSelectedItem() );
 
 		// configure buttons now, as they need to communicate with the components
 		// above
