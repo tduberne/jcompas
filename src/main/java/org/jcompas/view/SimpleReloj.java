@@ -43,18 +43,20 @@ public class SimpleReloj extends JPanel implements Reloj {
 	private static final Color BEAT_STRONG_COLOR = new Color( 255 , 150 , 150 );
 	private final int fontSize = 17;
 
-	private final CompasInformation compas;
-	private double needleAngle = 0;
-	private final double tickAngleStep;
+	private CompasInformation compas = null;
+	private double tickAngleStep = -1;
 
-	public SimpleReloj(final CompasInformation compas) {
-		this.compas = compas;
-		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
-	}
+	private double needleAngle = 0;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
+	@Override
+	public void setCompas(final CompasInformation compas) {
+		this.compas = compas;
+		this.tickAngleStep = Math.PI * 2 / compas.getBeatsCount();
+	}
+
 	@Override
 	public JPanel getView() {
 		return this;
@@ -75,6 +77,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 	@Override
 	public void paintComponent(final Graphics g) {
 		super.paintComponent( g );
+		if ( compas == null ) return;
 
 		final int width = Math.min( getWidth() , getHeight() );
 		final double smallR = 0.45 * width;

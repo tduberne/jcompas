@@ -108,7 +108,8 @@ public final class Controller {
 		log.debug( "selecting estilo "+name );
 		log.debug( "compas is: "+selectedEstilo.getCompas() );
 		relojPanel.removeAll();
-		reloj = new SimpleReloj( selectedEstilo.getCompas() );
+		reloj = new SimpleReloj();
+		reloj.setCompas( selectedEstilo.getCompas() );
 		log.debug( "adding Reloj "+reloj );
 		relojPanel.add( reloj.getView() );
 		relojPanel.revalidate();

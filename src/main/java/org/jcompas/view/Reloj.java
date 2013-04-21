@@ -21,6 +21,8 @@ package org.jcompas.view;
 
 import javax.swing.JPanel;
 
+import org.jcompas.model.CompasInformation;
+
 /**
  * Interface to be implemented by visual components indicating
  * the position in the compas.
@@ -29,6 +31,8 @@ import javax.swing.JPanel;
  * @author thibautd
  */
 public interface Reloj {
+	public void setCompas(CompasInformation compas);
+
 	/**
 	 * Returns the component to add in the UI
 	 * @return the component
