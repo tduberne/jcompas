@@ -20,6 +20,8 @@
 package org.jcompas.view;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import java.util.ArrayList;
@@ -104,7 +106,7 @@ class CounterRelojView extends JPanel {
 		final int yCenter = xCenter;
 
 		paintBackground( g , width );
-		paintName( g , xCenter , yCenter );
+		paintName( g , width , xCenter , yCenter );
 	}
 
 	private void paintBackground(
@@ -122,11 +124,23 @@ class CounterRelojView extends JPanel {
 
 	private void paintName(
 			final Graphics g,
+			final int width,
 			final int xCenter,
 			final int yCenter) {
+		final FontMetrics initialFm = g.getFontMetrics();
+		final Font font = g.getFont();
+		g.setFont(
+				font.deriveFont( (float)
+					((font.getSize() * width / 2.0) /
+					 (initialFm.getAscent() + initialFm.getDescent()) ) ) );
+
+		final FontMetrics fm = g.getFontMetrics();
+		int x = xCenter - (fm.stringWidth( beatName ) / 2);
+		int y = fm.getAscent() + yCenter - ((fm.getAscent() + fm.getDescent()) / 2);
 		g.drawString(
 				beatName,
-				xCenter,
-				yCenter );
+				x,
+				y );
+		g.setFont( font );
 	}
 }
