@@ -76,7 +76,7 @@ public class SimpleReloj extends JPanel implements Reloj {
 
 	@Override
 	public String toString() {
-		return "reloj";
+		return "Reloj";
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
