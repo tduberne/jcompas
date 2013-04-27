@@ -1,0 +1,15 @@
+<pattern name="Musicales 1 (Sordas)"
+		nCompas="1"
+		nRepeat="3">
+	<estilo file="estilos/soleares.xml"/>
+
+	<musician name="Paquito">
+		<sound directory="palmas/sorda/fuerte/">
+			-- -- X- -- -- -- X- X- -- X- -- --
+		</sound>
+		<sound directory="palmas/sorda/baja/">
+			X- X- -- -- -- -- -- -- XX -- -- --
+		</sound>
+	</musician>
+
+</pattern>
