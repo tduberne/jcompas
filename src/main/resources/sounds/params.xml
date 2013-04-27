@@ -43,7 +43,7 @@
 		<attenuation file="2.wav" att="79.9106375665922" />
 		<attenuation file="3.wav" att="93.8020071612285" />
 	  </volume>
-	  <volume dir="percusion/foot/" volume="40">
+	  <volume dir="percusion/foot/" volume="25">
 	  </volume>
 	</volumes>
 </soundparameters>
