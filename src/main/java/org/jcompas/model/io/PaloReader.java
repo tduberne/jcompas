@@ -192,16 +192,30 @@ public class PaloReader {
 			String soundDir = e.getAttribute( XmlSchemaNames.SOUND_DIR_ATT ).getValue();
 			Clap clap = clapReader.createClap( soundDir );
 
-			char[] claps = e.getTextTrim().toLowerCase().toCharArray();
-
-			for (int i=0; i < claps.length; i++) {
-				if ( claps[ i ] == 'x' ) {
-					golpes.add( new Golpe( clap , (double) i / claps.length ) );
-				}
+			for ( double pos : getTimePositionOfClaps( e.getTextTrim() ) ) {
+				golpes.add( new Golpe( clap , pos ) );
 			}
 		}
 
 		return golpes;
+	}
+
+	private List<Double> getTimePositionOfClaps(final String description) {
+		final char[] chars = description.toLowerCase().toCharArray();
+		
+		final List<Integer> posOfClaps = new ArrayList<Integer>();
+		int countNonWhitespace = 0;
+		for (char c : chars) {
+			if ( Character.isWhitespace( c ) ) continue;
+			if ( c == 'x' ) posOfClaps.add( countNonWhitespace );
+			countNonWhitespace++;
+		}
+
+		final List<Double> positions = new ArrayList<Double>();
+		for ( Integer p : posOfClaps ) {
+			positions.add( ((double) p) / countNonWhitespace );
+		}
+		return positions;
 	}
 }
 
