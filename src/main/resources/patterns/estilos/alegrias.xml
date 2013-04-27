@@ -1,5 +1,5 @@
 <estilo name="Alegrías" palo="Alegrías">
-		<compas bpm="170">
+		<compas bpm="130">
 			<beat name="1" strong="false"/>
 			<beat name="2" strong="false"/>
 			<beat name="3" strong="true"/>
