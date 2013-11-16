@@ -57,7 +57,7 @@ public final class Controller {
 
 	public Controller( final Paths paths ) {
 		try {
-			palos = new PaloReader().readPalos( new Paths() );
+			palos = new PaloReader().readPalos( paths );
 		}
 		catch (Exception e) {
 			JCompasGlobal.notifyException(
