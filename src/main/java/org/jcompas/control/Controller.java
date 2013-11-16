@@ -24,9 +24,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import org.jcompas.model.Estilo;
 import org.jcompas.model.io.PaloReader;
+import org.jcompas.model.io.Paths;
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.Palo;
 import org.jcompas.model.Palos;
@@ -57,7 +57,7 @@ public final class Controller {
 
 	public Controller() {
 		try {
-			palos = new PaloReader().readPalos();
+			palos = new PaloReader().readPalos( new Paths() );
 		}
 		catch (Exception e) {
 			JCompasGlobal.notifyException(

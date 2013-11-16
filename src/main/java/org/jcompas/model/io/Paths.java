@@ -29,15 +29,15 @@ public class Paths {
 	private static final URL PATTERNS_LOCATION = ClassLoader.getSystemResource( "patterns/" );
 	private static final URL SOUND_CONFIG_LOCATION = ClassLoader.getSystemResource( "sounds/params.xml" );
 	
-	public static URL getSoundsLocation() {
+	public URL getSoundsLocation() {
 		return SOUNDS_LOCATION;
 	}
 
-	public static URL getPatternsLocation() {
+	public URL getPatternsLocation() {
 		return PATTERNS_LOCATION;
 	}
 
-	public static URL getSoundConfigLocation() {
+	public URL getSoundConfigLocation() {
 		return SOUND_CONFIG_LOCATION;
 	}
 }
