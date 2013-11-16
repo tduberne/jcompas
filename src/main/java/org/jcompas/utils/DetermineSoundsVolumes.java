@@ -34,7 +34,7 @@ import javax.sound.sampled.AudioSystem;
 
 import org.apache.log4j.Logger;
 
-import org.jcompas.model.io.IOUtils;
+import org.jcompas.model.io.Paths;
 import org.jcompas.model.sound.SoundUtils;
 import org.jcompas.model.SoundConfig;
 
@@ -50,12 +50,12 @@ import org.jdom2.output.XMLOutputter;
 public class DetermineSoundsVolumes {
 	private static final Logger log =
 		Logger.getLogger(DetermineSoundsVolumes.class);
-	private static final int START_RELEVANT_PATH = IOUtils.SOUNDS_LOCATION.getPath().length();
+	private static final int START_RELEVANT_PATH = Paths.getSoundsLocation().getPath().length();
 	private static final String DEFAULT_VOLUME = "25";
 
 	public static void main(final String[] args) throws IOException {
 		Element root = new Element( SoundConfig.VOLUMES_TAG );
-		recurse( new File( IOUtils.SOUNDS_LOCATION.getPath() ) , root );
+		recurse( new File( Paths.getSoundsLocation().getPath() ) , root );
 		
 		OutputStream stream = System.out;
 		if (args.length > 0) {

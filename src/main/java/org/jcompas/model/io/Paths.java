@@ -24,9 +24,21 @@ import java.net.URL;
 /**
  * @author thibautd
  */
-public class IOUtils {
-	public static final URL SOUNDS_LOCATION = ClassLoader.getSystemResource( "sounds/" );
-	public static final URL PATTERNS_LOCATION = ClassLoader.getSystemResource( "patterns/" );
-	public static final URL SOUND_CONFIG_LOCATION = ClassLoader.getSystemResource( "sounds/params.xml" );
+public class Paths {
+	private static final URL SOUNDS_LOCATION = ClassLoader.getSystemResource( "sounds/" );
+	private static final URL PATTERNS_LOCATION = ClassLoader.getSystemResource( "patterns/" );
+	private static final URL SOUND_CONFIG_LOCATION = ClassLoader.getSystemResource( "sounds/params.xml" );
+	
+	public static URL getSoundsLocation() {
+		return SOUNDS_LOCATION;
+	}
+
+	public static URL getPatternsLocation() {
+		return PATTERNS_LOCATION;
+	}
+
+	public static URL getSoundConfigLocation() {
+		return SOUND_CONFIG_LOCATION;
+	}
 }
 

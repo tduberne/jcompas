@@ -43,7 +43,7 @@ public class ClapReader {
 	private final SoundConfig config;
 
 	public ClapReader() {
-		this( new SoundConfig( IOUtils.SOUND_CONFIG_LOCATION ) );
+		this( new SoundConfig( Paths.getSoundConfigLocation() ) );
 	}
 
 	public ClapReader(final SoundConfig config) {
@@ -54,7 +54,7 @@ public class ClapReader {
 		Clap clap = cache.get( directory );
 
 		if (clap == null) {
-			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
+			File f = new File( Paths.getSoundsLocation().getPath() + "/"+directory );
 			log.debug( "reading sound directory "+f );
 			log.debug( "volume is "+(config.getVolume( directory )*100)+"%" );
 			clap = new RandomizedClap(

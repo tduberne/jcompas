@@ -61,8 +61,8 @@ public class PaloReader {
 
 	public Palos readPalos() {
 		try {
-			log.debug( "getting palos from "+IOUtils.PATTERNS_LOCATION.toURI() );
-			File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
+			log.debug( "getting palos from "+Paths.getPatternsLocation().toURI() );
+			File[] files = new File( Paths.getPatternsLocation().toURI() ).listFiles(
 					new FilenameFilter() {
 						@Override
 						public boolean accept(File dir, String name) {
@@ -129,7 +129,7 @@ public class PaloReader {
 	}
 
 	private EstiloAndPalo parseEstilo(final String file, final List<Pattern> patterns) throws JDOMException, IOException {
-		Document d = xmlParser.build( IOUtils.PATTERNS_LOCATION.getPath() + file );
+		Document d = xmlParser.build( Paths.getPatternsLocation().getPath() + file );
 		String name = d.getRootElement().getAttribute( XmlSchemaNames.ESTILO_NAME_ATT ).getValue();
 
 		Element compasElement = d.getRootElement().getChild( XmlSchemaNames.COMPAS_TAG );
