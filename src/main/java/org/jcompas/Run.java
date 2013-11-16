@@ -20,15 +20,16 @@
 package org.jcompas;
 
 import java.awt.GridLayout;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-
 import org.jcompas.control.Controller;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.io.Paths;
 import org.jcompas.view.ControlPaneFactory;
 import org.jcompas.view.RelojPaneFactory;
 
@@ -40,6 +41,10 @@ public class Run {
 		Logger.getLogger(Run.class);
 
 	public static void main(final String[] args) {
+		final Paths paths = args.length > 0 ?
+				new Paths( new File( args[ 0 ] ) ) :
+				new Paths();
+		
 		PropertyConfigurator.configure( ClassLoader.getSystemResource( "log4j.properties" ) );
 		log.info( "################################################################################" );
 		log.info( "Starting jCompas "+JCompasGlobal.getVersionId() );
@@ -52,8 +57,7 @@ public class Run {
 			}
 		});
 		try {
-			Controller controller = new Controller();
-
+			Controller controller = new Controller( paths );
 			JFrame window = new JFrame( "jCompas "+JCompasGlobal.getVersionId() );
 			window.getContentPane().setLayout( new GridLayout( 1 , 2 ) );
 			window.add( RelojPaneFactory.createRelojPane( controller ) );

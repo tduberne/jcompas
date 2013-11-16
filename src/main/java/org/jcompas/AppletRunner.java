@@ -24,6 +24,7 @@ import java.awt.GridLayout;
 import javax.swing.JApplet;
 
 import org.jcompas.control.Controller;
+import org.jcompas.model.io.Paths;
 import org.jcompas.view.ControlPaneFactory;
 import org.jcompas.view.RelojPaneFactory;
 
@@ -35,7 +36,7 @@ public class AppletRunner extends JApplet {
 
 	@Override
 	public void init() {
-		Controller controller = new Controller();
+		Controller controller = new Controller( new Paths() );
 
 		getContentPane().setLayout( new GridLayout( 1 , 2 ) );
 		add( RelojPaneFactory.createRelojPane( controller ) );

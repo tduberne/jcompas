@@ -55,7 +55,7 @@ public final class Controller {
 	private MetronomeRunner metronomeRunner = null;
 	private RelojRunner relojRunner = null;
 
-	public Controller() {
+	public Controller( final Paths paths ) {
 		try {
 			palos = new PaloReader().readPalos( new Paths() );
 		}
