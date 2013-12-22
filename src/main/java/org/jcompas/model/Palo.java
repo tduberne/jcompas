@@ -55,8 +55,8 @@ public final class Palo {
 		return estilos.keySet();
 	}
 
-	public Estilo getEstilo(final String name) {
-		return estilos.get( name );
+	public Estilo getEstilo(final String estiloName) {
+		return estilos.get( estiloName );
 	}
 
 	public String toString() {

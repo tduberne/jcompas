@@ -167,7 +167,7 @@ public class PaloReader {
 		}
 	}
 
-	private Pattern parsePattern(final ClapReader clapReader, final Document doc) throws FileNotFoundException, DataConversionException {
+	private Pattern parsePattern(final ClapReader clapReader, final Document doc) throws DataConversionException {
 		Element root = doc.getRootElement();
 		String patternName = root.getAttribute( XmlSchemaNames.PATTERN_NAME_ATT ).getValue();
 		int nCompas = root.getAttribute( XmlSchemaNames.PATTERN_NCOMPAS_ATT ).getIntValue();
@@ -190,7 +190,7 @@ public class PaloReader {
 
 	private List<Golpe> parseGolpes(
 			final ClapReader clapReader,
-			final Element musician) throws FileNotFoundException {
+			final Element musician) {
 		List<Golpe> golpes = new ArrayList<Golpe>();
 
 		for (Element e : musician.getChildren( XmlSchemaNames.SOUND_TAG )) {

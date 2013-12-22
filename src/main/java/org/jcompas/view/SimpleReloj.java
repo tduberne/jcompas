@@ -109,7 +109,6 @@ public class SimpleReloj extends JPanel implements Reloj {
 
 		paintForeground(
 				g,
-				width,
 				xCenter,
 				yCenter,
 				smallR,
@@ -168,7 +167,6 @@ public class SimpleReloj extends JPanel implements Reloj {
 
 	private void paintForeground(
 			final Graphics g,
-			final int width,
 			final int xCenter,
 			final int yCenter,
 			final double smallR,

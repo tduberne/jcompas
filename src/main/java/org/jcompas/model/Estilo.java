@@ -66,8 +66,8 @@ public final class Estilo {
 		return patterns.keySet();
 	}
 
-	public Pattern getPattern(final String name) {
-		return patterns.get( name );
+	public Pattern getPattern(final String patternName) {
+		return patterns.get( patternName );
 	}
 }
 

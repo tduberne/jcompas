@@ -108,7 +108,7 @@ public final class SoundUtils {
 					buffer.putFloat( (float) d );
 					break;
 				case 64:
-					buffer.putDouble( (double) d );
+					buffer.putDouble( d );
 					break;
 				default:
 					throw new IllegalArgumentException( "unhandled sample size "+sampleSize );
@@ -159,7 +159,7 @@ public final class SoundUtils {
 		return line;
 	}
 
-	public static void releaseLine(final AudioFormat format) throws LineUnavailableException {
+	public static void releaseLine(final AudioFormat format) {
 		SourceDataLine l = activeLines.remove( format );
 		if (l != null) l.close();
 	}
