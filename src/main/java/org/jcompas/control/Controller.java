@@ -22,6 +22,7 @@ package org.jcompas.control;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 
 import org.apache.log4j.Logger;
 import org.jcompas.model.Estilo;
@@ -40,9 +41,7 @@ import org.jcompas.view.Reloj;
  * @author thibautd
  */
 public final class Controller {
-	private static final Logger log = Logger.getLogger( Controller.class );
-	private static final int TIME_BEFORE_PLAY = 100;
-
+	private static final Logger log = Logger.getLogger(Controller.class);
 	private final Palos palos;
 
 	private Palo selectedPalo = null;
@@ -55,14 +54,11 @@ public final class Controller {
 	private MetronomeRunner metronomeRunner = null;
 	private RelojRunner relojRunner = null;
 
-	public Controller( final Paths paths ) {
+	public Controller(final Paths paths) {
 		try {
-			palos = new PaloReader().readPalos( paths );
-		}
-		catch (Exception e) {
-			JCompasGlobal.notifyException(
-					"error while importing palos",
-					e );
+			palos = new PaloReader().readPalos(paths);
+		} catch (Exception e) {
+			JCompasGlobal.notifyException("error while importing palos", e);
 			throw new RuntimeException();
 		}
 	}
@@ -71,8 +67,8 @@ public final class Controller {
 	// for interface
 	public void setReloj(final Reloj reloj) {
 		this.reloj = reloj;
-		if ( selectedEstilo != null ) {
-			reloj.setCompas( selectedEstilo.getCompas() );
+		if (selectedEstilo != null) {
+			reloj.setCompas(selectedEstilo.getCompas());
 		}
 	}
 
@@ -81,11 +77,12 @@ public final class Controller {
 	}
 
 	public void selectPalo(final String name) {
-		log.debug( "selecting palo "+name );
-		selectedPalo = palos.createPalo( name );
+		log.debug("selecting palo " + name);
+		selectedPalo = palos.createPalo(name);
 		selectedEstilo = null;
 		selectedPatterns.clear();
-		if ( reloj != null ) reloj.setCompas( null );
+		if (reloj != null)
+			reloj.setCompas(null);
 	}
 
 	public String getSelectedPalo() {
@@ -97,13 +94,13 @@ public final class Controller {
 	}
 
 	public void selectEstilo(final String name) {
-		selectedEstilo = selectedPalo.getEstilo( name );
+		selectedEstilo = selectedPalo.getEstilo(name);
 		selectedPatterns.clear();
 		bpm = selectedEstilo.getCompas().getTypicalBpm();
 
-		log.debug( "selecting estilo "+name );
-		log.debug( "compas is: "+selectedEstilo.getCompas() );
-		reloj.setCompas( selectedEstilo.getCompas() );
+		log.debug("selecting estilo " + name);
+		log.debug("compas is: " + selectedEstilo.getCompas());
+		reloj.setCompas(selectedEstilo.getCompas());
 	}
 
 	public String getSelectedEstilo() {
@@ -115,42 +112,44 @@ public final class Controller {
 	}
 
 	public List<String> getSelectedPatterns() {
-		return toStrings( selectedPatterns );
+		return toStrings(selectedPatterns);
 	}
 
-
-	public List<String> addPatternToSelection( final String name ) {
-		selectedPatterns.add( selectedEstilo.getPattern( name ) );
+	public List<String> addPatternToSelection(final String name) {
+		selectedPatterns.add(selectedEstilo.getPattern(name));
 		return getSelectedPatterns();
 	}
 
-	public List<String> removePatternFromSelection( final String name ) {
-		selectedPatterns.remove( selectedEstilo.getPattern( name ) );
+	public List<String> removePatternFromSelection(final String name) {
+		selectedPatterns.remove(selectedEstilo.getPattern(name));
 		return getSelectedPatterns();
 	}
 
 	public boolean start() {
 		if (selectedPatterns.size() == 0) {
-			JCompasGlobal.userWarning( "no Pattern selected!" );
+			JCompasGlobal.userWarning("no Pattern selected!");
 			return false;
 		}
 
-		metronomeRunner =
-			new MetronomeRunner( 
-					new SimpleMetronome(
-						selectedPatterns,
-						selectedEstilo.getCompas()));
-		relojRunner = new RelojRunner( reloj );
+		metronomeRunner = new MetronomeRunner(new SimpleMetronome(
+				selectedPatterns, selectedEstilo.getCompas()));
+		relojRunner = new RelojRunner(reloj);
 
-		log.debug( "start playing!" );
-		long compasDur = (long)
-			((60000d / bpm) * selectedEstilo.getCompas().getBeatsCount());
-		log.debug( "bpm: "+bpm );
-		log.debug( "compas dur.: "+compasDur+" ms." );
-		long start = System.currentTimeMillis() + TIME_BEFORE_PLAY;
+		log.debug("start playing!");
+		long compasDur = (long) ((60000d / bpm) * selectedEstilo.getCompas()
+				.getBeatsCount());
+		log.debug("bpm: " + bpm);
+		log.debug("compas dur.: " + compasDur + " ms.");
 
-		metronomeRunner.start( start , compasDur );
-		relojRunner.start( start , compasDur );
+		final TimedLatch latch = new TimedLatch(3);
+		metronomeRunner.start(latch, compasDur);
+		relojRunner.start(latch, compasDur);
+		try {
+			latch.release();
+		}
+		catch (Exception e) {
+			return false;
+		}
 
 		return true;
 	}

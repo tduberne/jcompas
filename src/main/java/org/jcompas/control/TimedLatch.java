@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * InfinitePlayer.java
+ * TimedLatch.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2013 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -19,12 +19,40 @@
  * *********************************************************************** */
 package org.jcompas.control;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+
 /**
- * Interface for objects that can be started.
  * @author thibautd
  */
-public interface InfinitePlayer {
-	public void start(final TimedLatch startLatch, final long compasLengthMilli);
-	public void stop();
+public class TimedLatch {
+	private final CyclicBarrier barrier;
+	private final CountDownLatch releaseTimeSetLatch = new CountDownLatch(1);
+	private long releaseTime = Long.MIN_VALUE;
+
+	public TimedLatch(final int nParties) {
+		this.barrier = new CyclicBarrier(nParties);
+	}
+
+	public long await() throws InterruptedException, BrokenBarrierException {
+		// first wait for everybody to be ready
+		barrier.await();
+		// then wait for release time to be set
+		releaseTimeSetLatch.await();
+		return releaseTime;
+	}
+
+	public synchronized void release() throws InterruptedException,
+			BrokenBarrierException {
+		if ( releaseTime != Long.MIN_VALUE ) throw new IllegalStateException();
+		barrier.await();
+		releaseTime = System.currentTimeMillis();
+		releaseTimeSetLatch.countDown();
+	}
+
+	public long getReleaseTime() {
+		return releaseTime;
+	}
 }
 

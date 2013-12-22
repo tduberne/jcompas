@@ -20,12 +20,12 @@
 package org.jcompas.control;
 
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
-
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.model.sound.MetronomeData;
 import org.jcompas.model.sound.Pattern;
@@ -36,7 +36,7 @@ import org.jcompas.model.sound.SoundUtils;
  * @author thibautd
  */
 public final class MetronomeRunner implements InfinitePlayer {
-	private static final Logger log = Logger.getLogger( MetronomeRunner.class );
+	private static final Logger log = Logger.getLogger(MetronomeRunner.class);
 	private final MetronomeData metronome;
 	private final AudioFormat format;
 	private final SourceDataLine line;
@@ -48,15 +48,13 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// Try to find a CLEAN way to play it (or another CLEAN way
 		// to identify the AudioFormat)
 		Pattern pattern = metronome.getNextPattern();
-		format = SoundUtils.identifyAudioFormat( pattern );
+		format = SoundUtils.identifyAudioFormat(pattern);
 		try {
-			line = SoundUtils.acquireLine( format );
-		}
-		catch (Exception e) {
+			line = SoundUtils.acquireLine(format);
+		} catch (Exception e) {
 			JCompasGlobal.notifyException(
-					"exception while initializing metronome",
-					e);
-			throw new RuntimeException( e );
+					"exception while initializing metronome", e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -64,17 +62,11 @@ public final class MetronomeRunner implements InfinitePlayer {
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
 	@Override
-	public void start(
-			final long startTime,
-			final long compasLengthMilli) {
+	public void start(final TimedLatch startLatch, final long compasLengthMilli) {
 		line.start();
-		feeder = new Feeder(
-				startTime,
-				line,
-				metronome,
-				format,
+		feeder = new Feeder(startLatch, line, metronome, format,
 				compasLengthMilli);
-		new Thread( feeder ).start();
+		new Thread(feeder).start();
 	}
 
 	@Override
@@ -83,12 +75,13 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// stopping the line stops the blocking behavior of
 		// write(), and we do not want the feeder to loop again
 		// and refeed the line!
-		log.debug( "stopping feeder" );
-		if ( feeder != null ) feeder.run = false;
-		if ( line != null ) {
-			log.debug( "stopping line" );
+		log.debug("stopping feeder");
+		if (feeder != null)
+			feeder.run = false;
+		if (line != null) {
+			log.debug("stopping line");
 			line.stop();
-			log.debug( "flushing line" );
+			log.debug("flushing line");
 			line.flush();
 		}
 		feeder = null;
@@ -116,44 +109,47 @@ public final class MetronomeRunner implements InfinitePlayer {
 		private final int nSamplesPerCompas;
 		private final int frameSize;
 		private final SourceDataLine line;
-		private final long startTime;
+		private final TimedLatch startLatch;
 		private final double frameDurationMilli;
 
-		public Feeder(
-				final long startTime,
-				final SourceDataLine line,
-				final MetronomeData metronome,
-				final AudioFormat format,
+		public Feeder(final TimedLatch startLatch, final SourceDataLine line,
+				final MetronomeData metronome, final AudioFormat format,
 				final long compasLengthMillisec) {
 			this.format = format;
-			this.startTime = startTime;
+			this.startLatch = startLatch;
 			this.line = line;
 			this.metronome = metronome;
 
 			frameDurationMilli = 1000 / format.getFrameRate();
-			log.debug( "frame duration in ms: "+frameDurationMilli );
-			double dnFramesPerCompas = compasLengthMillisec / frameDurationMilli;
-			log.debug( dnFramesPerCompas+" frames per compas." );
+			log.debug("frame duration in ms: " + frameDurationMilli);
+			double dnFramesPerCompas = compasLengthMillisec
+					/ frameDurationMilli;
+			log.debug(dnFramesPerCompas + " frames per compas.");
 			nFramesPerCompas = (int) dnFramesPerCompas;
 			frameSize = format.getFrameSize();
 			nBytesPerCompas = nFramesPerCompas * frameSize;
-			nSamplesPerCompas = nBytesPerCompas / (format.getSampleSizeInBits() / 8);
+			nSamplesPerCompas = nBytesPerCompas
+					/ (format.getSampleSizeInBits() / 8);
 			if (nBytesPerCompas == Integer.MAX_VALUE) {
-				throw new RuntimeException( "overflow!" );
+				throw new RuntimeException("overflow!");
 			}
-			maxBytesInBuffer = (int) (MAX_BUFFER_DUR / frameDurationMilli) * frameSize;
-			log.debug( "max buffer size: "+maxBytesInBuffer );
+			maxBytesInBuffer = (int) (MAX_BUFFER_DUR / frameDurationMilli)
+					* frameSize;
+			log.debug("max buffer size: " + maxBytesInBuffer);
 		}
 
 		@Override
 		public void run() {
-			byte[] buffer = mixPattern( metronome.getNextPattern() );
+			byte[] buffer = mixPattern(metronome.getNextPattern());
+
 			try {
-				Thread.sleep( startTime - System.currentTimeMillis() );
-			} catch (InterruptedException e) {
-				JCompasGlobal.notifyException(
-						"could not sleep",
-						e );
+				startLatch.await();
+			}
+			catch (BrokenBarrierException e) {
+				throw new RuntimeException( e );
+			}
+			catch (InterruptedException e) {
+				throw new RuntimeException( e );
 			}
 			while (run) {
 				int start = 0;

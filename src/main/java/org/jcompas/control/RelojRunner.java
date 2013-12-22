@@ -19,6 +19,8 @@
  * *********************************************************************** */
 package org.jcompas.control;
 
+import java.util.concurrent.BrokenBarrierException;
+
 import org.jcompas.model.JCompasGlobal;
 import org.jcompas.view.Reloj;
 
@@ -30,16 +32,16 @@ public class RelojRunner implements InfinitePlayer {
 	private final InternRunnable runner;
 
 	public RelojRunner(final Reloj reloj) {
-		runner = new InternRunnable( reloj );
-		thread = new Thread( runner );
+		runner = new InternRunnable(reloj);
+		thread = new Thread(runner);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
 	// interface
 	// /////////////////////////////////////////////////////////////////////////
 	@Override
-	public void start(final long startTime, final long compasLengthMilli) {
-		runner.setStartInfo( startTime , compasLengthMilli );
+	public void start(final TimedLatch startLatch, final long compasLengthMilli) {
+		runner.setStartInfo(startLatch, compasLengthMilli);
 		thread.start();
 	}
 
@@ -55,33 +57,39 @@ public class RelojRunner implements InfinitePlayer {
 		private final Reloj reloj;
 		private long period = -1;
 		private final int defaultFps = 60;
-		private long startTime = -1;
+		private TimedLatch latch = null;
 
 		public InternRunnable(final Reloj reloj) {
 			this.reloj = reloj;
 		}
 
-		public void setStartInfo( final long startTime , final long period ) {
-			this.startTime = startTime;
+		public void setStartInfo(final TimedLatch latch, final long period) {
+			this.latch = latch;
 			this.period = period;
 		}
 
-
 		@Override
 		public void run() {
-			if (period < 1) throw new IllegalStateException( "invalid period: "+period+" ms." );
+			if (period < 1)
+				throw new IllegalStateException("invalid period: " + period
+						+ " ms.");
 
 			final long timeStep = 1000 / defaultFps;
-			long last = startTime;
-			while (true) {
-				try {
+			try {
+				final long startTime = latch.await();
+				long last = startTime;
+				while (true) {
 					Thread.sleep( Math.max( last + timeStep - System.currentTimeMillis() , 1 ) );
-				} catch (InterruptedException e) {
-					JCompasGlobal.notifyException( "" , e );
+					last = System.currentTimeMillis();
+					reloj.notifyCompasFraction(
+							((double) ( System.currentTimeMillis() - startTime) / period) % 1 );
 				}
-				last = System.currentTimeMillis();
-				reloj.notifyCompasFraction(
-						((double) ( System.currentTimeMillis() - startTime) / period) % 1 );
+			}
+			catch (BrokenBarrierException e) {
+				JCompasGlobal.notifyException( "" , e );
+			}
+			catch (InterruptedException e) {
+				JCompasGlobal.notifyException( "" , e );
 			}
 		}
 	}
