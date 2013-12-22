@@ -56,13 +56,13 @@ public class PaloReader {
 	private static final Logger log =
 		Logger.getLogger(PaloReader.class);
 
-	private final ClapReader clapReader = new ClapReader();
 	private final SAXBuilder xmlParser = new SAXBuilder();
 
-	public Palos readPalos() {
+	public Palos readPalos( final Paths paths ) {
+		final ClapReader clapReader = new ClapReader( paths );
 		try {
-			log.debug( "getting palos from "+IOUtils.PATTERNS_LOCATION.toURI() );
-			File[] files = new File( IOUtils.PATTERNS_LOCATION.toURI() ).listFiles(
+			log.debug( "getting palos from "+paths.getPatternsLocation().toURI() );
+			File[] files = new File( paths.getPatternsLocation().toURI() ).listFiles(
 					new FilenameFilter() {
 						@Override
 						public boolean accept(File dir, String name) {
@@ -74,7 +74,7 @@ public class PaloReader {
 			for (File f : files) {
 				Document doc = xmlParser.build( f );
 				if (doc.getRootElement().getName().equals( XmlSchemaNames.PATTERN_TAG )) {
-					Pattern p = parsePattern( doc );
+					Pattern p = parsePattern( clapReader , doc );
 					for (String estiloFile : extractEstilos( doc )) {
 						List<Pattern> ps = estilo2Pattern.get( estiloFile );
 
@@ -91,7 +91,7 @@ public class PaloReader {
 
 			Map<String, List<Estilo>> palo2Estilo = new HashMap<String, List<Estilo>>();
 			for (Map.Entry<String, List<Pattern>> patterns : estilo2Pattern.entrySet()) {
-				EstiloAndPalo estilo = parseEstilo( patterns.getKey() , patterns.getValue() );
+				EstiloAndPalo estilo = parseEstilo( paths , patterns.getKey() , patterns.getValue() );
 
 				List<Estilo> es = palo2Estilo.get( estilo.palo );
 				if (es == null) {
@@ -128,8 +128,11 @@ public class PaloReader {
 		return files;
 	}
 
-	private EstiloAndPalo parseEstilo(final String file, final List<Pattern> patterns) throws JDOMException, IOException {
-		Document d = xmlParser.build( IOUtils.PATTERNS_LOCATION.getPath() + file );
+	private EstiloAndPalo parseEstilo(
+			final Paths paths,
+			final String file,
+			final List<Pattern> patterns) throws JDOMException, IOException {
+		Document d = xmlParser.build( paths.getPatternsLocation().getPath() + file );
 		String name = d.getRootElement().getAttribute( XmlSchemaNames.ESTILO_NAME_ATT ).getValue();
 
 		Element compasElement = d.getRootElement().getChild( XmlSchemaNames.COMPAS_TAG );
@@ -164,7 +167,7 @@ public class PaloReader {
 		}
 	}
 
-	private Pattern parsePattern(final Document doc) throws FileNotFoundException, DataConversionException {
+	private Pattern parsePattern(final ClapReader clapReader, final Document doc) throws FileNotFoundException, DataConversionException {
 		Element root = doc.getRootElement();
 		String patternName = root.getAttribute( XmlSchemaNames.PATTERN_NAME_ATT ).getValue();
 		int nCompas = root.getAttribute( XmlSchemaNames.PATTERN_NCOMPAS_ATT ).getIntValue();
@@ -174,7 +177,7 @@ public class PaloReader {
 
 		for (Element musician : root.getChildren( XmlSchemaNames.MUSICIAN_TAG )) {
 			String name = musician.getAttribute( XmlSchemaNames.MUSICIAN_NAME_ATT ).getValue();
-			List<Golpe> golpes = parseGolpes( musician );
+			List<Golpe> golpes = parseGolpes( clapReader , musician );
 			musicians.add( new Musician( name , golpes ) );
 		}
 
@@ -185,7 +188,9 @@ public class PaloReader {
 				nCompas);
 	}
 
-	private List<Golpe> parseGolpes(final Element musician) throws FileNotFoundException {
+	private List<Golpe> parseGolpes(
+			final ClapReader clapReader,
+			final Element musician) throws FileNotFoundException {
 		List<Golpe> golpes = new ArrayList<Golpe>();
 
 		for (Element e : musician.getChildren( XmlSchemaNames.SOUND_TAG )) {

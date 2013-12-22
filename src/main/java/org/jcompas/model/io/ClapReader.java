@@ -41,20 +41,18 @@ public class ClapReader {
 
 	private final Map<String, Clap> cache = new HashMap<String, Clap>();
 	private final SoundConfig config;
+	private final Paths paths;
 
-	public ClapReader() {
-		this( new SoundConfig( IOUtils.SOUND_CONFIG_LOCATION ) );
-	}
-
-	public ClapReader(final SoundConfig config) {
-		this.config = config;
+	public ClapReader( final Paths paths ) {
+		this.config = new SoundConfig( paths.getSoundConfigLocation() );
+		this.paths = paths;
 	}
 
 	public Clap createClap(final String directory) {
 		Clap clap = cache.get( directory );
 
 		if (clap == null) {
-			File f = new File( IOUtils.SOUNDS_LOCATION.getPath() + "/"+directory );
+			File f = new File( paths.getSoundsLocation().getPath() + "/"+directory );
 			log.debug( "reading sound directory "+f );
 			log.debug( "volume is "+(config.getVolume( directory )*100)+"%" );
 			clap = new RandomizedClap(

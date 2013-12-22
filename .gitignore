@@ -5,3 +5,6 @@
 /target/
 *.log
 *.log.*
+
+# soundbanks should be put in there, and not committed
+soundbanks/
