@@ -189,7 +189,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 				ds[ i ] = 0;
 			}
 
-			for (Pattern.ClapLine m : pattern.getMusicians()) {
+			for (Pattern.ClapLine m : pattern.getLines()) {
 				double[] mDs = SoundUtils.convertSoundToDouble(
 						format,
 						catMusician( m ));

@@ -51,7 +51,7 @@ public final class SoundUtils {
 	public static AudioFormat identifyAudioFormat(
 			final Claps claps,
 			final Pattern p ) {
-		return identifyAudioFormat( claps , p.getMusicians().get( 0 ) );
+		return identifyAudioFormat( claps , p.getLines().get( 0 ) );
 	}
 
 	public static AudioFormat identifyAudioFormat(
