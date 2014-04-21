@@ -25,8 +25,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import org.jcompas.model.sound.Clap;
-
 /**
  * Abstraction for a "pattern".
  * @author thibautd

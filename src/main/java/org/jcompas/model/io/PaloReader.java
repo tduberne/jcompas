@@ -32,6 +32,7 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.jcompas.model.datamodel.Beat;
+import org.jcompas.model.datamodel.Clap;
 import org.jcompas.model.datamodel.CompasInformation;
 import org.jcompas.model.datamodel.Estilo;
 import org.jcompas.model.datamodel.Palo;
@@ -39,7 +40,6 @@ import org.jcompas.model.datamodel.Palos;
 import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.datamodel.Pattern.Golpe;
 import org.jcompas.model.datamodel.Pattern.Musician;
-import org.jcompas.model.sound.Clap;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;

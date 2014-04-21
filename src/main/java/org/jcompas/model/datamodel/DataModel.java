@@ -20,6 +20,7 @@
 package org.jcompas.model.datamodel;
 
 
+
 /**
  * This class structures and stores all the data.
  * The basic data model is the following:
@@ -37,6 +38,7 @@ public class DataModel {
 	private final Palos palos = new Palos();
 	private final Estilos estilos = new Estilos();
 	private final Patterns patterns = new Patterns();
+	private final Claps claps = new Claps();
 
 	public Palos getPalos() {
 		return palos;
@@ -50,6 +52,10 @@ public class DataModel {
 		return patterns;
 	}
 
+	public Claps getClaps() {
+		return claps;
+	}
+
 	public void addEstilo( final Estilo estilo ) {
 		estilos.addEstilo( estilo );
 		palos.getOrCreatePalo( estilo.getPalo() ).addEstilo( estilo.getId() );
@@ -61,6 +67,10 @@ public class DataModel {
 			final Estilo estilo = estilos.getEstilo( eId );
 			estilo.addPattern( pattern.getId() );
 		}
+	}
+
+	public void addClap( final Clap clap ) {
+		claps.addClap( clap );
 	}
 }
 

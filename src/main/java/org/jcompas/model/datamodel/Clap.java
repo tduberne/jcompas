@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * RandomizedClap.java
+ * Clap.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,47 +17,32 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.io;
-
-import java.util.Random;
+package org.jcompas.model.datamodel;
 
 import javax.sound.sampled.AudioFormat;
 
-import org.jcompas.model.datamodel.Clap;
-import org.jcompas.model.datamodel.ClapId;
-
 /**
+ * Abstraction for a metronome "clap"
  * @author thibautd
  */
-class RandomizedClap implements Clap {
-	private final ClapId id;
-	private final byte[][] sounds;
-	private final AudioFormat format;
-	private final Random random = new Random();
+public interface Clap {
+	/**
+	 * Gives access to the sound raw data.
+	 * It does not have to be the same sound returned over and over
+	 * (ie some randomness can be added to improve realism).
+	 * @return the byte sequence, as specified by the format.
+	 */
+	public byte[] getSoundData();
 
-	RandomizedClap(
-			final ClapId id,
-			final byte[][] sounds,
-			final AudioFormat format) {
-		this.id = id;
-		this.sounds = sounds;
-		this.format = format;
-	}
+	/**
+	 * Gives a unique identifier to the clap
+	 */
+	public ClapId getId();
 
-	@Override
-	public byte[] getSoundData() {
-		return sounds[random.nextInt(sounds.length)];
-	}
-
-	@Override
-	public AudioFormat getAudioFormat() {
-		return format;
-	}
-
-	@Override
-	public ClapId getId() {
-		return id;
-	}
-
+	/**
+	 * Gives access to the format
+	 * @return the format.
+	 */
+	public AudioFormat getAudioFormat();
 }
 

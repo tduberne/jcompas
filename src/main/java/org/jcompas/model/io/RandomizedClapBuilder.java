@@ -30,8 +30,8 @@ import javax.sound.sampled.AudioSystem;
 
 import org.apache.log4j.Logger;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.datamodel.Clap;
 import org.jcompas.model.datamodel.ClapId;
-import org.jcompas.model.sound.Clap;
 import org.jcompas.model.sound.SoundUtils;
 
 /**
