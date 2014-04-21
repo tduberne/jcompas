@@ -27,10 +27,9 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-
-import org.jcompas.model.CompasInformation;
 import org.jcompas.model.JCompasGlobal;
-import org.jcompas.model.Beat;
+import org.jcompas.model.datamodel.Beat;
+import org.jcompas.model.datamodel.CompasInformation;
 
 /**
  * @author thibautd

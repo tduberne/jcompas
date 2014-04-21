@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,17 +31,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-
-import org.jcompas.model.Beat;
-import org.jcompas.model.CompasInformation;
-import org.jcompas.model.Estilo;
-import org.jcompas.model.Palo;
-import org.jcompas.model.Palos;
+import org.jcompas.model.datamodel.Beat;
+import org.jcompas.model.datamodel.CompasInformation;
+import org.jcompas.model.datamodel.Estilo;
+import org.jcompas.model.datamodel.Palo;
+import org.jcompas.model.datamodel.Palos;
+import org.jcompas.model.datamodel.Pattern;
+import org.jcompas.model.datamodel.Pattern.Golpe;
+import org.jcompas.model.datamodel.Pattern.Musician;
 import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.Pattern;
-import org.jcompas.model.sound.Pattern.Golpe;
-import org.jcompas.model.sound.Pattern.Musician;
-
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;

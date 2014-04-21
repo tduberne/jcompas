@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * Palo.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,45 +17,44 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
-import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
+ * Represents a "Palo", such as Bulerias,
+ * soleares, seguiryias, sevillanas...
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
+public final class Palo {
+	private final PaloId id;
+	private final Set<EstiloId> estilos = new LinkedHashSet<EstiloId>();
 
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
-
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
+	public Palo(
+			final PaloId id ) {
+		this.id = id;
 	}
 
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
-		}
-		remainingPlays--;
-		return currentPattern;
+	void addEstilo( final EstiloId estilo ) {
+		estilos.add( estilo );
 	}
 
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
+	public PaloId getId() {
+		return id;
+	}
+
+	public String getName() {
+		return id.toString();
+	}
+
+	public Set<EstiloId> getEstilos() {
+		return Collections.unmodifiableSet( estilos );
+	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+getName()+", "+estilos+"]";
 	}
 }
 

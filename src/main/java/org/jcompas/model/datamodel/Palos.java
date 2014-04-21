@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * PaloFactory.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,45 +17,36 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
-import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
+ * Gives access to the available palos.
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
+public final class Palos {
+	private final Map<PaloId, Palo> palos = new LinkedHashMap<PaloId, Palo>();
 
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
+	public Palos() {}
 
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
+	public Collection<PaloId> getAvailablePalos() {
+		return palos.keySet();
 	}
 
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
+	public Palo getPalo( final PaloId name ) {
+		return palos.get( name );
+	}
+
+	Palo getOrCreatePalo( final PaloId name ) {
+		Palo p = palos.get( name );
+		if ( p == null ) {
+			p = new Palo( name );
+			palos.put( name , p );
 		}
-		remainingPlays--;
-		return currentPattern;
-	}
-
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
+		return p;
 	}
 }
 

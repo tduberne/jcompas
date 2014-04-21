@@ -17,12 +17,15 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+
+import org.jcompas.model.sound.Clap;
 
 /**
  * Abstraction for a "pattern".
@@ -30,7 +33,8 @@ import java.util.List;
  */
 public final class Pattern {
 	private final List<Musician> musicians;
-	private final String name;
+	private final PatternId id;
+	private final Set<EstiloId> estilos;
 	private final int typicalNRepeats;
 	private final int durationInCompas;
 
@@ -38,11 +42,13 @@ public final class Pattern {
 	// constructor
 	// /////////////////////////////////////////////////////////////////////////
 	public Pattern(
-			final String name,
+			final PatternId id,
+			final Set<EstiloId> estilos,
 			final List<Musician> musicians,
 			final int typicalNRepeats,
 			final int durationInCompas) {
-		this.name = name;
+		this.id = id;
+		this.estilos = estilos;
 		this.musicians = Collections.unmodifiableList( musicians );
 		this.typicalNRepeats = typicalNRepeats;
 		this.durationInCompas = durationInCompas;
@@ -55,8 +61,16 @@ public final class Pattern {
 		return musicians;
 	}
 
+	public PatternId getId() {
+		return id;
+	}
+
 	public String getName() {
-		return name;
+		return id.toString();
+	}
+
+	public Set<EstiloId> getEstilos() {
+		return estilos;
 	}
 
 	public int getTypicalNumberOfRepetitions() {

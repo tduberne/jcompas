@@ -21,7 +21,7 @@ package org.jcompas.view;
 
 import javax.swing.JPanel;
 
-import org.jcompas.model.CompasInformation;
+import org.jcompas.model.datamodel.CompasInformation;
 
 /**
  * Interface to be implemented by visual components indicating

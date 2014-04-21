@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Palo.java
+ * PatternId.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,50 +17,16 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.jcompas.model.AbstractId;
 
 /**
- * Represents a "Palo", such as Bulerias,
- * soleares, seguiryias, sevillanas...
  * @author thibautd
  */
-public final class Palo {
-	private final String name;
-	private final Map<String, Estilo> estilos;
-
-	public Palo(
-			final String name,
-			final Collection<Estilo> estilos) {
-		this.name = name;
-
-		Map<String, Estilo> map = new HashMap<String, Estilo>();
-		for (Estilo e : estilos) {
-			map.put( e.getName() , e );
-		}
-		
-		this.estilos = Collections.unmodifiableMap( map );
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Set<String> getEstilos() {
-		return estilos.keySet();
-	}
-
-	public Estilo getEstilo(final String estiloName) {
-		return estilos.get( estiloName );
-	}
-
-	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+estilos+"]";
+public class PatternId extends AbstractId {
+	public PatternId( final String id ) {
+		super( id );
 	}
 }
 

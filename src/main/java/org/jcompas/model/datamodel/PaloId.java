@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * PaloFactory.java
+ * PaloId.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,31 +17,16 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.jcompas.model.AbstractId;
 
 /**
- * Gives access to the available palos.
  * @author thibautd
  */
-public final class Palos {
-	private final Map<String, Palo> palos = new HashMap<String, Palo>();
-
-	public Palos(final Collection<Palo> palos) {
-		for (Palo p : palos) {
-			this.palos.put( p.getName() , p );
-		}
-	}
-
-	public Collection<String> getAvailablePalos() {
-		return palos.keySet();
-	}
-
-	public Palo createPalo( final String name ) {
-		return palos.get( name );
+public class PaloId extends AbstractId {
+	public PaloId( final String id ) {
+		super( id );
 	}
 }
 

@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 
 import org.apache.log4j.Logger;
-import org.jcompas.model.Estilo;
+import org.jcompas.model.datamodel.Estilo;
+import org.jcompas.model.datamodel.Palo;
+import org.jcompas.model.datamodel.Palos;
+import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.io.PaloReader;
 import org.jcompas.model.io.Paths;
 import org.jcompas.model.JCompasGlobal;
-import org.jcompas.model.Palo;
-import org.jcompas.model.Palos;
-import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
 
@@ -78,7 +78,7 @@ public final class Controller {
 
 	public void selectPalo(final String name) {
 		log.debug("selecting palo " + name);
-		selectedPalo = palos.createPalo(name);
+		selectedPalo = palos.getPalo(name);
 		selectedEstilo = null;
 		selectedPatterns.clear();
 		if (reloj != null)

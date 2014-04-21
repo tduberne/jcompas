@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * CompasInformation.java
+ * Patterns.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,47 +17,25 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * A data structure giving access to compas information.
  * @author thibautd
  */
-public final class CompasInformation {
-	private final String name;
-	private final int typicalBpm;
-	private final List<Beat> beats;
+public class Patterns {
+	private Map<PatternId, Pattern> patterns = new LinkedHashMap<PatternId, Pattern>();
 
-	public CompasInformation(
-			final String name,
-			final int bpm,
-			final List<Beat> beats) {
-		this.name = name;
-		this.typicalBpm = bpm;
-		this.beats = Collections.unmodifiableList( beats );
+	public Pattern getPattern(final PatternId id) {
+		return patterns.get( id );
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public int getTypicalBpm() {
-		return typicalBpm;
-	}
-
-	public List<Beat> getBeats() {
-		return beats;
-	}
-
-	public int getBeatsCount() {
-		return beats.size();
-	}
-
-	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
+	// package: modifications should be done via the data model
+	void addPattern(final Pattern pattern) {
+		final Pattern old = patterns.put( pattern.getId() , pattern );
+		if ( old != null ) throw new IllegalStateException( "already a pattern "+pattern.getName() );
 	}
 }
 

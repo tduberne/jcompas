@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Estilo.java
+ * Estilos.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,57 +17,25 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-
-import org.jcompas.model.sound.Pattern;
 
 /**
- * Represents an estilo, that is a special form of a palo
- * (Bulerias por 12 or por 6, sevillanas rocieras or boleras...).
- * Technically, it can be seen as a collection of patterns associated with
- * one particular compas.
- *
  * @author thibautd
  */
-public final class Estilo {
-	private final String name;
-	private final CompasInformation compas;
-	private final Map<String, Pattern> patterns;
+public class Estilos {
+	private Map<EstiloId, Estilo> estilos = new LinkedHashMap<EstiloId, Estilo>();
 
-	public Estilo(
-			final String name,
-			final CompasInformation compas,
-			final List<Pattern> patterns) {
-		this.name = name;
-		this.compas = compas;
-		Map<String, Pattern> map = new HashMap<String, Pattern>();
-		for (Pattern p : patterns) {
-			map.put( p.getName() , p );
-		}
-
-		this.patterns = Collections.unmodifiableMap( map );
+	public Estilo getEstilo(final EstiloId id) {
+		return estilos.get( id );
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public CompasInformation getCompas() {
-		return compas;
-	}
-
-	public Set<String> getPatterns() {
-		return patterns.keySet();
-	}
-
-	public Pattern getPattern(final String patternName) {
-		return patterns.get( patternName );
+	// package: modifications should be done via the data model
+	void addEstilo(final Estilo estilo) {
+		final Estilo old = estilos.put( estilo.getId() , estilo );
+		if ( old != null ) throw new IllegalStateException( "already an estilo "+estilo.getName() );
 	}
 }
 

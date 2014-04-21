@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Tense.java
+ * CompasInformation.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,34 +17,47 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
+ * A data structure giving access to compas information.
  * @author thibautd
  */
-public final class Beat {
+public final class CompasInformation {
 	private final String name;
-	private final boolean isStrong;
+	private final int typicalBpm;
+	private final List<Beat> beats;
 
-	public Beat(final int name, final boolean isStrong) {
-		this ( ""+name , isStrong );
-	}
-
-	public Beat(final String name, final boolean isStrong) {
+	public CompasInformation(
+			final String name,
+			final int bpm,
+			final List<Beat> beats) {
 		this.name = name;
-		this.isStrong = isStrong;
+		this.typicalBpm = bpm;
+		this.beats = Collections.unmodifiableList( beats );
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public boolean isStrong() {
-		return isStrong;
+	public int getTypicalBpm() {
+		return typicalBpm;
+	}
+
+	public List<Beat> getBeats() {
+		return beats;
+	}
+
+	public int getBeatsCount() {
+		return beats.size();
 	}
 
 	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+(isStrong ? "s" : "w")+"]";
+		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
 	}
 }
 

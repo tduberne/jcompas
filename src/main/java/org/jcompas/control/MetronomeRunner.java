@@ -27,8 +27,8 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.sound.MetronomeData;
-import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SoundUtils;
 
 /**

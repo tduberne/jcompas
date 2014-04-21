@@ -23,14 +23,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.jcompas.model.Beat;
-import org.jcompas.model.CompasInformation;
+import org.jcompas.model.datamodel.Beat;
+import org.jcompas.model.datamodel.CompasInformation;
 
 /**
  * @author thibautd

@@ -19,7 +19,8 @@
  * *********************************************************************** */
 package org.jcompas.model.sound;
 
-import org.jcompas.model.CompasInformation;
+import org.jcompas.model.datamodel.CompasInformation;
+import org.jcompas.model.datamodel.Pattern;
 
 /**
  * @author thibautd

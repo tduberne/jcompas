@@ -21,7 +21,6 @@ package org.jcompas.model.sound;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +36,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
-
-import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.datamodel.Pattern;
 
 /**
  * @author thibautd

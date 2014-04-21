@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * Tense.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,45 +17,34 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
-
-import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
+package org.jcompas.model.datamodel;
 
 /**
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
+public final class Beat {
+	private final String name;
+	private final boolean isStrong;
 
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
-
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
+	public Beat(final int name, final boolean isStrong) {
+		this ( ""+name , isStrong );
 	}
 
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
-		}
-		remainingPlays--;
-		return currentPattern;
+	public Beat(final String name, final boolean isStrong) {
+		this.name = name;
+		this.isStrong = isStrong;
 	}
 
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
+	public String getName() {
+		return name;
+	}
+
+	public boolean isStrong() {
+		return isStrong;
+	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+name+(isStrong ? "s" : "w")+"]";
 	}
 }
 
