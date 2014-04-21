@@ -49,12 +49,13 @@ public class RandomizedClapBuilder {
 		this.id = id;
 	}
 
-	public void withSound(final String path, final double volume) {
+	public RandomizedClapBuilder withSound(final String path, final double volume) {
 		if ( volume < 0 ) throw new IllegalArgumentException( "volume "+volume+" is negative" );
 		if ( volume < 1 ) log.warn( "volume "+volume+" between 0 and 1. Be aware that no attenuation is 100, not 1!" );
 
 		paths.add( path );
 		volumes.add( volume );
+		return this;
 	}
 
 	public Clap build() {
