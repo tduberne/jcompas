@@ -21,15 +21,13 @@ package org.jcompas.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.GridLayout;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -37,8 +35,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -48,10 +44,14 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
-
 import org.jcompas.control.Controller;
+import org.jcompas.model.datamodel.EstiloId;
+import org.jcompas.model.datamodel.PaloId;
+import org.jcompas.model.datamodel.PatternId;
 
 /**
  * @author thibautd
@@ -154,7 +154,7 @@ public class ControlPaneFactory {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				JComboBox box = (JComboBox) e.getSource();
-				controller.selectPalo( (String) box.getSelectedItem() );
+				controller.selectPalo( (PaloId) box.getSelectedItem() );
 				log.debug( "adding estilos "+controller.getEstilos() );
 				estiloBox.setModel(
 					new DefaultComboBoxModel(
@@ -165,13 +165,13 @@ public class ControlPaneFactory {
 		});
 		// fire an event to fill the estilo box
 		paloBox.setSelectedIndex( paloBox.getSelectedIndex() );
-		controller.selectPalo( (String) paloBox.getSelectedItem() );
+		controller.selectPalo( (PaloId) paloBox.getSelectedItem() );
 
 		estiloBox.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox box = (JComboBox) e.getSource();
-				controller.selectEstilo( (String) box.getSelectedItem() );
+				controller.selectEstilo( (EstiloId) box.getSelectedItem() );
 
 				patternBoxes.setPatterns( controller.getPatterns() );
 
@@ -183,7 +183,7 @@ public class ControlPaneFactory {
 		});
 		// fire an event to fill the pattern boxes
 		estiloBox.setSelectedIndex( estiloBox.getSelectedIndex() );
-		controller.selectEstilo( (String) estiloBox.getSelectedItem() );
+		controller.selectEstilo( (EstiloId) estiloBox.getSelectedItem() );
 
 		// configure buttons now, as they need to communicate with the components
 		// above
@@ -240,11 +240,11 @@ public class ControlPaneFactory {
 		}
 
 		public void setPatterns(
-				final Collection<String> patterns) {
+				final Collection<PatternId> patterns) {
 			boxes.clear();
 			removeAll();
-			for (String p : patterns) {
-				JCheckBox b = new JCheckBox( p );
+			for (PatternId p : patterns) {
+				JCheckBox b = new JCheckBox( p.toString() );
 				boxes.add( b );
 				b.addItemListener( listener );
 				add( b );
@@ -279,8 +279,9 @@ public class ControlPaneFactory {
 		private class Listener implements ItemListener {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
-				JCheckBox b = (JCheckBox) e.getItem();
-				String p = b.getLabel();
+				final JCheckBox b = (JCheckBox) e.getItem();
+				// XXX find a nicer way!
+				final PatternId p = new PatternId( b.getLabel() );
 
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					controller.addPatternToSelection( p );
