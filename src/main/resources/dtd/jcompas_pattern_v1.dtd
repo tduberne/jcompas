@@ -2,23 +2,16 @@
 
 <!ELEMENT pattern (estilos,line*)>
 <!ATTLIST pattern 
-	name	CDATA	#REQUIRED
+	refId	CDATA	#REQUIRED
 	nCompas	CDATA	"1"
-	nRepeat	CDATA	"3"
-	nSlots	CDATA	#REQUIRED>
+	nRepeat	CDATA	"3">
 
 <!ELEMENT estilos (estilo*)>
 <!ATTLIST estilo 
 	refId	CDATA	#REQUIRED>
 
-<!ELEMENT line (sound,beats)>
+<!ELEMENT line (#PCDATA)>
 
-<!ELEMENT sound EMPTY>
-<!ATTLIST sound 
-	refId	CDATA	#REQUIRED>
-
-<!ELEMENT beats (beat*)>
-
-<!ELEMENT beat EMPTY>
-<!ATTLIST beat 
-	slot	CDATA	#REQUIRED>
+<!ATTLIST line 
+	name		CDATA	#REQUIRED
+	soundRefId	CDATA	#REQUIRED>
