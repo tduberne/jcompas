@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * RandomizedClap.java
+ * RandomizedClapBuilder.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,104 +17,91 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.io;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import org.apache.log4j.Logger;
-
 import org.jcompas.model.JCompasGlobal;
-import org.jcompas.model.SoundConfig;
+import org.jcompas.model.datamodel.ClapId;
+import org.jcompas.model.sound.Clap;
+import org.jcompas.model.sound.SoundUtils;
 
 /**
  * @author thibautd
  */
-public class RandomizedClap implements Clap {
+public class RandomizedClapBuilder {
 	private static final Logger log =
-		Logger.getLogger(RandomizedClap.class);
+		Logger.getLogger(RandomizedClapBuilder.class);
 
-	private final String name;
-	private final byte[][] sounds;
-	private final AudioFormat format;
-	private final Random random = new Random();
+	private final ClapId id;
+	private final List<String> paths = new ArrayList<String>();
+	private final List<Double> volumes = new ArrayList<Double>();
 
-	public RandomizedClap(
-			final String name,
-			final File[] data,
-			final double volume,
-			final SoundConfig.Attenuations attenuations) {
-		this.name = name;
-		sounds = new byte[data.length][];
+	public RandomizedClapBuilder(final ClapId id) {
+		this.id = id;
+	}
+
+	public void withSound(final String path, final double volume) {
+		if ( volume < 0 ) throw new IllegalArgumentException( "volume "+volume+" is negative" );
+		if ( volume < 1 ) log.warn( "volume "+volume+" between 0 and 1. Be aware that no attenuation is 100, not 1!" );
+
+		paths.add( path );
+		volumes.add( volume );
+	}
+
+	public Clap build() {
+		final byte[][] sounds = new byte[paths.size()][];
 		try {
 			AudioFormat currentFormat = null;
 
-			for (int i=0; i < data.length; i++) {
-				AudioInputStream audio = AudioSystem.getAudioInputStream(
-						new FileInputStream( data[ i ] ) );
+			for ( int i = 0; i < paths.size(); i++ ) {
+				AudioInputStream audio =
+					AudioSystem.getAudioInputStream(
+							new FileInputStream(
+								paths.get( i ) ));
 				ByteArrayOutputStream array = new ByteArrayOutputStream();
 
 				if (currentFormat == null) {
 					currentFormat = audio.getFormat();
-					log.debug( "format: "+currentFormat );
+					log.debug("format: " + currentFormat);
 				}
 				// TODO: else check compatibility
 
 				byte[] buffer = new byte[20000];
-				int nRead = audio.read( buffer );
-				while ( nRead > 0 ) {
-					array.write( buffer , 0 , nRead );
-					nRead = audio.read( buffer );
+				int nRead = audio.read(buffer);
+				while (nRead > 0) {
+					array.write(buffer, 0, nRead);
+					nRead = audio.read(buffer);
 				}
 
-				double[] soundAsDouble =
-					SoundUtils.convertSoundToDouble(
-							currentFormat,
-							array.toByteArray());
+				double[] soundAsDouble = SoundUtils.convertSoundToDouble(
+						currentFormat, array.toByteArray());
 
-				double fileVolume = volume * attenuations.getAttenuation( data[ i ].getName() );
-				for (int j=0; j < soundAsDouble.length; j++) {
+				double fileVolume = volumes.get( i );
+				for (int j = 0; j < soundAsDouble.length; j++) {
 					soundAsDouble[j] *= fileVolume;
 				}
 
-				this.sounds[i] =
-					SoundUtils.convertSoundToBytes(
-						currentFormat,
+				sounds[i] = SoundUtils.convertSoundToBytes(currentFormat,
 						soundAsDouble);
 			}
 
-			this.format = currentFormat;
+			return new RandomizedClap( id , sounds , currentFormat );
 		} catch (Exception e) {
-			JCompasGlobal.notifyException( "" , e );
+			JCompasGlobal.notifyException("", e);
 			// global should already exit,
 			// but without that the code does not
 			// compile
 			throw new RuntimeException();
 		}
 	}
-
-	@Override
-	public byte[] getSoundData() {
-		return sounds[ random.nextInt( sounds.length ) ];
-	}
-
-	@Override
-	public String getSoundName() {
-		return name;
-	}
-
-	@Override
-	public AudioFormat getAudioFormat() {
-		return format;
-	}
-
 }
 

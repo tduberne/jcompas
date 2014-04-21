@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * RandomizedClap.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -19,57 +19,44 @@
  * *********************************************************************** */
 package org.jcompas.model.io;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.FileNotFoundException;
+import java.util.Random;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
+import javax.sound.sampled.AudioFormat;
+import org.jcompas.model.datamodel.ClapId;
 import org.jcompas.model.sound.Clap;
-import org.jcompas.model.sound.RandomizedClap;
-import org.jcompas.model.SoundConfig;
 
 /**
  * @author thibautd
  */
-public class ClapReader {
-	private static final Logger log =
-		Logger.getLogger(ClapReader.class);
+class RandomizedClap implements Clap {
+	private final ClapId id;
+	private final byte[][] sounds;
+	private final AudioFormat format;
+	private final Random random = new Random();
 
-	private final Map<String, Clap> cache = new HashMap<String, Clap>();
-	private final SoundConfig config;
-	private final Paths paths;
-
-	public ClapReader( final Paths paths ) {
-		this.config = new SoundConfig( paths.getSoundConfigLocation() );
-		this.paths = paths;
+	RandomizedClap(
+			final ClapId id,
+			final byte[][] sounds,
+			final AudioFormat format) {
+		this.id = id;
+		this.sounds = sounds;
+		this.format = format;
 	}
 
-	public Clap createClap(final String directory) {
-		Clap clap = cache.get( directory );
-
-		if (clap == null) {
-			File f = new File( paths.getSoundsLocation().getPath() + "/"+directory );
-			log.debug( "reading sound directory "+f );
-			log.debug( "volume is "+(config.getVolume( directory )*100)+"%" );
-			clap = new RandomizedClap(
-					directory,
-					f.listFiles(
-						new FilenameFilter() {
-							@Override
-							public boolean accept(File dir, String name) {
-								return name.endsWith( ".wav" );
-							}
-						}),
-					config.getVolume( directory ),
-					config.getAttenuations( directory ));
-			cache.put( directory , clap );
-		}
-
-		return clap;
+	@Override
+	public byte[] getSoundData() {
+		return sounds[random.nextInt(sounds.length)];
 	}
+
+	@Override
+	public AudioFormat getAudioFormat() {
+		return format;
+	}
+
+	@Override
+	public ClapId getId() {
+		return id;
+	}
+
 }
 
