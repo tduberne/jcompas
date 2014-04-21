@@ -36,6 +36,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
+import org.jcompas.model.datamodel.Claps;
 import org.jcompas.model.datamodel.Pattern;
 
 /**
@@ -47,16 +48,16 @@ public final class SoundUtils {
 
 	private SoundUtils() {};
 
-	public static AudioFormat identifyAudioFormat( final Pattern p ) {
-		return identifyAudioFormat( p.getMusicians().get( 0 ) );
+	public static AudioFormat identifyAudioFormat(
+			final Claps claps,
+			final Pattern p ) {
+		return identifyAudioFormat( claps , p.getMusicians().get( 0 ) );
 	}
 
-	public static AudioFormat identifyAudioFormat( final Pattern.ClapLine m ) {
-		return identifyAudioFormat( m.getGolpes().get( 0 ) );
-	}
-
-	public static AudioFormat identifyAudioFormat( final Pattern.Golpe p ) {
-		return p.getClap().getAudioFormat();
+	public static AudioFormat identifyAudioFormat(
+			final Claps claps,
+			final Pattern.ClapLine m ) {
+		return claps.getClap( m.getClapId() ).getAudioFormat();
 	}
 
 	public static double[] convertSoundToDouble(

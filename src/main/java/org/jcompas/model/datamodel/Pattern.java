@@ -84,12 +84,15 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	public static final class ClapLine {
 		private final String name;
+		private final ClapId clap;
 		private final List<Golpe> golpes;
 
 		public ClapLine(
 				final String name,
+				final ClapId clap,
 				final List<Golpe> golpes) {
 			this.name = name;
+			this.clap = clap;
 			List<Golpe> sorted = new ArrayList<Golpe>( golpes );
 			Collections.sort(
 					golpes,
@@ -113,21 +116,18 @@ public final class Pattern {
 		public List<Golpe> getGolpes() {
 			return golpes;
 		}
+
+		public ClapId getClapId() {
+			return clap;
+		}
 	}
 
 	public static final class Golpe {
-		private final Clap sound;
 		private final double position;
 
 		public Golpe(
-				final Clap sound,
 				final double positionInCompas) {
-			this.sound = sound;
 			this.position = positionInCompas;
-		}
-
-		public Clap getClap() {
-			return sound;
 		}
 
 		public double getPositionInCompas() {

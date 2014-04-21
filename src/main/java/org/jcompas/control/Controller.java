@@ -128,8 +128,12 @@ public final class Controller {
 			return false;
 		}
 
-		metronomeRunner = new MetronomeRunner(new SimpleMetronome(
-				selectedPatterns, selectedEstilo.getCompas()));
+		metronomeRunner =
+				new MetronomeRunner(
+						model,
+						new SimpleMetronome(
+								selectedPatterns,
+								selectedEstilo.getCompas()));
 		relojRunner = new RelojRunner(reloj);
 
 		log.debug("start playing!");
