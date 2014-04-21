@@ -25,8 +25,7 @@ import org.jcompas.model.AbstractId;
  * @author thibautd
  */
 public class ClapId extends AbstractId {
-
-	protected ClapId(final String id) {
+	public ClapId(final String id) {
 		super(id);
 	}
 }
