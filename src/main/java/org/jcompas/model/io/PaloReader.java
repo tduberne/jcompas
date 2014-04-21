@@ -39,7 +39,7 @@ import org.jcompas.model.datamodel.Palo;
 import org.jcompas.model.datamodel.Palos;
 import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.datamodel.Pattern.Golpe;
-import org.jcompas.model.datamodel.Pattern.Musician;
+import org.jcompas.model.datamodel.Pattern.ClapLine;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -170,17 +170,17 @@ public class PaloReader {
 		int nCompas = root.getAttribute( XmlSchemaNames.PATTERN_NCOMPAS_ATT ).getIntValue();
 		int nRepeat = root.getAttribute( XmlSchemaNames.PATTERN_NREPEAT_ATT ).getIntValue();
 
-		List<Musician> musicians = new ArrayList<Musician>();
+		List<ClapLine> clapLines = new ArrayList<ClapLine>();
 
 		for (Element musician : root.getChildren( XmlSchemaNames.MUSICIAN_TAG )) {
 			String name = musician.getAttribute( XmlSchemaNames.MUSICIAN_NAME_ATT ).getValue();
 			List<Golpe> golpes = parseGolpes( clapReader , musician );
-			musicians.add( new Musician( name , golpes ) );
+			clapLines.add( new ClapLine( name , golpes ) );
 		}
 
 		return new Pattern(
 				patternName,
-				musicians,
+				clapLines,
 				nRepeat,
 				nCompas);
 	}

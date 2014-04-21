@@ -30,7 +30,7 @@ import java.util.Set;
  * @author thibautd
  */
 public final class Pattern {
-	private final List<Musician> musicians;
+	private final List<ClapLine> clapLines;
 	private final PatternId id;
 	private final Set<EstiloId> estilos;
 	private final int typicalNRepeats;
@@ -42,12 +42,12 @@ public final class Pattern {
 	public Pattern(
 			final PatternId id,
 			final Set<EstiloId> estilos,
-			final List<Musician> musicians,
+			final List<ClapLine> clapLines,
 			final int typicalNRepeats,
 			final int durationInCompas) {
 		this.id = id;
 		this.estilos = estilos;
-		this.musicians = Collections.unmodifiableList( musicians );
+		this.clapLines = Collections.unmodifiableList( clapLines );
 		this.typicalNRepeats = typicalNRepeats;
 		this.durationInCompas = durationInCompas;
 	}
@@ -55,8 +55,8 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	// getters
 	// /////////////////////////////////////////////////////////////////////////
-	public List<Musician> getMusicians() {
-		return musicians;
+	public List<ClapLine> getMusicians() {
+		return clapLines;
 	}
 
 	public PatternId getId() {
@@ -82,11 +82,11 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	// classes
 	// /////////////////////////////////////////////////////////////////////////
-	public static final class Musician {
+	public static final class ClapLine {
 		private final String name;
 		private final List<Golpe> golpes;
 
-		public Musician(
+		public ClapLine(
 				final String name,
 				final List<Golpe> golpes) {
 			this.name = name;

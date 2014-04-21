@@ -172,7 +172,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 				ds[ i ] = 0;
 			}
 
-			for (Pattern.Musician m : pattern.getMusicians()) {
+			for (Pattern.ClapLine m : pattern.getMusicians()) {
 				double[] mDs = SoundUtils.convertSoundToDouble(
 						format,
 						catMusician( m ));
@@ -185,14 +185,14 @@ public final class MetronomeRunner implements InfinitePlayer {
 			return SoundUtils.convertSoundToBytes( format , ds );
 		}
 
-		private byte[] catMusician(final Pattern.Musician musician) {
+		private byte[] catMusician(final Pattern.ClapLine clapLine) {
 			byte[] bytes = new byte[ nBytesPerCompas ];
 
 			for (int i=0; i<bytes.length; i++) {
 				bytes[ i ] = 0;
 			}
 
-			for (Pattern.Golpe golpe : musician.getGolpes()) {
+			for (Pattern.Golpe golpe : clapLine.getGolpes()) {
 				byte[] sound = golpe.getClap().getSoundData();
 				int frameNr = (int) (golpe.getPositionInCompas() * nFramesPerCompas);
 				// "swing": randomize a little
