@@ -20,7 +20,6 @@
 package org.jcompas.model.io;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +32,6 @@ import org.jcompas.model.datamodel.PaloId;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 
 /**
  * @author thibautd
@@ -51,11 +48,8 @@ public class EstiloReader {
 			final Document document = JCompasIOUtils.createSaxBuilder().build( estiloFile );
 			parseDocument(document);
 		}
-		catch (JDOMException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
+		catch (Exception e) {
+			throw new RuntimeException( "error while reading file "+estiloFile, e);
 		}
 	}
 

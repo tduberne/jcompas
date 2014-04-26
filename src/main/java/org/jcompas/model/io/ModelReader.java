@@ -52,20 +52,20 @@ public class ModelReader {
 			new ClapReader( paths , model ).readFile(
 					new File( paths.getSoundConfigLocation().toURI() ) );
 
-			log.debug( "getting patterns from "+paths.getPatternsLocation().toURI() );
-			final File[] patterns = new File( paths.getPatternsLocation().toURI() ).listFiles( xmlFilter );
-			final PatternReader patternReader = new PatternReader( model );
-
-			for (File f : patterns) {
-				patternReader.readFile( f );
-			}
-
 			log.debug( "getting estilos from "+paths.getPatternsLocation() );
 			final File[] estilos = new File( paths.getEstilosLocation().toURI() ).listFiles( xmlFilter );
 			final EstiloReader estiloReader = new EstiloReader( model );
 
 			for (File f : estilos) {
 				estiloReader.readFile( f );
+			}
+
+			log.debug( "getting patterns from "+paths.getPatternsLocation().toURI() );
+			final File[] patterns = new File( paths.getPatternsLocation().toURI() ).listFiles( xmlFilter );
+			final PatternReader patternReader = new PatternReader( model );
+
+			for (File f : patterns) {
+				patternReader.readFile( f );
 			}
 		}
 		catch (Exception e) {
