@@ -48,7 +48,7 @@ public class EstiloReader {
 
 	public void readFile(final File estiloFile) {
 		try {
-			final Document document = new SAXBuilder().build( estiloFile );
+			final Document document = JCompasIOUtils.createSaxBuilder().build( estiloFile );
 			parseDocument(document);
 		}
 		catch (JDOMException e) {

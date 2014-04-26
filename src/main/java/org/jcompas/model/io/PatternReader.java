@@ -51,7 +51,7 @@ public class PatternReader {
 
 	public void readFile(final File patternFile) {
 		try {
-			final Document document = new SAXBuilder().build( patternFile );
+			final Document document = JCompasIOUtils.createSaxBuilder().build( patternFile );
 			parseDocument(document);
 		}
 		catch (JDOMException e) {

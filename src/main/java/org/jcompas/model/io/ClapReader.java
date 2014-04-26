@@ -29,7 +29,6 @@ import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 
 /**
  * @author thibautd
@@ -49,7 +48,7 @@ public class ClapReader {
 
 	public void readFile(final File configFile) {
 		try {
-			final Document document = new SAXBuilder().build(configFile);
+			final Document document = JCompasIOUtils.createSaxBuilder().build(configFile);
 			parseDocument(document);
 		}
 		catch (JDOMException e) {
