@@ -10,5 +10,6 @@
 	bpm			CDATA			#REQUIRED>
 
 <!ELEMENT beat EMPTY>
+<!ATTLIST beat
 	name		CDATA			#REQUIRED
 	strong		(true|false)	"false">
