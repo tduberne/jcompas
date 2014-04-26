@@ -19,6 +19,7 @@
  * *********************************************************************** */
 package org.jcompas.model.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -48,7 +49,7 @@ public class PatternReader {
 		this.model = model;
 	}
 
-	public void readFile(final String patternFile) {
+	public void readFile(final File patternFile) {
 		try {
 			final Document document = new SAXBuilder().build( patternFile );
 			parseDocument(document);

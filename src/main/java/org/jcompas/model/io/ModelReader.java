@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * PaloReader.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -20,71 +20,59 @@
 package org.jcompas.model.io;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FilenameFilter;
 
 import org.apache.log4j.Logger;
-import org.jcompas.model.datamodel.ClapId;
 import org.jcompas.model.datamodel.DataModel;
-import org.jdom2.DataConversionException;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 
 /**
  * @author thibautd
  */
-public class ClapReader {
-	private static final Logger log = Logger.getLogger(ClapReader.class);
+public class ModelReader {
+	private static final Logger log =
+		Logger.getLogger(ModelReader.class);
 
-	private final Paths paths;
+	private static final FilenameFilter xmlFilter =
+		new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith( ".xml" );
+			}
+		};
+
 	private final DataModel model;
 
-	public ClapReader(
-			final Paths paths,
-			final DataModel model) {
-		this.paths = paths;
+	public ModelReader( final DataModel model ) {
 		this.model = model;
 	}
 
-	public void readFile(final File configFile) {
+	public void read( final Paths paths ) {
 		try {
-			final Document document = new SAXBuilder().build(configFile);
-			parseDocument(document);
-		}
-		catch (JDOMException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+			log.debug( "getting sounds from "+paths.getSoundConfigLocation() );
+			new ClapReader( paths , model ).readFile(
+					new File( paths.getSoundConfigLocation().toURI() ) );
 
-	private void parseDocument(final Document document)
-			throws DataConversionException {
-		for (Element e : document.getRootElement().getChildren( "sound" )) {
-			parseSound( e );
+			log.debug( "getting patterns from "+paths.getPatternsLocation().toURI() );
+			final File[] patterns = new File( paths.getPatternsLocation().toURI() ).listFiles( xmlFilter );
+			final PatternReader patternReader = new PatternReader( model );
+
+			for (File f : patterns) {
+				patternReader.readFile( f );
+			}
+
+			log.debug( "getting estilos from "+paths.getPatternsLocation() );
+			final File[] estilos = new File( paths.getEstilosLocation().toURI() ).listFiles( xmlFilter );
+			final EstiloReader estiloReader = new EstiloReader( model );
+
+			for (File f : estilos) {
+				estiloReader.readFile( f );
+			}
 		}
-	}
-
-	private void parseSound(final Element e)
-			throws DataConversionException {
-		final String id = e.getAttribute( "refId" ).getValue();
-
-		final RandomizedClapBuilder builder =
-			new RandomizedClapBuilder(
-					new ClapId( id ) );
-
-		for (Element attElem : e.getChildren( "soundFile" )) {
-			final String file = attElem.getAttribute( "path" ).getValue();
-			final double att = attElem.getAttribute( "volume" ).getDoubleValue() / 100d;
-			log.debug( "defined attenuation for "+file+"= "+att );
-			builder.withSound(
-					paths.getSoundsLocation().getPath() + file,
-					att );
+		catch (Exception e) {
+			throw new JCompasImportException(
+					"could not import palos",
+					e);
 		}
-
-		model.addClap( builder.build() );
 	}
 }
 

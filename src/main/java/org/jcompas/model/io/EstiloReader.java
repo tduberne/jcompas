@@ -19,6 +19,7 @@
  * *********************************************************************** */
 package org.jcompas.model.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class EstiloReader {
 		this.model = model;
 	}
 
-	public void readFile(final String estiloFile) {
+	public void readFile(final File estiloFile) {
 		try {
 			final Document document = new SAXBuilder().build( estiloFile );
 			parseDocument(document);

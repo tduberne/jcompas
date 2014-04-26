@@ -32,7 +32,7 @@ import org.jcompas.model.datamodel.Palo;
 import org.jcompas.model.datamodel.PaloId;
 import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.datamodel.PatternId;
-import org.jcompas.model.io.PaloReader;
+import org.jcompas.model.io.ModelReader;
 import org.jcompas.model.io.Paths;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
