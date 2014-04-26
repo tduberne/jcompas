@@ -56,6 +56,11 @@ public final class Controller {
 	private MetronomeRunner metronomeRunner = null;
 	private RelojRunner relojRunner = null;
 
+	public Controller( final Paths paths ) {
+		this( new DataModel() );
+		new ModelReader( this.model ).read( paths );
+	}
+	
 	public Controller(final DataModel model) {
 		this.model = model;
 	}
