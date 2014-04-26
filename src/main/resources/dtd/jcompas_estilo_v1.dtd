@@ -9,6 +9,6 @@
 <!ATTLIST compas
 	bpm			CDATA			#REQUIRED>
 
-<!ELEMENT beat (EMPTY)>
+<!ELEMENT beat EMPTY>
 	name		CDATA			#REQUIRED
 	strong		(true|false)	"false">

@@ -6,7 +6,7 @@
 <!ATTLIST sound
 	refId	CDATA	#REQUIRED>
 
-<!ELEMENT soundFile (EMPTY)>
+<!ELEMENT soundFile EMPTY>
 <!ATTLIST soundFile
 	path	CDATA	#REQUIRED
 	volume	CDATA	"100">
