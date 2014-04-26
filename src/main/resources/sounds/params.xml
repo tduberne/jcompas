@@ -1,49 +1,51 @@
-<soundparameters>
-	<volumes>
-		<!--
-		 Describes the volumes of files in %
-		 This is more flexible/easier than modifying the files
-		-->
-	  <volume dir="palmas/sonora/fuerte/" volume="25">
-		<attenuation file="sonora-fuerte-3.wav" att="100.0" />
-		<attenuation file="sonora-fuerte-4.wav" att="100.0" />
-		<attenuation file="sonora-fuerte-1.wav" att="100.0" />
-		<attenuation file="sonora-fuerte-2.wav" att="100.0" />
-	  </volume>
-	  <volume dir="palmas/sonora/baja/" volume="25">
-		<attenuation file="sonora-baja-3.wav" att="100.0" />
-		<attenuation file="sonora-baja-4.wav" att="94.18543186383339" />
-		<attenuation file="sonora-baja-2.wav" att="89.35807422266801" />
-		<attenuation file="sonora-baja-1.wav" att="92.63803680981596" />
-	  </volume>
-	  <volume dir="palmas/sorda/fuerte/" volume="35">
-		<attenuation file="1.wav" att="72.25453904459721" />
-		<attenuation file="2.wav" att="100.0" />
-		<attenuation file="3.wav" att="64.41423744794531" />
-	  </volume>
-	  <volume dir="palmas/sorda/baja/" volume="25">
-		<attenuation file="1.wav" att="74.46859137055837" />
-		<attenuation file="2.wav" att="100.0" />
-	  </volume>
-	  <volume dir="percusion/cajon/alto/fuerte/" volume="25">
-		<attenuation file="4.wav" att="100.0" />
-		<attenuation file="5.wav" att="98.10676598386095" />
-		<attenuation file="1.wav" att="98.12199286046872" />
-		<attenuation file="2.wav" att="98.51444005817578" />
-		<attenuation file="3.wav" att="98.09154383242824" />
-	  </volume>
-	  <volume dir="percusion/mesa/sonora/" volume="25">
-		<attenuation file="1.wav" att="56.08564558604633" />
-		<attenuation file="2.wav" att="100.0" />
-		<attenuation file="3.wav" att="96.63948441404709" />
-	  </volume>
-	  <volume dir="percusion/mesa/sorda/" volume="25">
-		<attenuation file="4.wav" att="100.0" />
-		<attenuation file="1.wav" att="71.1607621088071" />
-		<attenuation file="2.wav" att="79.9106375665922" />
-		<attenuation file="3.wav" att="93.8020071612285" />
-	  </volume>
-	  <volume dir="percusion/foot/" volume="25">
-	  </volume>
-	</volumes>
-</soundparameters>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sounds SYSTEM "jcompas_sounds_v1.dtd">
+
+<sounds>
+	<!--
+	 Describes the volumes of files in %
+	 This is more flexible/easier than modifying the files
+	-->
+	<sound refId="palma sonora fuerte" >
+		<soundFile path="palmas/sonora/fuerte/sonora-fuerte-3.wav" volume="100.0" />
+		<soundFile path="palmas/sonora/fuerte/sonora-fuerte-4.wav" volume="100.0" />
+		<soundFile path="palmas/sonora/fuerte/sonora-fuerte-1.wav" volume="100.0" />
+		<soundFile path="palmas/sonora/fuerte/sonora-fuerte-2.wav" volume="100.0" />
+	</sound>
+	<sound refId="palma sonora baja">
+		<soundFile path="palmas/sonora/baja/sonora-baja-3.wav" volume="100.0" />
+		<soundFile path="palmas/sonora/baja/sonora-baja-4.wav" volume="94.18543186383339" />
+		<soundFile path="palmas/sonora/baja/sonora-baja-2.wav" volume="89.35807422266801" />
+		<soundFile path="palmas/sonora/baja/sonora-baja-1.wav" volume="92.63803680981596" />
+	</sound>
+  <sound refId="palma sonora fuerte">
+	<soundFile path="palmas/sorda/fuerte/1.wav" volume="72.25453904459721" />
+	<soundFile path="palmas/sorda/fuerte/2.wav" volume="100.0" />
+	<soundFile path="palmas/sorda/fuerte/3.wav" volume="64.41423744794531" />
+  </sound>
+  <sound refId="palma sonora baja">
+	<soundFile path="palmas/sorda/baja/1.wav" volume="74.46859137055837" />
+	<soundFile path="palmas/sorda/baja/2.wav" volume="100.0" />
+  </sound>
+  <sound refId="cajon alto fuerte">
+	<soundFile path="percusion/cajon/alto/fuerte/4.wav" volume="100.0" />
+	<soundFile path="percusion/cajon/alto/fuerte/5.wav" volume="98.10676598386095" />
+	<soundFile path="percusion/cajon/alto/fuerte/1.wav" volume="98.12199286046872" />
+	<soundFile path="percusion/cajon/alto/fuerte/2.wav" volume="98.51444005817578" />
+	<soundFile path="percusion/cajon/alto/fuerte/3.wav" volume="98.09154383242824" />
+  </sound>
+  <sound refId="mesa sonora">
+	<soundFile path="percusion/mesa/sonora/1.wav" volume="56.08564558604633" />
+	<soundFile path="percusion/mesa/sonora/2.wav" volume="100.0" />
+	<soundFile path="percusion/mesa/sonora/3.wav" volume="96.63948441404709" />
+  </sound>
+  <sound refId="mesa sorda">
+	<soundFile path="percusion/mesa/sorda/4.wav" volume="100.0" />
+	<soundFile path="percusion/mesa/sorda/1.wav" volume="71.1607621088071" />
+	<soundFile path="percusion/mesa/sorda/2.wav" volume="79.9106375665922" />
+	<soundFile path="percusion/mesa/sorda/3.wav" volume="93.8020071612285" />
+  </sound>
+  <sound refId="foot">
+	  <soundFile path="percusion/foot/1.wav" volume="100.0" />
+  </sound>
+</sounds>
