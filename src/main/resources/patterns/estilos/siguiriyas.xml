@@ -1,4 +1,7 @@
-<estilo name="Siguiriya en 5" palo="Siguiriya">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE estilo SYSTEM "jcompas_estilo_v1.dtd">
+
+<estilo refId="Siguiriya en 5" paloRefId="Siguiriya">
 		<compas bpm="100">
 			<beat name="1" strong="true"/>
 			<beat name="" strong="false"/>

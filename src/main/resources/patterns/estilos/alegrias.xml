@@ -1,4 +1,7 @@
-<estilo name="Alegrías" palo="Alegrías">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE estilo SYSTEM "jcompas_estilo_v1.dtd">
+
+<estilo refId="Alegrías" paloRefId="Alegrías">
 		<compas bpm="130">
 			<beat name="1" strong="false"/>
 			<beat name="2" strong="false"/>
