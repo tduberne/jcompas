@@ -27,21 +27,14 @@ import java.util.List;
  * @author thibautd
  */
 public final class CompasInformation {
-	private final String name;
 	private final int typicalBpm;
 	private final List<Beat> beats;
 
 	public CompasInformation(
-			final String name,
 			final int bpm,
 			final List<Beat> beats) {
-		this.name = name;
 		this.typicalBpm = bpm;
 		this.beats = Collections.unmodifiableList( beats );
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public int getTypicalBpm() {
@@ -57,7 +50,7 @@ public final class CompasInformation {
 	}
 
 	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
+		return "["+getClass().getSimpleName()+": "+typicalBpm+"bpm, "+beats+"]";
 	}
 }
 
