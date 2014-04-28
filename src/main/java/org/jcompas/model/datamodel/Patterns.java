@@ -21,15 +21,27 @@ package org.jcompas.model.datamodel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author thibautd
  */
 public class Patterns {
+	private static final Logger log =
+		Logger.getLogger(Patterns.class);
+
 	private Map<PatternId, Pattern> patterns = new LinkedHashMap<PatternId, Pattern>();
 
 	public Pattern getPattern(final PatternId id) {
-		return patterns.get( id );
+		final Pattern pattern = patterns.get( id );
+		if ( pattern == null ) {
+			log.error( "no pattern "+id );
+			log.error( "valid values: "+patterns.keySet() );
+			throw new NoSuchElementException( "no pattern "+id ); 
+		}
+		return pattern;
 	}
 
 	// package: modifications should be done via the data model

@@ -22,12 +22,16 @@ package org.jcompas.model.datamodel;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Gives access to the available palos.
  * @author thibautd
  */
 public final class Palos {
+	private static final Logger log = Logger.getLogger( Palos.class );
 	private final Map<PaloId, Palo> palos = new LinkedHashMap<PaloId, Palo>();
 
 	public Palos() {}
@@ -36,8 +40,14 @@ public final class Palos {
 		return palos.keySet();
 	}
 
-	public Palo getPalo( final PaloId name ) {
-		return palos.get( name );
+	public Palo getPalo( final PaloId id ) {
+		final Palo palo = palos.get( id );
+		if ( palo == null ) {
+			log.error( "no palo "+id );
+			log.error( "valid values: "+palos.keySet() );
+			throw new NoSuchElementException( "no palo "+id ); 
+		}
+		return palo;
 	}
 
 	Palo getOrCreatePalo( final PaloId name ) {

@@ -21,15 +21,27 @@ package org.jcompas.model.datamodel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author thibautd
  */
 public class Estilos {
+	private static final Logger log =
+		Logger.getLogger(Estilos.class);
+
 	private Map<EstiloId, Estilo> estilos = new LinkedHashMap<EstiloId, Estilo>();
 
 	public Estilo getEstilo(final EstiloId id) {
-		return estilos.get( id );
+		final Estilo estilo = estilos.get( id );
+		if ( estilo == null ) {
+			log.error( "no estilo "+id );
+			log.error( "valid values: "+estilos.keySet() );
+			throw new NoSuchElementException( "no estilo "+id ); 
+		}
+		return estilo;
 	}
 
 	// package: modifications should be done via the data model

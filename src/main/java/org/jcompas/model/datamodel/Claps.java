@@ -21,15 +21,27 @@ package org.jcompas.model.datamodel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author thibautd
  */
 public class Claps {
+	private static final Logger log =
+		Logger.getLogger(Claps.class);
+
 	private Map<ClapId, Clap> claps = new LinkedHashMap<ClapId, Clap>();
 
 	public Clap getClap(final ClapId id) {
-		return claps.get( id );
+		final Clap clap = claps.get( id );
+		if ( clap == null ) {
+			log.error( "no clap "+id );
+			log.error( "valid values: "+claps.keySet() );
+			throw new NoSuchElementException( "no clap "+id ); 
+		}
+		return clap;
 	}
 
 	// package: modifications should be done via the data model
