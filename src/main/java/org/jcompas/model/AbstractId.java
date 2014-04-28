@@ -31,7 +31,8 @@ public abstract class AbstractId {
 
 	@Override
 	public boolean equals(final Object o) {
-		return o.getClass().equals( getClass() ) && ((AbstractId) o).equals( id );
+		return o.getClass().equals( getClass() ) &&
+			((AbstractId) o).id.equals( id );
 	}
 
 	@Override
