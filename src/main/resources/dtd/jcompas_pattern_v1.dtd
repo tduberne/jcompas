@@ -7,11 +7,12 @@
 	nRepeat	CDATA	"3">
 
 <!ELEMENT estilos (estilo*)>
+
+<!ELEMENT estilo EMPTY>
 <!ATTLIST estilo 
 	refId	CDATA	#REQUIRED>
 
 <!ELEMENT line (#PCDATA)>
-
 <!ATTLIST line 
 	name		CDATA	""
 	soundRefId	CDATA	#REQUIRED>
