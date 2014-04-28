@@ -126,8 +126,8 @@ public class ConvertPatterns {
 	private static String getSoundId(final String directory) {
 		if ( "palmas/sonora/fuerte/".equals( directory ) ) return "palma sonora fuerte";
 		if ( "palmas/sonora/baja/".equals( directory ) ) return "palma sonora baja";
-		if ( "palmas/sorda/fuerte/".equals( directory) ) return "palma sonora fuerte";
-		if ( "palmas/sorda/baja/".equals( directory) ) return "palma sonora baja";
+		if ( "palmas/sorda/fuerte/".equals( directory) ) return "palma sorda fuerte";
+		if ( "palmas/sorda/baja/".equals( directory) ) return "palma sorda baja";
 		if ( "percusion/cajon/alto/fuerte/".equals( directory) ) return "cajon alto fuerte";
 		if ( "percusion/mesa/sonora/".equals( directory) ) return "mesa sonora";
 		if ( "percusion/mesa/sorda/".equals( directory) ) return "mesa sorda";
