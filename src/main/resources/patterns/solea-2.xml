@@ -1,15 +1,9 @@
-<pattern name="Musicales 1 (Sordas)"
-		nCompas="1"
-		nRepeat="3">
-	<estilo file="estilos/soleares.xml"/>
-
-	<musician name="Paquito">
-		<sound directory="palmas/sorda/fuerte/">
-			-- -- X- -- -- -- X- X- -- X- -- --
-		</sound>
-		<sound directory="palmas/sorda/baja/">
-			X- X- -- -- -- -- -- -- XX -- -- --
-		</sound>
-	</musician>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
+<pattern refId="Musicales 1 (Sordas)" nCompas="1" nRepeat="3">
+  <estilos>
+    <estilo refId="Soleá" />
+  </estilos>
+  <line name="" soundRefId="palma sorda fuerte">-- -- X- -- -- -- X- X- -- X- -- --</line>
+  <line name="" soundRefId="palma sorda baja">X- X- -- -- -- -- -- -- XX -- -- --</line>
 </pattern>

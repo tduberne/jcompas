@@ -1,12 +1,9 @@
-<pattern name="Tiempos fuertes"
-		nCompas="1"
-		nRepeat="3">
-	<estilo file="estilos/siguiriyas.xml"/>
-	<estilo file="estilos/siguiriyas-12.xml"/>
-
-	<musician name="Paquito">
-		<sound directory="palmas/sorda/fuerte/">
-			X-X-X--X--X-
-		</sound>
-	</musician>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
+<pattern refId="Tiempos fuertes" nCompas="1" nRepeat="3">
+  <estilos>
+    <estilo refId="Siguiriya en 5" />
+    <estilo refId="Siguiriya en 12" />
+  </estilos>
+  <line name="" soundRefId="palma sorda fuerte">X-X-X--X--X-</line>
 </pattern>
