@@ -18,12 +18,12 @@
 		<soundFile path="palmas/sonora/baja/sonora-baja-2.wav" volume="89.35807422266801" />
 		<soundFile path="palmas/sonora/baja/sonora-baja-1.wav" volume="92.63803680981596" />
 	</sound>
-  <sound refId="palma sonora fuerte">
+  <sound refId="palma sorda fuerte">
 	<soundFile path="palmas/sorda/fuerte/1.wav" volume="72.25453904459721" />
 	<soundFile path="palmas/sorda/fuerte/2.wav" volume="100.0" />
 	<soundFile path="palmas/sorda/fuerte/3.wav" volume="64.41423744794531" />
   </sound>
-  <sound refId="palma sonora baja">
+  <sound refId="palma sorda baja">
 	<soundFile path="palmas/sorda/baja/1.wav" volume="74.46859137055837" />
 	<soundFile path="palmas/sorda/baja/2.wav" volume="100.0" />
   </sound>
