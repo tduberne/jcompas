@@ -32,6 +32,7 @@ import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.datamodel.Pattern.ClapLine;
 import org.jcompas.model.datamodel.Pattern.Golpe;
 import org.jcompas.model.datamodel.PatternId;
+import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -58,12 +59,20 @@ public class PatternReader {
 
 	private void parseDocument(final Document document) {
 		final PatternId id = parseId(document);
+		final String name = parseName( document );
 		final int nRepeats = parseNRepeats(document);
 		final int duration = parseDuration(document);
 		final Set<EstiloId> estilos = parseEstilos(document);
 		final List<ClapLine> lines = parseLines(document);
 
-		model.addPattern(new Pattern(id, estilos, lines, nRepeats, duration));
+		model.addPattern(
+				new Pattern(
+					name,
+					id,
+					estilos,
+					lines,
+					nRepeats,
+					duration));
 	}
 
 	private static List<ClapLine> parseLines(final Document document) {
@@ -135,4 +144,8 @@ public class PatternReader {
 		return new PatternId( id );
 	}
 
+	private static String parseName(final Document document) {
+		final Attribute att = document.getRootElement().getAttribute( "name" );
+		return att == null ? null : att.getValue();
+	}
 }

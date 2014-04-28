@@ -2,6 +2,7 @@
 
 <!ELEMENT pattern (estilos,line*)>
 <!ATTLIST pattern 
+	name	CDATA	#IMPLIED
 	refId	CDATA	#REQUIRED
 	nCompas	CDATA	"1"
 	nRepeat	CDATA	"3">

@@ -32,6 +32,7 @@ import java.util.Set;
 public final class Pattern {
 	private final List<ClapLine> clapLines;
 	private final PatternId id;
+	private final String name;
 	private final Set<EstiloId> estilos;
 	private final int typicalNRepeats;
 	private final int durationInCompas;
@@ -40,12 +41,14 @@ public final class Pattern {
 	// constructor
 	// /////////////////////////////////////////////////////////////////////////
 	public Pattern(
+			final String name,
 			final PatternId id,
 			final Set<EstiloId> estilos,
 			final List<ClapLine> clapLines,
 			final int typicalNRepeats,
 			final int durationInCompas) {
 		this.id = id;
+		this.name = name != null ? name : id.toString();
 		this.estilos = estilos;
 		this.clapLines = Collections.unmodifiableList( clapLines );
 		this.typicalNRepeats = typicalNRepeats;
@@ -64,7 +67,7 @@ public final class Pattern {
 	}
 
 	public String getName() {
-		return id.toString();
+		return name;
 	}
 
 	public Set<EstiloId> getEstilos() {
