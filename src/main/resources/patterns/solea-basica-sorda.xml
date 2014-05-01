@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
-<pattern refId="Compas Básico (sordas)" nCompas="1" nRepeat="3">
+<pattern  name="Compas Básico (sordas)" refId="Solea Compas Básico (sordas)" nCompas="1" nRepeat="3">
   <estilos>
     <estilo refId="Soleá" />
     <estilo refId="Alegrías" />

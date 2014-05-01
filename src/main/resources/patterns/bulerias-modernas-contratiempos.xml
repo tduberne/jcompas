@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
-<pattern refId="Contratiempos (1)" nCompas="1" nRepeat="3">
+<pattern refId="Bulerías Modernas Contratiempos (1)" name="Contratiempos (1)" nCompas="1" nRepeat="3">
   <estilos>
     <estilo refId="Bulerías Modernas" />
   </estilos>
