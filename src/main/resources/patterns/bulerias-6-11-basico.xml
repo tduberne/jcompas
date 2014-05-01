@@ -1,21 +1,10 @@
-<pattern name="Compas Básico"
-		nCompas="1"
-		nRepeat="3">
-	<estilo file="estilos/bulerias-6-11.xml"/>
-
-	<musician name="Paquito">
-		<sound directory="palmas/sonora/fuerte/">
-			X-X-X-
-		</sound>
-		<sound directory="palmas/sonora/baja/">
-			-X-X-X
-		</sound>
-	</musician>
-
-	<musician name="Pie">
-		<sound directory="percusion/foot/">
-			X-X-X-
-		</sound>
-	</musician>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
+<pattern name="Compas Básico" refId="Compas Básico 6-11" nCompas="1" nRepeat="3">
+  <estilos>
+    <estilo refId="Medio Compás 6-11" />
+  </estilos>
+  <line name="" soundRefId="palma sonora fuerte">X-X-X-</line>
+  <line name="" soundRefId="palma sonora baja">-X-X-X</line>
+  <line name="" soundRefId="foot">X-X-X-</line>
 </pattern>

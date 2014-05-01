@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * PaloFactory.java
+ * Patterns.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,31 +17,37 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
- * Gives access to the available palos.
  * @author thibautd
  */
-public final class Palos {
-	private final Map<String, Palo> palos = new HashMap<String, Palo>();
+public class Patterns {
+	private static final Logger log =
+		Logger.getLogger(Patterns.class);
 
-	public Palos(final Collection<Palo> palos) {
-		for (Palo p : palos) {
-			this.palos.put( p.getName() , p );
+	private Map<PatternId, Pattern> patterns = new LinkedHashMap<PatternId, Pattern>();
+
+	public Pattern getPattern(final PatternId id) {
+		final Pattern pattern = patterns.get( id );
+		if ( pattern == null ) {
+			log.error( "no pattern "+id );
+			log.error( "valid values: "+patterns.keySet() );
+			throw new NoSuchElementException( "no pattern "+id ); 
 		}
+		return pattern;
 	}
 
-	public Collection<String> getAvailablePalos() {
-		return palos.keySet();
-	}
-
-	public Palo createPalo( final String name ) {
-		return palos.get( name );
+	// package: modifications should be done via the data model
+	void addPattern(final Pattern pattern) {
+		final Pattern old = patterns.put( pattern.getId() , pattern );
+		if ( old != null ) throw new IllegalStateException( "already a pattern "+pattern.getName() );
 	}
 }
 

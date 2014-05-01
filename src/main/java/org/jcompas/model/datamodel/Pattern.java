@@ -17,20 +17,23 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Abstraction for a "pattern".
  * @author thibautd
  */
 public final class Pattern {
-	private final List<Musician> musicians;
+	private final List<ClapLine> clapLines;
+	private final PatternId id;
 	private final String name;
+	private final Set<EstiloId> estilos;
 	private final int typicalNRepeats;
 	private final int durationInCompas;
 
@@ -39,11 +42,15 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	public Pattern(
 			final String name,
-			final List<Musician> musicians,
+			final PatternId id,
+			final Set<EstiloId> estilos,
+			final List<ClapLine> clapLines,
 			final int typicalNRepeats,
 			final int durationInCompas) {
-		this.name = name;
-		this.musicians = Collections.unmodifiableList( musicians );
+		this.id = id;
+		this.name = name != null ? name : id.toString();
+		this.estilos = estilos;
+		this.clapLines = Collections.unmodifiableList( clapLines );
 		this.typicalNRepeats = typicalNRepeats;
 		this.durationInCompas = durationInCompas;
 	}
@@ -51,12 +58,20 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	// getters
 	// /////////////////////////////////////////////////////////////////////////
-	public List<Musician> getMusicians() {
-		return musicians;
+	public List<ClapLine> getLines() {
+		return clapLines;
+	}
+
+	public PatternId getId() {
+		return id;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public Set<EstiloId> getEstilos() {
+		return estilos;
 	}
 
 	public int getTypicalNumberOfRepetitions() {
@@ -70,14 +85,17 @@ public final class Pattern {
 	// /////////////////////////////////////////////////////////////////////////
 	// classes
 	// /////////////////////////////////////////////////////////////////////////
-	public static final class Musician {
+	public static final class ClapLine {
 		private final String name;
+		private final ClapId clap;
 		private final List<Golpe> golpes;
 
-		public Musician(
+		public ClapLine(
 				final String name,
+				final ClapId clap,
 				final List<Golpe> golpes) {
 			this.name = name;
+			this.clap = clap;
 			List<Golpe> sorted = new ArrayList<Golpe>( golpes );
 			Collections.sort(
 					golpes,
@@ -101,21 +119,18 @@ public final class Pattern {
 		public List<Golpe> getGolpes() {
 			return golpes;
 		}
+
+		public ClapId getClapId() {
+			return clap;
+		}
 	}
 
 	public static final class Golpe {
-		private final Clap sound;
 		private final double position;
 
 		public Golpe(
-				final Clap sound,
 				final double positionInCompas) {
-			this.sound = sound;
 			this.position = positionInCompas;
-		}
-
-		public Clap getClap() {
-			return sound;
 		}
 
 		public double getPositionInCompas() {

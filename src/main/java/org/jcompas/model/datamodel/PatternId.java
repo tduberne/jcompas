@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * PatternId.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,45 +17,16 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
-import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
+import org.jcompas.model.AbstractId;
 
 /**
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
-
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
-
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
-	}
-
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
-		}
-		remainingPlays--;
-		return currentPattern;
-	}
-
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
+public class PatternId extends AbstractId {
+	public PatternId( final String id ) {
+		super( id );
 	}
 }
 

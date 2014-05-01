@@ -20,12 +20,10 @@
 package org.jcompas.model;
 
 import java.net.URL;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;

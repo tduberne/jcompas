@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * CompasInformation.java
+ * Id.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -19,45 +19,30 @@
  * *********************************************************************** */
 package org.jcompas.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
- * A data structure giving access to compas information.
  * @author thibautd
  */
-public final class CompasInformation {
-	private final String name;
-	private final int typicalBpm;
-	private final List<Beat> beats;
+public abstract class AbstractId {
+	private final String id;
 
-	public CompasInformation(
-			final String name,
-			final int bpm,
-			final List<Beat> beats) {
-		this.name = name;
-		this.typicalBpm = bpm;
-		this.beats = Collections.unmodifiableList( beats );
+	protected AbstractId( final String id ) {
+		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public boolean equals(final Object o) {
+		return o.getClass().equals( getClass() ) &&
+			((AbstractId) o).id.equals( id );
 	}
 
-	public int getTypicalBpm() {
-		return typicalBpm;
+	@Override
+	public int hashCode() {
+		return id.hashCode();
 	}
 
-	public List<Beat> getBeats() {
-		return beats;
-	}
-
-	public int getBeatsCount() {
-		return beats.size();
-	}
-
+	@Override
 	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+", "+typicalBpm+"bpm, "+beats+"]";
+		return id;
 	}
 }
 

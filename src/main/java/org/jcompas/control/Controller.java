@@ -22,16 +22,18 @@ package org.jcompas.control;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
 
 import org.apache.log4j.Logger;
-import org.jcompas.model.Estilo;
-import org.jcompas.model.io.PaloReader;
-import org.jcompas.model.io.Paths;
 import org.jcompas.model.JCompasGlobal;
-import org.jcompas.model.Palo;
-import org.jcompas.model.Palos;
-import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.datamodel.DataModel;
+import org.jcompas.model.datamodel.Estilo;
+import org.jcompas.model.datamodel.EstiloId;
+import org.jcompas.model.datamodel.Palo;
+import org.jcompas.model.datamodel.PaloId;
+import org.jcompas.model.datamodel.Pattern;
+import org.jcompas.model.datamodel.PatternId;
+import org.jcompas.model.io.ModelReader;
+import org.jcompas.model.io.Paths;
 import org.jcompas.model.sound.SimpleMetronome;
 import org.jcompas.view.Reloj;
 
@@ -42,7 +44,7 @@ import org.jcompas.view.Reloj;
  */
 public final class Controller {
 	private static final Logger log = Logger.getLogger(Controller.class);
-	private final Palos palos;
+	private final DataModel model;
 
 	private Palo selectedPalo = null;
 	private Estilo selectedEstilo = null;
@@ -54,13 +56,13 @@ public final class Controller {
 	private MetronomeRunner metronomeRunner = null;
 	private RelojRunner relojRunner = null;
 
-	public Controller(final Paths paths) {
-		try {
-			palos = new PaloReader().readPalos(paths);
-		} catch (Exception e) {
-			JCompasGlobal.notifyException("error while importing palos", e);
-			throw new RuntimeException();
-		}
+	public Controller( final Paths paths ) {
+		this( new DataModel() );
+		new ModelReader( this.model ).read( paths );
+	}
+	
+	public Controller(final DataModel model) {
+		this.model = model;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -72,13 +74,13 @@ public final class Controller {
 		}
 	}
 
-	public Collection<String> getPalos() {
-		return palos.getAvailablePalos();
+	public Collection<PaloId> getPalos() {
+		return model.getPalos().getAvailablePalos();
 	}
 
-	public void selectPalo(final String name) {
+	public void selectPalo(final PaloId name) {
 		log.debug("selecting palo " + name);
-		selectedPalo = palos.createPalo(name);
+		selectedPalo = model.getPalos().getPalo(name);
 		selectedEstilo = null;
 		selectedPatterns.clear();
 		if (reloj != null)
@@ -89,12 +91,12 @@ public final class Controller {
 		return selectedPalo == null ? null : selectedPalo.getName();
 	}
 
-	public Collection<String> getEstilos() {
+	public Collection<EstiloId> getEstilos() {
 		return selectedPalo == null ? null : selectedPalo.getEstilos();
 	}
 
-	public void selectEstilo(final String name) {
-		selectedEstilo = selectedPalo.getEstilo(name);
+	public void selectEstilo(final EstiloId name) {
+		selectedEstilo = model.getEstilos().getEstilo( name );
 		selectedPatterns.clear();
 		bpm = selectedEstilo.getCompas().getTypicalBpm();
 
@@ -107,21 +109,21 @@ public final class Controller {
 		return selectedEstilo == null ? null : selectedEstilo.getName();
 	}
 
-	public Collection<String> getPatterns() {
+	public Collection<PatternId> getPatterns() {
 		return selectedEstilo == null ? null : selectedEstilo.getPatterns();
 	}
 
-	public List<String> getSelectedPatterns() {
+	public List<PatternId> getSelectedPatterns() {
 		return toStrings(selectedPatterns);
 	}
 
-	public List<String> addPatternToSelection(final String name) {
-		selectedPatterns.add(selectedEstilo.getPattern(name));
+	public List<PatternId> addPatternToSelection(final PatternId name) {
+		selectedPatterns.add( model.getPatterns().getPattern(name) );
 		return getSelectedPatterns();
 	}
 
-	public List<String> removePatternFromSelection(final String name) {
-		selectedPatterns.remove(selectedEstilo.getPattern(name));
+	public List<PatternId> removePatternFromSelection(final PatternId name) {
+		selectedPatterns.remove( model.getPatterns().getPattern(name) );
 		return getSelectedPatterns();
 	}
 
@@ -131,8 +133,12 @@ public final class Controller {
 			return false;
 		}
 
-		metronomeRunner = new MetronomeRunner(new SimpleMetronome(
-				selectedPatterns, selectedEstilo.getCompas()));
+		metronomeRunner =
+				new MetronomeRunner(
+						model,
+						new SimpleMetronome(
+								selectedPatterns,
+								selectedEstilo.getCompas()));
 		relojRunner = new RelojRunner(reloj);
 
 		log.debug("start playing!");
@@ -173,11 +179,11 @@ public final class Controller {
 		return bpm;
 	}
 
-	private static List<String> toStrings(final List<Pattern> ps) {
-		List<String> strings = new ArrayList<String>();
+	private static List<PatternId> toStrings(final List<Pattern> ps) {
+		final List<PatternId> strings = new ArrayList<PatternId>();
 
 		for ( Pattern p : ps ) {
-			strings.add( p.getName() );
+			strings.add( p.getId() );
 		}
 
 		return strings;

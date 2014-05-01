@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Estilo.java
+ * Claps.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,57 +17,37 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.datamodel;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.NoSuchElementException;
 
-import org.jcompas.model.sound.Pattern;
+import org.apache.log4j.Logger;
 
 /**
- * Represents an estilo, that is a special form of a palo
- * (Bulerias por 12 or por 6, sevillanas rocieras or boleras...).
- * Technically, it can be seen as a collection of patterns associated with
- * one particular compas.
- *
  * @author thibautd
  */
-public final class Estilo {
-	private final String name;
-	private final CompasInformation compas;
-	private final Map<String, Pattern> patterns;
+public class Claps {
+	private static final Logger log =
+		Logger.getLogger(Claps.class);
 
-	public Estilo(
-			final String name,
-			final CompasInformation compas,
-			final List<Pattern> patterns) {
-		this.name = name;
-		this.compas = compas;
-		Map<String, Pattern> map = new HashMap<String, Pattern>();
-		for (Pattern p : patterns) {
-			map.put( p.getName() , p );
+	private Map<ClapId, Clap> claps = new LinkedHashMap<ClapId, Clap>();
+
+	public Clap getClap(final ClapId id) {
+		final Clap clap = claps.get( id );
+		if ( clap == null ) {
+			log.error( "no clap "+id );
+			log.error( "valid values: "+claps.keySet() );
+			throw new NoSuchElementException( "no clap "+id ); 
 		}
-
-		this.patterns = Collections.unmodifiableMap( map );
+		return clap;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public CompasInformation getCompas() {
-		return compas;
-	}
-
-	public Set<String> getPatterns() {
-		return patterns.keySet();
-	}
-
-	public Pattern getPattern(final String patternName) {
-		return patterns.get( patternName );
+	// package: modifications should be done via the data model
+	void addClap(final Clap clap) {
+		final Clap old = claps.put( clap.getId() , clap );
+		if ( old != null ) throw new IllegalStateException( "already a clap "+clap.getId() );
 	}
 }
 

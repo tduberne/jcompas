@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ELEMENT pattern (estilos,line*)>
+<!ATTLIST pattern 
+	name	CDATA	#IMPLIED
+	refId	CDATA	#REQUIRED
+	nCompas	CDATA	"1"
+	nRepeat	CDATA	"3">
+
+<!ELEMENT estilos (estilo*)>
+
+<!ELEMENT estilo EMPTY>
+<!ATTLIST estilo 
+	refId	CDATA	#REQUIRED>
+
+<!ELEMENT line (#PCDATA)>
+<!ATTLIST line 
+	name		CDATA	""
+	soundRefId	CDATA	#REQUIRED>

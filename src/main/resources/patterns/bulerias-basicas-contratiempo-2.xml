@@ -1,27 +1,11 @@
-<pattern name="Contratiempos (2)"
-		nCompas="1"
-		nRepeat="3">
-	<estilo file="estilos/bulerias-basicas.xml"/>
-
-	<musician name="Paquito">
-		<sound directory="palmas/sonora/fuerte/">
-			x--x--x-x-x-
-		</sound>
-		<sound directory="palmas/sonora/baja/">
-			-xx-xx-x-x-x
-		</sound>
-	</musician>
-
-	<musician name="Carlito">
-		<sound directory="palmas/sonora/fuerte/">
-			x--x--x--x--x--x---x--x-
-		</sound>
-	</musician>
-
-
-	<musician name="Javier">
-		<sound directory="percusion/foot/">
-			x--x--x-x-x-
-		</sound>
-	</musician>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
+<pattern refId="Contratiempos (2)" nCompas="1" nRepeat="3">
+  <estilos>
+    <estilo refId="Bulerías Clásicas" />
+  </estilos>
+  <line name="" soundRefId="palma sonora fuerte">x--x--x-x-x-</line>
+  <line name="" soundRefId="palma sonora baja">-xx-xx-x-x-x</line>
+  <line name="" soundRefId="palma sonora fuerte">x--x--x--x--x--x---x--x-</line>
+  <line name="" soundRefId="foot">x--x--x-x-x-</line>
 </pattern>

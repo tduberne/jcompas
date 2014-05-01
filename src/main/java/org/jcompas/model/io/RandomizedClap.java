@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Tense.java
+ * RandomizedClap.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,34 +17,47 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model;
+package org.jcompas.model.io;
+
+import java.util.Random;
+
+import javax.sound.sampled.AudioFormat;
+
+import org.jcompas.model.datamodel.Clap;
+import org.jcompas.model.datamodel.ClapId;
 
 /**
  * @author thibautd
  */
-public final class Beat {
-	private final String name;
-	private final boolean isStrong;
+class RandomizedClap implements Clap {
+	private final ClapId id;
+	private final byte[][] sounds;
+	private final AudioFormat format;
+	private final Random random = new Random();
 
-	public Beat(final int name, final boolean isStrong) {
-		this ( ""+name , isStrong );
+	RandomizedClap(
+			final ClapId id,
+			final byte[][] sounds,
+			final AudioFormat format) {
+		this.id = id;
+		this.sounds = sounds;
+		this.format = format;
 	}
 
-	public Beat(final String name, final boolean isStrong) {
-		this.name = name;
-		this.isStrong = isStrong;
+	@Override
+	public byte[] getSoundData() {
+		return sounds[random.nextInt(sounds.length)];
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public AudioFormat getAudioFormat() {
+		return format;
 	}
 
-	public boolean isStrong() {
-		return isStrong;
+	@Override
+	public ClapId getId() {
+		return id;
 	}
 
-	public String toString() {
-		return "["+getClass().getSimpleName()+": "+name+(isStrong ? "s" : "w")+"]";
-	}
 }
 

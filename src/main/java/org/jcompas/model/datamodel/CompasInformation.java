@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * CompasInformation.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,45 +17,40 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
 
 /**
+ * A data structure giving access to compas information.
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
+public final class CompasInformation {
+	private final int typicalBpm;
+	private final List<Beat> beats;
 
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
-
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
+	public CompasInformation(
+			final int bpm,
+			final List<Beat> beats) {
+		this.typicalBpm = bpm;
+		this.beats = Collections.unmodifiableList( beats );
 	}
 
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
-		}
-		remainingPlays--;
-		return currentPattern;
+	public int getTypicalBpm() {
+		return typicalBpm;
 	}
 
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
+	public List<Beat> getBeats() {
+		return beats;
+	}
+
+	public int getBeatsCount() {
+		return beats.size();
+	}
+
+	public String toString() {
+		return "["+getClass().getSimpleName()+": "+typicalBpm+"bpm, "+beats+"]";
 	}
 }
 

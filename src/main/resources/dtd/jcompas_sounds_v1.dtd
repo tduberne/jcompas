@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ELEMENT sounds (sound*)>
+
+<!ELEMENT sound (soundFile+)>
+<!ATTLIST sound
+	refId	CDATA	#REQUIRED>
+
+<!ELEMENT soundFile EMPTY>
+<!ATTLIST soundFile
+	path	CDATA	#REQUIRED
+	volume	CDATA	"100">

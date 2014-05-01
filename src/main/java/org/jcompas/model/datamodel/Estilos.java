@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * XmlSchemaNames.java
+ * Estilos.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -17,37 +17,37 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.io;
+package org.jcompas.model.datamodel;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author thibautd
  */
-public class XmlSchemaNames {
-	private XmlSchemaNames() {}
+public class Estilos {
+	private static final Logger log =
+		Logger.getLogger(Estilos.class);
 
-	public static final String PATTERN_TAG = "pattern";
-	public static final String PATTERN_NAME_ATT = "name";
-	public static final String PATTERN_NCOMPAS_ATT = "nCompas";
-	public static final String PATTERN_NREPEAT_ATT = "nRepeat";
+	private Map<EstiloId, Estilo> estilos = new LinkedHashMap<EstiloId, Estilo>();
 
-	public static final String PATTERN_ESTILO_TAG = "estilo";
-	public static final String PATTERN_ESTILO_ATT = "file";
+	public Estilo getEstilo(final EstiloId id) {
+		final Estilo estilo = estilos.get( id );
+		if ( estilo == null ) {
+			log.error( "no estilo "+id );
+			log.error( "valid values: "+estilos.keySet() );
+			throw new NoSuchElementException( "no estilo "+id ); 
+		}
+		return estilo;
+	}
 
-	public static final String MUSICIAN_TAG = "musician";
-	public static final String MUSICIAN_NAME_ATT = "name";
-
-	public static final String SOUND_TAG = "sound";
-	public static final String SOUND_DIR_ATT = "directory";
-
-	public static final String ESTILO_TAG = "estilo";
-	public static final String ESTILO_NAME_ATT = "name";
-	public static final String ESTILO_PALO_ATT = "palo";
-
-	public static final String COMPAS_TAG = "compas";
-	public static final String COMPAS_BPM_ATT = "bpm";
-	public static final String BEAT_TAG = "beat";
-	public static final String BEAT_NAME_ATT = "name";
-	public static final String BEAT_POS_ATT = "pos";
-	public static final String BEAT_STRONG_ATT = "strong";
+	// package: modifications should be done via the data model
+	void addEstilo(final Estilo estilo) {
+		final Estilo old = estilos.put( estilo.getId() , estilo );
+		if ( old != null ) throw new IllegalStateException( "already an estilo "+estilo.getName() );
+	}
 }
 

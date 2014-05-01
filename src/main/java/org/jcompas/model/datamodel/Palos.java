@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * Clap.java
+ * PaloFactory.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,34 +17,46 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
-import javax.sound.sampled.AudioFormat;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
 
 /**
- * Abstraction for a metronome "clap"
+ * Gives access to the available palos.
  * @author thibautd
  */
-public interface Clap {
-	/**
-	 * Gives access to the sound raw data.
-	 * It does not have to be the same sound returned over and over
-	 * (ie some randomness can be added to improve realism).
-	 * @return the byte sequence, as specified by the format.
-	 */
-	public byte[] getSoundData();
+public final class Palos {
+	private static final Logger log = Logger.getLogger( Palos.class );
+	private final Map<PaloId, Palo> palos = new LinkedHashMap<PaloId, Palo>();
 
-	/**
-	 * Gives the name of the sound.
-	 * The name is used as an identifier for "instruments"
-	 * @return the name
-	 */
-	public String getSoundName();
+	public Palos() {}
 
-	/**
-	 * Gives access to the format
-	 * @return the format.
-	 */
-	public AudioFormat getAudioFormat();
+	public Collection<PaloId> getAvailablePalos() {
+		return palos.keySet();
+	}
+
+	public Palo getPalo( final PaloId id ) {
+		final Palo palo = palos.get( id );
+		if ( palo == null ) {
+			log.error( "no palo "+id );
+			log.error( "valid values: "+palos.keySet() );
+			throw new NoSuchElementException( "no palo "+id ); 
+		}
+		return palo;
+	}
+
+	Palo getOrCreatePalo( final PaloId name ) {
+		Palo p = palos.get( name );
+		if ( p == null ) {
+			p = new Palo( name );
+			palos.put( name , p );
+		}
+		return p;
+	}
 }
 

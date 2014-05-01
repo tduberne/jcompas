@@ -27,8 +27,10 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
 import org.jcompas.model.JCompasGlobal;
+import org.jcompas.model.datamodel.Clap;
+import org.jcompas.model.datamodel.DataModel;
+import org.jcompas.model.datamodel.Pattern;
 import org.jcompas.model.sound.MetronomeData;
-import org.jcompas.model.sound.Pattern;
 import org.jcompas.model.sound.SoundUtils;
 
 /**
@@ -38,17 +40,21 @@ import org.jcompas.model.sound.SoundUtils;
 public final class MetronomeRunner implements InfinitePlayer {
 	private static final Logger log = Logger.getLogger(MetronomeRunner.class);
 	private final MetronomeData metronome;
+	private final DataModel model;
 	private final AudioFormat format;
 	private final SourceDataLine line;
 	private Feeder feeder = null;
 
-	public MetronomeRunner(final MetronomeData m) {
+	public MetronomeRunner(
+			final DataModel model,
+			final MetronomeData m) {
+		this.model = model;
 		this.metronome = m;
 		// Oops, this pattern just vanishes afterwards...
 		// Try to find a CLEAN way to play it (or another CLEAN way
 		// to identify the AudioFormat)
 		Pattern pattern = metronome.getNextPattern();
-		format = SoundUtils.identifyAudioFormat(pattern);
+		format = SoundUtils.identifyAudioFormat( model.getClaps() , pattern);
 		try {
 			line = SoundUtils.acquireLine(format);
 		} catch (Exception e) {
@@ -64,7 +70,12 @@ public final class MetronomeRunner implements InfinitePlayer {
 	@Override
 	public void start(final TimedLatch startLatch, final long compasLengthMilli) {
 		line.start();
-		feeder = new Feeder(startLatch, line, metronome, format,
+		feeder = new Feeder(
+				startLatch,
+				line,
+				metronome,
+				model,
+				format,
 				compasLengthMilli);
 		new Thread(feeder).start();
 	}
@@ -97,12 +108,13 @@ public final class MetronomeRunner implements InfinitePlayer {
 		// Half a second seems to be a good value.
 		private static final int MAX_BUFFER_DUR = 500;
 		// TODO: pass to config file
-		private static final int MAX_IMPRECISION_MILLI = 10;
+		private static final int MAX_IMPRECISION_MILLI = 1;
 		private final Random random = new Random();
 		private final int maxBytesInBuffer;
 
 		private boolean run = true;
 		private final MetronomeData metronome;
+		private final DataModel model;
 		private final AudioFormat format;
 		private final int nBytesPerCompas;
 		private final int nFramesPerCompas;
@@ -112,13 +124,18 @@ public final class MetronomeRunner implements InfinitePlayer {
 		private final TimedLatch startLatch;
 		private final double frameDurationMilli;
 
-		public Feeder(final TimedLatch startLatch, final SourceDataLine line,
-				final MetronomeData metronome, final AudioFormat format,
+		public Feeder(
+				final TimedLatch startLatch,
+				final SourceDataLine line,
+				final MetronomeData metronome,
+				final DataModel model,
+				final AudioFormat format,
 				final long compasLengthMillisec) {
 			this.format = format;
 			this.startLatch = startLatch;
 			this.line = line;
 			this.metronome = metronome;
+			this.model = model;
 
 			frameDurationMilli = 1000 / format.getFrameRate();
 			log.debug("frame duration in ms: " + frameDurationMilli);
@@ -172,7 +189,7 @@ public final class MetronomeRunner implements InfinitePlayer {
 				ds[ i ] = 0;
 			}
 
-			for (Pattern.Musician m : pattern.getMusicians()) {
+			for (Pattern.ClapLine m : pattern.getLines()) {
 				double[] mDs = SoundUtils.convertSoundToDouble(
 						format,
 						catMusician( m ));
@@ -185,15 +202,16 @@ public final class MetronomeRunner implements InfinitePlayer {
 			return SoundUtils.convertSoundToBytes( format , ds );
 		}
 
-		private byte[] catMusician(final Pattern.Musician musician) {
+		private byte[] catMusician(final Pattern.ClapLine clapLine) {
 			byte[] bytes = new byte[ nBytesPerCompas ];
 
 			for (int i=0; i<bytes.length; i++) {
 				bytes[ i ] = 0;
 			}
 
-			for (Pattern.Golpe golpe : musician.getGolpes()) {
-				byte[] sound = golpe.getClap().getSoundData();
+			final Clap clap = model.getClaps().getClap( clapLine.getClapId() );
+			for (Pattern.Golpe golpe : clapLine.getGolpes()) {
+				final byte[] sound = clap.getSoundData();
 				int frameNr = (int) (golpe.getPositionInCompas() * nFramesPerCompas);
 				// "swing": randomize a little
 				// the aim is more attractive sound and avoiding clipping when the same

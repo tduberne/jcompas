@@ -1,4 +1,7 @@
-<estilo name="Medio Compás 6-11" palo="Bulería">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE estilo SYSTEM "jcompas_estilo_v1.dtd">
+
+<estilo refId="Medio Compás 6-11" paloRefId="Bulería">
 		<compas bpm="190">
 			<beat name="6" strong="true"/>
 			<beat name="7" strong="false"/>

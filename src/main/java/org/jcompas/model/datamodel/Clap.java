@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * SimpleMetronome.java
+ * Clap.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
@@ -17,45 +17,32 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.jcompas.model.sound;
+package org.jcompas.model.datamodel;
 
-import java.util.List;
-import java.util.Random;
-
-import org.jcompas.model.datamodel.CompasInformation;
-import org.jcompas.model.datamodel.Pattern;
+import javax.sound.sampled.AudioFormat;
 
 /**
+ * Abstraction for a metronome "clap"
  * @author thibautd
  */
-public final class SimpleMetronome implements MetronomeData {
-	private final Random random = new Random();
-	private final List<Pattern> patterns;
-	private final CompasInformation compasInformation;
+public interface Clap {
+	/**
+	 * Gives access to the sound raw data.
+	 * It does not have to be the same sound returned over and over
+	 * (ie some randomness can be added to improve realism).
+	 * @return the byte sequence, as specified by the format.
+	 */
+	public byte[] getSoundData();
 
-	private Pattern currentPattern = null;
-	private int remainingPlays = 0;
+	/**
+	 * Gives a unique identifier to the clap
+	 */
+	public ClapId getId();
 
-	public SimpleMetronome(
-			final List<Pattern> patterns,
-			final CompasInformation compasInformation) {
-		this.patterns = patterns;
-		this.compasInformation = compasInformation;
-	}
-
-	@Override
-	public Pattern getNextPattern() {
-		if (remainingPlays <= 0) {
-			currentPattern = patterns.get( random.nextInt( patterns.size() ) );
-			remainingPlays = currentPattern.getTypicalNumberOfRepetitions();
-		}
-		remainingPlays--;
-		return currentPattern;
-	}
-
-	@Override
-	public CompasInformation getCompasInfo() {
-		return compasInformation;
-	}
+	/**
+	 * Gives access to the format
+	 * @return the format.
+	 */
+	public AudioFormat getAudioFormat();
 }
 

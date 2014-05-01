@@ -1,4 +1,7 @@
-<estilo name="Bulerías Modernas" palo="Bulería">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE estilo SYSTEM "jcompas_estilo_v1.dtd">
+
+<estilo refId="Bulerías Modernas" paloRefId="Bulería">
 		<compas bpm="190">
 			<beat name="12" strong="true"/>
 			<beat name="1" strong="false"/>

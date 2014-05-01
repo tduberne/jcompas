@@ -1,10 +1,10 @@
 /* *********************************************************************** *
  * project: org.jcompas.*
- * ClapReader.java
+ * EstiloReader.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2012 by the members listed in the COPYING,        *
+ * copyright       : (C) 2014 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           :                                                       *
  *                                                                         *
@@ -20,70 +20,62 @@
 package org.jcompas.model.io;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.jcompas.model.datamodel.ClapId;
+import org.jcompas.model.datamodel.Beat;
+import org.jcompas.model.datamodel.CompasInformation;
 import org.jcompas.model.datamodel.DataModel;
+import org.jcompas.model.datamodel.Estilo;
+import org.jcompas.model.datamodel.EstiloId;
+import org.jcompas.model.datamodel.PaloId;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 
 /**
  * @author thibautd
  */
-public class ClapReader {
-	private static final Logger log = Logger.getLogger(ClapReader.class);
-
-	private final Paths paths;
+public class EstiloReader {
 	private final DataModel model;
 
-	public ClapReader(
-			final Paths paths,
-			final DataModel model) {
-		this.paths = paths;
+	public EstiloReader(final DataModel model) {
 		this.model = model;
 	}
 
-	public void readFile(final File configFile) {
+	public void readFile(final File estiloFile) {
 		try {
-			final Document document = JCompasIOUtils.createSaxBuilder().build(configFile);
+			final Document document = JCompasIOUtils.createSaxBuilder().build( estiloFile );
 			parseDocument(document);
 		}
-		catch (JDOMException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
+		catch (Exception e) {
+			throw new RuntimeException( "error while reading file "+estiloFile, e);
 		}
 	}
 
 	private void parseDocument(final Document document)
 			throws DataConversionException {
-		for (Element e : document.getRootElement().getChildren( "sound" )) {
-			parseSound( e );
-		}
+		final Element root = document.getRootElement();
+		final EstiloId estiloId = new EstiloId(root.getAttribute("refId").getValue());
+		final PaloId paloId = new PaloId(root.getAttribute("paloRefId").getValue());
+		final CompasInformation compas = parseCompas(root.getChild("compas"));
+
+		model.addEstilo( new Estilo(estiloId, paloId, compas) );
 	}
 
-	private void parseSound(final Element e)
+	private static CompasInformation parseCompas(final Element compasElement)
 			throws DataConversionException {
-		final String id = e.getAttribute( "refId" ).getValue();
+		final int bpm = compasElement.getAttribute( "bpm" ).getIntValue();
 
-		final RandomizedClapBuilder builder =
-			new RandomizedClapBuilder(
-					new ClapId( id ) );
-
-		for (Element attElem : e.getChildren( "soundFile" )) {
-			final String file = attElem.getAttribute( "path" ).getValue();
-			final double att = attElem.getAttribute( "volume" ).getDoubleValue() / 100d;
-			log.debug( "defined attenuation for "+file+"= "+att );
-			builder.withSound(
-					paths.getSoundsLocation().getPath() + file,
-					att );
+		final List<Beat> beats = new ArrayList<Beat>();
+		for (Element b : compasElement.getChildren( "beat" )) {
+			Beat beat = new Beat(
+					b.getAttribute( "name" ).getValue(),
+					b.getAttribute( "strong" ).getBooleanValue() );
+			beats.add( beat );
 		}
 
-		model.addClap( builder.build() );
+		return new CompasInformation( bpm , beats );
 	}
 }
 

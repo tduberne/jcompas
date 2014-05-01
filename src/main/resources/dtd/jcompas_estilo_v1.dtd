@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ELEMENT estilo (compas)>
+<!ATTLIST estilo
+	refId		CDATA			#REQUIRED
+	paloRefId	CDATA			#REQUIRED>
+
+<!ELEMENT compas (beat+)>
+<!ATTLIST compas
+	bpm			CDATA			#REQUIRED>
+
+<!ELEMENT beat EMPTY>
+<!ATTLIST beat
+	name		CDATA			#REQUIRED
+	strong		(true|false)	"false">

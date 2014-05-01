@@ -1,20 +1,10 @@
-<pattern name="Compas Básico (Sordas)"
-		nCompas="1"
-		nRepeat="3">
-	<estilo file="estilos/bulerias-basicas.xml"/>
-
-	<musician name="Paquito">
-		<sound directory="palmas/sorda/fuerte/">
-			X--X--X-X-X-
-		</sound>
-		<sound directory="palmas/sorda/baja/">
-			-XX-XX-X-X-X
-		</sound>
-	</musician>
-
-	<musician name="Carlito">
-		<sound directory="percusion/foot/">
-			X--X--X-X-X-
-		</sound>
-	</musician>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pattern SYSTEM "jcompas_pattern_v1.dtd">
+<pattern name="Compas Básico (Sordas)" refId="Bulerías Compas Básico (Sordas)" nCompas="1" nRepeat="3">
+  <estilos>
+    <estilo refId="Bulerías Clásicas" />
+  </estilos>
+  <line name="" soundRefId="palma sorda fuerte">X--X--X-X-X-</line>
+  <line name="" soundRefId="palma sorda baja">-XX-XX-X-X-X</line>
+  <line name="" soundRefId="foot">X--X--X-X-X-</line>
 </pattern>

@@ -21,7 +21,6 @@ package org.jcompas.model.sound;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +36,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
-
-import org.jcompas.model.sound.Pattern;
+import org.jcompas.model.datamodel.Claps;
+import org.jcompas.model.datamodel.Pattern;
 
 /**
  * @author thibautd
@@ -49,16 +48,16 @@ public final class SoundUtils {
 
 	private SoundUtils() {};
 
-	public static AudioFormat identifyAudioFormat( final Pattern p ) {
-		return identifyAudioFormat( p.getMusicians().get( 0 ) );
+	public static AudioFormat identifyAudioFormat(
+			final Claps claps,
+			final Pattern p ) {
+		return identifyAudioFormat( claps , p.getLines().get( 0 ) );
 	}
 
-	public static AudioFormat identifyAudioFormat( final Pattern.Musician m ) {
-		return identifyAudioFormat( m.getGolpes().get( 0 ) );
-	}
-
-	public static AudioFormat identifyAudioFormat( final Pattern.Golpe p ) {
-		return p.getClap().getAudioFormat();
+	public static AudioFormat identifyAudioFormat(
+			final Claps claps,
+			final Pattern.ClapLine m ) {
+		return claps.getClap( m.getClapId() ).getAudioFormat();
 	}
 
 	public static double[] convertSoundToDouble(
